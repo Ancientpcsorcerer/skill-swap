@@ -1,0 +1,310 @@
+.page {
+  padding: calc(var(--s-9) + var(--s-7)) var(--gutter) var(--s-9);
+  max-width: var(--container-w);
+  margin-inline: auto;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--s-7);
+  margin-bottom: var(--s-7);
+  padding-bottom: var(--s-5);
+  border-bottom: 1px solid var(--ink);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-weight: 500;
+  margin-bottom: var(--s-3);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 1.5rem;
+  height: 1px;
+  background: var(--ink-3);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--t-h1);
+  font-weight: 400;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0 0 var(--s-3);
+  font-variation-settings: 'opsz' 96, 'SOFT' 30;
+}
+
+.lede {
+  font-family: var(--font-body);
+  font-size: var(--t-body-l);
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 50ch;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  margin-bottom: var(--s-7);
+  padding-bottom: var(--s-5);
+  border-bottom: 1px solid var(--paper-3);
+}
+
+.searchWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  border: 1px solid var(--ink-4);
+  border-radius: var(--r-pill);
+  padding: 0.65rem 1rem;
+  background: var(--paper);
+  max-width: 32rem;
+  color: var(--ink-3);
+  transition: border-color var(--d-fast) var(--ease-out);
+}
+
+.searchWrap:focus-within {
+  border-color: var(--accent);
+}
+
+.search {
+  flex: 1;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: var(--t-body);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+.search::placeholder {
+  color: var(--ink-4);
+  font-style: italic;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.filterChip {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.6rem 1rem;
+  min-height: 2.5rem;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--r-pill);
+  background: var(--paper);
+  color: var(--ink-2);
+  cursor: pointer;
+  transition:
+    background-color var(--d-fast) var(--ease-out),
+    color var(--d-fast) var(--ease-out),
+    border-color var(--d-fast) var(--ease-out);
+}
+
+.filterChip:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.filterChip.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.sortRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.sortLabel {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+
+.sort {
+  border: 1px solid var(--ink-4);
+  border-radius: var(--r-pill);
+  padding: 0.45rem 0.9rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.sort:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  gap: var(--s-4);
+}
+
+.cardWrap {
+  display: flex;
+}
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--paper-3);
+  padding: var(--s-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  width: 100%;
+  transition: border-color var(--d-base) var(--ease-out), transform var(--d-base) var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  position: relative;
+}
+
+.cardName {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: -0.015em;
+  font-variation-settings: 'opsz' 48;
+}
+
+.cardName a {
+  color: var(--ink);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--d-fast) var(--ease-out);
+}
+
+.cardName a:hover {
+  border-bottom-color: var(--accent);
+}
+
+.cardLoc {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+.matchTag {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--r-pill);
+}
+
+.cardBio {
+  font-family: var(--font-body);
+  font-size: var(--t-body-s);
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+.cardGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.cardLabel {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+.cardChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.cardFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--paper-3);
+  margin-top: var(--s-1);
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+.cardLink {
+  font-family: var(--font-body);
+  font-size: var(--t-body-s);
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 1px;
+  transition: color var(--d-fast) var(--ease-out), border-color var(--d-fast) var(--ease-out);
+}
+
+.cardLink:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-9);
+  text-align: center;
+  color: var(--ink-3);
+}

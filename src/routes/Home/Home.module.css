@@ -1,0 +1,49 @@
+.home {
+  position: relative;
+}
+
+.pinWrap {
+  position: relative;
+  /* 5 viewports = the camera journey, with each act filling one viewport */
+  height: 500vh;
+}
+
+/* Reduced motion: collapse the pin so users read the narrative as a
+   normal vertical scroll, no scrolling-for-500vh-of-pinned-canvas. */
+.pinWrap[data-reduced='true'] {
+  height: auto;
+}
+
+.canvasFixed {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pinWrap[data-reduced='true'] .canvasFixed {
+  position: relative;
+  height: 60vh;
+  min-height: 24rem;
+}
+
+.canvasFixed > * {
+  width: 100%;
+  height: 100%;
+}
+
+.pinInner {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pinWrap[data-reduced='true'] .pinInner {
+  pointer-events: auto;
+}
+
+.pinInner > * {
+  pointer-events: auto;
+}

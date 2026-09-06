@@ -141,3 +141,5 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+testsprite_tests/tmp/
+testsprite_tests/tmp/config.json

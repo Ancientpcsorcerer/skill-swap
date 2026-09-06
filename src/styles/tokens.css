@@ -1,0 +1,111 @@
+/* ============================================================
+   Skill Swap — Design Tokens
+   The single source of truth for color, type, space, motion.
+   Anti-AI-slop palette: warm off-white, ink, terracotta.
+   ============================================================ */
+
+:root {
+  /* Color — Editorial, paper-feeling */
+  --ink: #1A1A1A;            /* primary text, deep black with warmth */
+  --ink-2: #2C2A28;          /* secondary text */
+  --ink-3: #5C5752;          /* tertiary text, captions */
+  --ink-4: #8B847D;          /* muted, micro */
+  --paper: #F4F1EB;          /* Cloud Dancer — base */
+  --paper-2: #EAE5DC;        /* card / surface */
+  --paper-3: #DCD5C8;        /* borders, dividers */
+  --paper-4: #C7BFAD;        /* strong borders */
+  --accent: #C66E4F;         /* Terracotta — interactive, links, marks */
+  --accent-2: #A8563A;       /* hover/active */
+  --accent-soft: #E8C2B0;    /* accent at low opacity (bg, fills) */
+
+  /* Semantic */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --fg-muted: var(--ink-3);
+  --border: var(--paper-3);
+  --link: var(--accent);
+  --link-hover: var(--accent-2);
+
+  /* Type */
+  --font-display: 'Fraunces', 'Times New Roman', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Type scale (mobile → desktop) */
+  --t-display-1: clamp(3.25rem, 8vw + 1rem, 9rem);    /* hero display */
+  --t-display-2: clamp(2.25rem, 5vw + 1rem, 5.5rem);  /* act headlines */
+  --t-h1: clamp(1.75rem, 2.5vw + 1rem, 3.5rem);
+  --t-h2: clamp(1.5rem, 1.5vw + 1rem, 2.25rem);
+  --t-h3: 1.5rem;
+  --t-body-l: 1.25rem;
+  --t-body: 1.0625rem;
+  --t-body-s: 0.9375rem;
+  --t-caption: 0.8125rem;
+  --t-micro: 0.6875rem;
+
+  /* Line-height */
+  --lh-tight: 1.02;
+  --lh-snug: 1.12;
+  --lh-normal: 1.45;
+  --lh-loose: 1.65;
+
+  /* Tracking */
+  --tr-display: -0.025em;
+  --tr-body: -0.005em;
+  --tr-caption: 0.02em;
+  --tr-mono: 0.02em;
+
+  /* Space — 8pt base */
+  --s-1: 0.25rem;   /*  4 */
+  --s-2: 0.5rem;    /*  8 */
+  --s-3: 0.75rem;   /* 12 */
+  --s-4: 1rem;      /* 16 */
+  --s-5: 1.5rem;    /* 24 */
+  --s-6: 2rem;      /* 32 */
+  --s-7: 3rem;      /* 48 */
+  --s-8: 4rem;      /* 64 */
+  --s-9: 6rem;      /* 96 */
+  --s-10: 8rem;     /* 128 */
+  --s-11: 12rem;    /* 192 */
+
+  /* Layout */
+  --measure: 68ch;
+  --container-w: 88rem;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --rail-w: 16rem;
+
+  /* Radii — restraint */
+  --r-1: 2px;
+  --r-2: 4px;
+  --r-3: 8px;
+  --r-pill: 999px;
+
+  /* Borders */
+  --bw-1: 1px;
+  --bw-2: 2px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --d-fast: 180ms;
+  --d-base: 320ms;
+  --d-slow: 600ms;
+  --d-cine: 1200ms;
+
+  /* Z-layers */
+  --z-canvas: 0;
+  --z-base: 1;
+  --z-nav: 50;
+  --z-modal: 100;
+  --z-toast: 200;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --d-fast: 0ms;
+    --d-base: 0ms;
+    --d-slow: 0ms;
+    --d-cine: 0ms;
+  }
+}
