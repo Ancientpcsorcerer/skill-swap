@@ -1449,12 +1449,14 @@
   "Ideas\\Connect_1_1.png": "8dba2661e5ddab968e9c78804a08e9b5f9b06c4be19649e5aabd0ba2fe4b5be9",
   "Ideas\\physical depth.png": "cf264785e14ac47790f6487064f5673365ebe8f04aee27f00e0cfb78ec519e28",
   "src\\components\\frame\\FrameTransition.tsx": "b593f81f0536981152272ae826ff87feb4853bd4b09f5fda6579790b816fe845",
-  "src\\components\\landing\\HeroMedia.tsx": "f1ff24b9eb187c7fb61e79bcff4f26fc15223cb8f48c9cb7cd7f2fea483d61b7",
+  "src\\components\\landing\\HeroMedia.tsx": "c1032984db83008da466ef65b9476625c18a1903629d7a6d0dd837d07f62573f",
   "src\\hooks\\useFrameProgress.ts": "0bc7ec021578a41deb84b5160645c123d3872356be52baa92958f4a44cd4fafe",
   "src\\lib\\frame.ts": "2d5652dfb58edc6388b2f06683decece914803d03710aa7a079026b73b65f0c9",
-  "src\\styles\\landing.css": "615b9d3cbcda9c4d1b5252731461e08b1bf38bd61c9efa62401a99312a749076",
+  "src\\styles\\landing.css": "ce91e72fedd846a6e92010aa16b538e56415c3b91badfebaaa44ded215597236",
   "src\\styles\\frame.css": "be881681fa544c0c6f712182350a271ce4aebc106300b6d05ce53eb07ea4d6f0",
   "public\\video\\landing-ambient.mp4": "a72f9a7f0989ce92f0e4c72b7e44eeeed6e6171c5ce44f52b81ba890c52986e6",
-  "src\\components\\landing\\BigFrameEnvironment.tsx": "192b629c8cd95f8d25e86941d393c3eb67004a512a495f6fca14bfe61e7ad19e",
-  "Ideas\\Background_1.png": "8105c818bf0c0b027c0d256f62863c09b84c9d1982940f472fbe892158a0c143"
+  "src\\components\\landing\\BigFrameEnvironment.tsx": "555d907d4abf27b18cac04ce9de2ec1db791111299cc6929f1a284cb6db45810",
+  "Ideas\\Background_1.png": "8105c818bf0c0b027c0d256f62863c09b84c9d1982940f472fbe892158a0c143",
+  "src\\assets\\big-frame.png": "78773827365ce800025507f9579c86ed84efa3ee4df5315b024601c992150e97",
+  "src\\assets\\landing-architecture.png": "ab1c3382abbbbc140e5c1d8e3774bf149848bb527aaac98700cd13027f4e2594"
 }

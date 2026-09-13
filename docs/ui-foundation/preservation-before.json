@@ -33,7 +33,7 @@
   "src/components/core/shared/SequenceController.ts": "a058f3d3851b575c81a7133c95567329421b341586b11f7cd1c2a345561f664f",
   "src/components/frame/FrameTransition.tsx": "b593f81f0536981152272ae826ff87feb4853bd4b09f5fda6579790b816fe845",
   "src/components/landing/Hero.tsx": "0fd67343241b9093e487e4780e4e4fe2950661d91f2b1c06f6a12de32adde712",
-  "src/components/landing/HeroMedia.tsx": "f1ff24b9eb187c7fb61e79bcff4f26fc15223cb8f48c9cb7cd7f2fea483d61b7",
+  "src/components/landing/HeroMedia.tsx": "c1032984db83008da466ef65b9476625c18a1903629d7a6d0dd837d07f62573f",
   "src/components/layout/Header.tsx": "fcafaf1a7a563da0b5c400b6d67d9187154df7e97ce93f328a7c66851d1d67e4",
   "src/components/layout/Navigation.tsx": "e98ffab9a9b6a7891b3f5f901e5097f4ea7f97bd79a7ef0f13c8e6448d566e2d",
   "src/components/ui/BrandMark.tsx": "0417d128acc9c420e1ae9a98a99357666f71712b5f471a27eb3cc76813504ef7",
@@ -44,7 +44,7 @@
   "src/hooks/useFrameProgress.ts": "0bc7ec021578a41deb84b5160645c123d3872356be52baa92958f4a44cd4fafe",
   "src/hooks/useModalDialog.ts": "6146cd48f3a8c1e987c418a5d8a79ae4ae8eaef310ace9179a6a7912b42d71f2",
   "src/hooks/useReducedMotion.ts": "e25602e36f4632d33112e90f55c8c4fa7e4695486b5851b5f39680583168fbdb",
-  "src/lib/assets.ts": "423817fa0feef2bba95157be915d5ca38ae45da320027e05ff7ed493b3ba5667",
+  "src/lib/assets.ts": "fb79fbe1576b0e3728c7015bfea3d580ddbd6309a260d25b5b7cf10a705a243a",
   "src/lib/checkpoints.ts": "84a10702731f61dc42f1d006de2b8c41c338753559aefc4a7e9a167cd075990e",
   "src/lib/frame.ts": "2d5652dfb58edc6388b2f06683decece914803d03710aa7a079026b73b65f0c9",
   "src/modules/connect/ConnectModule.tsx": "6c0135d837d85892e94418ab41aba3ca02c0fa394f17664180db25a6fdde00c2",
@@ -66,7 +66,7 @@
   "src/styles/dialog.css": "848fc3015639b34a4aae4a790c31be268899bd13dce3771373dcdbe6224e78b7",
   "src/styles/frame.css": "be881681fa544c0c6f712182350a271ce4aebc106300b6d05ce53eb07ea4d6f0",
   "src/styles/global.css": "91bbdcbc2fa7324c649173295fd462c1a19b1a79619cdfa7c6e718f256509f37",
-  "src/styles/landing.css": "615b9d3cbcda9c4d1b5252731461e08b1bf38bd61c9efa62401a99312a749076",
+  "src/styles/landing.css": "ce91e72fedd846a6e92010aa16b538e56415c3b91badfebaaa44ded215597236",
   "src/styles/tokens.css": "cc10bee1b01f12d7cc6909d43665c8957dd8b3ec49201fc467dcfb658a1e2c60",
   "src/types/checkpoints.ts": "e6186f9eefa6b77879a3ec68e11d7d3dfce158dd3e5bd409b1c85a32b7b487aa",
   "src/types/core-assets.d.ts": "306b7ec40041d14220fc3d3c6da1d094b0e4958986b7452bb79630236a68b855",
@@ -1540,6 +1540,8 @@
   "public/video/portal.mp4": "8c0a07b331f8967166a4d7fdbcc99d82604df3f0937671eec16256abcc307843",
   "reference_0.webp": "630319780a15c0bad228a3ffbbd3e4d1da35148d6ebcafbdd9e2044b6be34a54",
   "prompt.txt": "a61e183f1a3628e2b2ae07b4d343c10fe1f6cc71678284e97c452297f4c29c09",
-  "src/components/landing/BigFrameEnvironment.tsx": "192b629c8cd95f8d25e86941d393c3eb67004a512a495f6fca14bfe61e7ad19e",
-  "vite.config.ts": "8f484cf0998ea0ae64e73e9a1a20643a3b0db265d926b95ee1bbf84f132ac530"
+  "src/components/landing/BigFrameEnvironment.tsx": "555d907d4abf27b18cac04ce9de2ec1db791111299cc6929f1a284cb6db45810",
+  "vite.config.ts": "8f484cf0998ea0ae64e73e9a1a20643a3b0db265d926b95ee1bbf84f132ac530",
+  "src/assets/big-frame.png": "78773827365ce800025507f9579c86ed84efa3ee4df5315b024601c992150e97",
+  "src/assets/landing-architecture.png": "ab1c3382abbbbc140e5c1d8e3774bf149848bb527aaac98700cd13027f4e2594"
 }
