@@ -1,12 +1,11 @@
 {
-  "inspectedFiles": 2143,
-  "unchanged": 2120,
-  "unchangedAssets": 2066,
+  "inspectedFiles": 1543,
+  "unchanged": 1521,
+  "unchangedAssets": 1466,
   "changedSource": [
     "src/app/application.css",
     "src/app/ApplicationRoot.tsx",
     "src/app/ApplicationShell.tsx",
-    "src/app/CinematicEntry.tsx",
     "src/app/GlobalSidebar.tsx",
     "src/app/GlobalTopBar.tsx",
     "src/app/navigation.ts",

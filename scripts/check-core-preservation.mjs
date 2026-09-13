@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+
+// Authorized retirement: these cinematic assets and loader files must remain absent.
+const retired = ['Cores/Connect_start', 'Cores/Connect_back', 'build/connect-assets.ts', 'src/types/connect-assets.d.ts'];
+for (const path of retired) assert(!existsSync(path), 'Retired cinematic path restored: ' + path);
 
 const before = JSON.parse(readFileSync('docs/core-chain/preservation-before.json', 'utf8'));
 for (const [path, expected] of Object.entries(before)) {
@@ -9,7 +13,7 @@ for (const [path, expected] of Object.entries(before)) {
   assert.equal(actual, expected, 'Protected file changed: ' + path);
 }
 const folders = readdirSync('dist/cores').sort();
-assert.deepEqual(folders, ['Connect_start', 'Discover_back', 'Discover_start', 'Learn_back', 'Learn_start']);
+assert.deepEqual(folders, ['Discover_back', 'Discover_start', 'Learn_back', 'Learn_start']);
 const packaged = {};
 for (const folder of folders) {
   const files = readdirSync(join('dist/cores', folder));

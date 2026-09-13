@@ -11,7 +11,7 @@ export function CinematicEntry({ enabled, onEnter }: { enabled: boolean; onEnter
       const data = checkpoint.dataset;
       const image = checkpoint.querySelector('img');
       setReady(data.coreProgress === '1.000000' && data.loading === 'false' && data.frameError === 'false'
-        && Number(data.frameIndex) === Number(data.frameTotal) - 1 && Boolean(image?.complete && image.naturalWidth));
+        && (data.cinematicDisabled === 'true' || (Number(data.frameIndex) === Number(data.frameTotal) - 1 && Boolean(image?.complete && image.naturalWidth))));
     };
     const observer = new MutationObserver(check);
     observer.observe(checkpoint, { subtree: true, attributes: true,

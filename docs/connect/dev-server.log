@@ -116,3 +116,6 @@
 8:34:41 pm [vite] (client) page reload playwright-report/trace/uiMode.html
 8:34:41 pm [vite] (client) page reload playwright-report/trace/uiMode.html
 8:34:41 pm [vite] (client) page reload playwright-report/index.html
+10:09:14 pm [vite] (client) hmr update /src/modules/auth/AuthModule.tsx
+10:09:26 pm [vite] (client) hmr update /src/components/auth/SignupModal.tsx
+10:09:48 pm [vite] (client) hmr update /src/app/application.css

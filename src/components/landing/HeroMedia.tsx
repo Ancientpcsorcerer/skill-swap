@@ -1,4 +1,5 @@
 ﻿import { useEffect, useRef, useState } from 'react';
+import { BigFrameEnvironment } from './BigFrameEnvironment';
 import { assets } from '../../lib/assets';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
@@ -21,6 +22,7 @@ export function HeroMedia() {
   return (
     <>
       <div className="plate" aria-hidden="true">
+        <BigFrameEnvironment />
         <img className="plate-video plate-poster" src={assets.landingPoster} alt="" fetchPriority="high" />
         <video ref={video} className="plate-video"
           autoPlay={!reducedMotion && !pausedByUser}

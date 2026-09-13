@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { resolve, relative } from 'node:path';
 import type { Plugin } from 'vite';
@@ -22,11 +23,11 @@ export function coreAssets(): Plugin {
       });
       let issue: string | null = sources.some(source => !source.files.length) ? core + ' sequence is missing.' : null;
       if (core === 'Create' && !issue) {
-        const duplicated = sources.every(source => source.files.every(name => {
-          const connect = resolve(root, 'Cores', source.folder.replace('Create', 'Connect'), name);
-          return existsSync(connect) && readFileSync(resolve(source.directory, name)).equals(readFileSync(connect));
-        }));
-        if (duplicated) issue = 'Create_start and Create_back duplicate Connect. Correct Create artwork is required.';
+        // Keep the known invalid Create placeholders excluded after retiring Connect.
+        const original = JSON.parse(readFileSync(resolve(root, 'docs/ui-foundation/preservation-before.json'), 'utf8')) as Record<string, string>;
+        const duplicated = sources.every(source => source.files.every(name =>
+          createHash('sha256').update(readFileSync(resolve(source.directory, name))).digest('hex') === original['Cores/' + source.folder + '/' + name]));
+        if (duplicated) issue = 'Create contains the previously identified invalid placeholder artwork.';
       }
       if (issue) return 'export default ' + JSON.stringify({ valid: false, issue, forward: [], reverse: [] });
       const lists = sources.map(source => source.files.map(name => {

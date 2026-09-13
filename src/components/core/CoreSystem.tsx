@@ -27,6 +27,7 @@ function ConnectAdapter({ position, range, active, available, onReady }: Checkpo
     const check = () => {
       const image = node.querySelector('img');
       const checkpoint = node.querySelector<HTMLElement>('#connect-checkpoint');
+      if (activeRef.current && checkpoint?.dataset.cinematicDisabled === 'true') { onReady('connect'); return; }
       if (activeRef.current && image?.complete && image.naturalWidth && checkpoint?.dataset.loading === 'false'
         && checkpoint.dataset.frameIndex === checkpoint.dataset.targetIndex) onReady('connect');
     };
