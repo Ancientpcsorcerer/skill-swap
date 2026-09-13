@@ -14,10 +14,19 @@ export function validate(schema: ValidationSchema) {
         req.body = await schema.body.parseAsync(req.body);
       }
       if (schema.query) {
-        req.query = await schema.query.parseAsync(req.query);
+        const parsed = await schema.query.parseAsync(req.query);
+        // Express 5 defines req.query as a getter; mutate properties instead of reassigning
+        for (const key of Object.keys(req.query)) {
+          delete (req.query as Record<string, unknown>)[key];
+        }
+        Object.assign(req.query, parsed);
       }
       if (schema.params) {
-        req.params = await schema.params.parseAsync(req.params);
+        const parsed = await schema.params.parseAsync(req.params);
+        for (const key of Object.keys(req.params)) {
+          delete (req.params as Record<string, unknown>)[key];
+        }
+        Object.assign(req.params, parsed);
       }
       next();
     } catch (error) {
