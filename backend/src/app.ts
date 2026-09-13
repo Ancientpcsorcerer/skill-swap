@@ -14,11 +14,39 @@ import { NotFoundError } from './utils/errors';
 export const app = express();
 
 // Security and utility middleware
-app.use(helmet());
+// Strict allowed frontend origins whitelist
+const ALLOWED_FRONTEND_ORIGINS = [
+  'https://skill-swap-xi-lake.vercel.app',
+  'https://skill-swap.vercel.app',
+  'https://skill-swap-git-main-ancientpcsorcerer.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:5173',
+];
+
+function isOriginAllowed(origin: string | undefined): boolean {
+  if (!origin) return true; // allow curl, health monitors, mobile apps without origin
+  if (ALLOWED_FRONTEND_ORIGINS.includes(origin)) return true;
+  // Allow project-specific Vercel preview URLs for skill-swap
+  if (/^https:\/\/skill-swap(-[a-z0-9-]+)?-ancientpcsorcerer\.vercel\.app$/.test(origin)) {
+    return true;
+  }
+  // Check configured CORS_ORIGIN
+  const envOrigins = env.CORS_ORIGIN.split(',').map((o) => o.trim()).filter((o) => o !== '*');
+  return envOrigins.includes(origin);
+}
+
 app.use(
   cors({
-    origin: env.CORS_ORIGIN.split(',').map((o) => o.trim()),
+    origin: (origin, callback) => {
+      if (isOriginAllowed(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`Security policy: Origin '${origin}' is not authorized to access this API.`));
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   })
 );
 app.use(compression());

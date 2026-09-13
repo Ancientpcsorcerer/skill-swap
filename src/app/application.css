@@ -1578,3 +1578,512 @@
 :where(.application-shell) .project-card-meta { margin-top:10px; }
 :where(.application-shell) .discover-layout .project-grid ~ .project-grid .project-art-button { height:60px; }
 :where(.application-shell) .discover-trending { gap:13px; }
+
+/* ==========================================================================
+   MODERN DYNAMIC UI, ANIMATIONS & SOCIAL AUTHENTICATION DESIGN SYSTEM
+   ========================================================================== */
+
+@keyframes authFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(20, 21, 20, 0);
+  }
+  50% {
+    box-shadow: 0 0 24px 2px rgba(20, 21, 20, 0.06);
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Enhanced Auth Screen */
+.animated-auth-screen {
+  animation: authFadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  min-height: 100vh;
+  position: relative;
+  overflow-y: auto;
+}
+
+.auth-card-container {
+  max-width: 460px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 36px;
+  background: rgba(242, 239, 234, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(20, 21, 20, 0.09);
+  border-radius: 16px;
+  box-shadow: 0 24px 56px -12px rgba(20, 21, 20, 0.09), 0 4px 16px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
+
+.auth-brand-link {
+  display: inline-block;
+  margin-bottom: 24px;
+  letter-spacing: 0.28em;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--workspace-ink);
+  transition: opacity 0.2s ease;
+}
+
+.auth-brand-link:hover {
+  opacity: 0.75;
+}
+
+/* Mode Switcher Segmented Control */
+.auth-tabs {
+  display: flex;
+  background: rgba(20, 21, 20, 0.06);
+  padding: 4px;
+  border-radius: 999px;
+  margin-bottom: 24px;
+  gap: 4px;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--workspace-muted);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auth-tab.active {
+  background: #ffffff;
+  color: var(--workspace-ink);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+}
+
+.auth-header-text {
+  margin-bottom: 24px;
+}
+
+.auth-header-text h1 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin: 0 0 8px 0;
+  color: var(--workspace-ink);
+}
+
+.auth-header-text p {
+  font-size: 13.5px;
+  color: var(--workspace-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Social Buttons */
+.social-auth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.social-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border: 1px solid rgba(20, 21, 20, 0.12);
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--workspace-ink);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.social-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: rgba(20, 21, 20, 0.28);
+  box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.08);
+}
+
+.social-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.social-icon {
+  flex-shrink: 0;
+}
+
+/* Divider */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0 24px 0;
+}
+
+.auth-divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(20, 21, 20, 0.1);
+}
+
+.auth-divider-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--workspace-muted);
+}
+
+/* Form inputs */
+.auth-form-animated {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label, .label-row label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--workspace-ink);
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.password-hint {
+  font-size: 11px;
+  color: var(--workspace-muted);
+}
+
+.input-field-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-field-wrapper input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;
+  border: 1px solid rgba(20, 21, 20, 0.14);
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--workspace-ink);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.input-field-wrapper input:focus {
+  border-color: var(--workspace-ink);
+  box-shadow: 0 0 0 3px rgba(20, 21, 20, 0.08);
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: 0;
+  color: var(--workspace-muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.password-toggle-btn:hover {
+  color: var(--workspace-ink);
+}
+
+/* Alerts */
+.animated-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  animation: authFadeInUp 0.3s ease both;
+}
+
+.form-error-alert {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.form-notice-alert {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+/* Submit CTA */
+.auth-submit-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: 10px;
+  background: var(--workspace-ink);
+  color: #f2efea;
+  border: 0;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(20, 21, 20, 0.25);
+  background: #2a2c29;
+}
+
+.auth-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-spinner-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(242, 239, 234, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Quick Demo Login Pill Bar */
+.demo-credentials-section {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px dashed rgba(20, 21, 20, 0.12);
+}
+
+.demo-credentials-title {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--workspace-muted);
+  margin-bottom: 10px;
+}
+
+.demo-pills-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.demo-account-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #ffffff;
+  border: 1px solid rgba(20, 21, 20, 0.12);
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.demo-account-pill:hover {
+  transform: translateY(-2px);
+  border-color: var(--workspace-ink);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.demo-pill-name {
+  font-weight: 600;
+  color: var(--workspace-ink);
+}
+
+.demo-pill-role {
+  color: var(--workspace-muted);
+  font-size: 11px;
+}
+
+/* Modal Enhancements */
+.modal-glass-dialog {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.modal-glass-dialog::backdrop {
+  background: rgba(10, 10, 10, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.animated-modal-panel {
+  width: 100%;
+  max-width: 420px;
+  background: #f2efea;
+  border-radius: 16px;
+  padding: 36px 32px;
+  border: 1px solid rgba(20, 21, 20, 0.12);
+  box-shadow: 0 32px 72px -16px rgba(0, 0, 0, 0.28);
+  animation: authFadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.modal-header-centered {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 12px 0 6px 0;
+  color: var(--workspace-ink);
+}
+
+.modal-subtitle {
+  font-size: 13px;
+  color: var(--workspace-muted);
+  margin: 0;
+}
+
+.modal-social-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.modal-divider {
+  text-align: center;
+  position: relative;
+  margin: 16px 0;
+}
+
+.modal-divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(20, 21, 20, 0.1);
+}
+
+.modal-divider span {
+  position: relative;
+  background: #f2efea;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--workspace-muted);
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-input-group input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid rgba(20, 21, 20, 0.14);
+  border-radius: 8px;
+  font-size: 13.5px;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.modal-input-group input:focus {
+  border-color: var(--workspace-ink);
+  box-shadow: 0 0 0 3px rgba(20, 21, 20, 0.08);
+}
+
+.modal-submit-btn {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.modal-footer-switch {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 12.5px;
+  color: var(--workspace-muted);
+}
+
+.switch-link {
+  background: none;
+  border: 0;
+  color: var(--workspace-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Global Micro-Animations for Cards & Interactive Elements */
+:where(.application-shell) .project-card,
+:where(.application-shell) .person-row {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, background 0.2s ease;
+}
+
+:where(.application-shell) .project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.08);
+}
+
+:where(.application-shell) .person-row:hover {
+  background: rgba(20, 21, 20, 0.02);
+}
+
+:where(.application-shell) .pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+:where(.application-shell) .pill:active {
+  transform: translateY(0);
+}
+
