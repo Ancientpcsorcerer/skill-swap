@@ -38,3 +38,32 @@ dialog { color: var(--ink); font: inherit; }
   .mobile-menu[open] .menu-cta { animation: rise .42s var(--ease) .22s both; }
 }
 @media (max-width: 360px) { .signup-panel { padding: 44px 24px 28px; } }
+
+/* Ensure high-contrast dark text for Google & GitHub social auth buttons */
+.modal-glass-dialog .social-button,
+.signup-modal .social-button,
+.signup-modal .google-button,
+.signup-modal .github-button {
+  background: #ffffff !important;
+  color: #141514 !important;
+  border: 1px solid rgba(20, 21, 20, 0.16) !important;
+}
+
+.modal-glass-dialog .social-button span,
+.signup-modal .social-button span,
+.signup-modal .google-button span,
+.signup-modal .github-button span {
+  color: #141514 !important;
+  font-weight: 600 !important;
+}
+
+.modal-notice-banner {
+  margin: 14px 0 4px 0;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  color: #f2efea;
+  font-size: 13px;
+  text-align: center;
+}

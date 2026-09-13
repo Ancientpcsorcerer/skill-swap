@@ -14,7 +14,7 @@ export function ConnectModule({searchRequest=0,onSearchHandled}:{searchRequest?:
   const {session}=useSession(); const {people,loading,requests,error,announcement,retry,tab,setTab,query,setQuery}=useConnect();
   const [preview,setPreview]=useState<Person|null>(null); const [filter,setFilter]=useState('All'); const [sort,setSort]=useState('Relevance'); const search=useRef<HTMLInputElement>(null);
   useEffect(()=>{if(searchRequest){setTab('people');search.current?.focus();onSearchHandled?.();}},[searchRequest,setTab,onSearchHandled]);
-  const suggestions=suggestPeople(people,session!.identity); const candidates=tab==='suggested'?(suggestions.length?suggestions.map(item=>item.person):people.slice(0,6)):people;
+  const suggestions = session ? suggestPeople(people, session.identity) : []; const candidates=tab==='suggested'?(suggestions.length?suggestions.map(item=>item.person):people.slice(0,6)):people;
   const listed=candidates.filter(person=>matchesPerson(person,query)&&(filter==='All'||person.skills.includes(filter))).sort((a,b)=>sort==='Name'?a.name.localeCompare(b.name):0);
   const count=requests.filter(request=>request.direction==='incoming'&&request.status==='pending').length;
   return <section className="connect-module"><PageHero core="connect" title={<>Meet people.<br/>Share ideas. Build together.</>} description="Find collaborators, mentors and like-minded people.">

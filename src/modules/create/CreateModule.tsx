@@ -16,17 +16,268 @@ import { useConnect } from '../connect/ConnectProvider';
 import { matchesPerson } from '../connect/selectors';
 import { ConnectionAction } from '../connect/components/ConnectionAction';
 import { ProjectComposer } from './ProjectComposer';
+import { useAuthGate } from '../../app/session/AuthGateContext';
 import type { Project } from '../../app/data/models';
 import type { Person } from '../connect/types';
-export function CreateModule(){const{session}=useSession();const workspace=useWorkspace();const{people}=useConnect();const[composer,setComposer]=useState<{type:string;description:string}|null>(null);const[filter,setFilter]=useState('All');const[query,setQuery]=useState('');const[preview,setPreview]=useState<Project|null>(null);const[person,setPerson]=useState<Person|null>(null);const[allTemplates,setAllTemplates]=useState(false);
-  const mine=workspace.projects.filter(project=>project.creatorId===session!.identity.id);const displayed=(mine.length?mine:[sampleProjects[0],sampleProjects[1],sampleProjects[3]]).filter(project=>filter==='All'||project.status===filter||(filter==='Drafts'&&project.status==='Draft'));
-  const collaborators=people.filter(person=>matchesPerson(person,query)).slice(0,3);
-  function quickCreate(event:FormEvent<HTMLFormElement>){event.preventDefault();const data=new FormData(event.currentTarget);setComposer({type:String(data.get('type')),description:String(data.get('description'))});}
-  return <div className="module-columns create-layout"><div className="module-main"><PageHero core="create" title={<>Turn your ideas<br/>into real projects.</>} description="Build. Collaborate. Solve. Create a better tomorrow."><div className="hero-actions"><button className="primary-button" onClick={()=>setComposer({type:'',description:''})}><Icon name="create"/>New Project</button><button className="secondary-button" onClick={()=>navigate('discover')}>Explore Projects <span aria-hidden="true">&#8599;</span></button></div></PageHero>
-    <SectionHeader title="Start from a template" action={allTemplates?'Show less':'View all'} onAction={()=>setAllTemplates(value=>!value)}/><div className="template-grid">{projectTemplates.map(template=><button className="template-card" key={template.type} onClick={()=>setComposer({type:template.type,description:''})}><Icon name={template.icon}/><strong>{template.title}</strong><span>{template.description}</span></button>)}{allTemplates&&projectTypes.filter(type=>!projectTemplates.some(template=>template.type===type)).map(type=><button key={type} className="template-card" onClick={()=>setComposer({type,description:''})}><Icon name="create"/><strong>{type} Project</strong><span>Start with an idea of your own.</span></button>)}</div>
-    <div className="section-with-tabs"><SectionHeader title="Your Projects"/><Tabs label="Project status" values={['All','Ongoing','Completed','Drafts']} value={filter} onChange={setFilter}/></div>{!mine.length&&<p className="sample-label">Start your first project. Explore these examples for inspiration.</p>}<div className="project-rows">{displayed.map(project=><article className="project-row" key={project.id}><button className="project-row-art" onClick={()=>setPreview(project)} aria-label={'View '+project.title}><Artwork art={project.art}/></button><div><button className="card-title" onClick={()=>setPreview(project)}>{project.title}</button><p>{project.description}</p><Tags values={project.tags}/></div><div className="avatar-stack" aria-label={project.members+' collaborators'}>{project.collaboratorIds.slice(0,2).map(id=><Avatar key={id} name={id} personId={id} small/>)}<span>{project.collaboratorIds.length?'+'+Math.max(0,project.members-2):'You'}</span></div><span className={'status-badge status-'+project.status.toLowerCase()}>{project.status}</span><Dropdown label={'Actions for '+project.title} trigger={<Icon name="more"/>} items={[{label:'View project',action:()=>setPreview(project)},{label:'Use as a starting point',action:()=>setComposer({type:project.type,description:project.description})},...(project.creatorId===session!.identity.id?[{label:project.status==='Completed'?'Mark ongoing':'Mark completed',action:()=>workspace.updateProject(project.id,project.status==='Completed'?'Ongoing':'Completed')}]:[])]}/></article>)}{!displayed.length&&<p className="workspace-empty">No projects in this stage yet.</p>}</div>
-  </div><aside className="module-aside"><Panel title="Create Something New" description="Have an idea? Start building today."><form className="stack-form quick-project" onSubmit={quickCreate}><textarea aria-label="Describe your project idea" name="description" placeholder="Describe your project idea..." required minLength={10}/><label>Project type<select name="type" required defaultValue=""><option value="">Select a type</option>{projectTypes.map(type=><option key={type}>{type}</option>)}</select></label><button className="primary-button">Create Project</button></form></Panel>
-    <Panel title="Find Collaborators" description="Get the right people for your project."><SearchField label="Find collaborators" placeholder="Search skills, roles or people..." value={query} onChange={setQuery}/><div className="chip-buttons">{suggestedRoles.map(role=><button key={role} onClick={()=>setQuery(({Developer:'web',Designer:'design',Researcher:'research',Hardware:'electronics',Writer:'writing',Mentor:'teaching',Student:'education','Data Analyst':'data'} as Record<string,string>)[role])}>{role}</button>)}</div>{query&&<div className="collaborator-results">{collaborators.map(person=><button key={person.id} className="quiet-button" onClick={()=>setPerson(person)}>{person.name}<span>{person.skills.join(', ')}</span></button>)}{!collaborators.length&&<p>No people found. Try another skill.</p>}</div>}</Panel>
-    <Panel title="Need Inspiration?" description="Explore what others are building."><div className="mini-projects">{[sampleProjects[6],sampleProjects[4],sampleProjects[2]].map(project=><button key={project.id} onClick={()=>setPreview(project)}><Artwork art={project.art}/><span><strong>{project.title}</strong><small>{project.tags.join(' / ')}</small></span></button>)}</div></Panel></aside><ProjectComposer initial={composer} onClose={()=>setComposer(null)}/><ProjectPreview project={preview} onClose={()=>setPreview(null)}/><ProfilePreview person={person} onClose={()=>setPerson(null)} action={person?<ConnectionAction person={person} onRespond={()=>setPerson(null)}/>:undefined}/>
-  </div>;
+
+export function CreateModule() {
+  const { session } = useSession();
+  const { requireAuth } = useAuthGate();
+  const workspace = useWorkspace();
+  const { people } = useConnect();
+  const [composer, setComposer] = useState<{ type: string; description: string } | null>(null);
+  const [filter, setFilter] = useState('All');
+  const [query, setQuery] = useState('');
+  const [preview, setPreview] = useState<Project | null>(null);
+  const [person, setPerson] = useState<Person | null>(null);
+  const [allTemplates, setAllTemplates] = useState(false);
+
+  const mine = session
+    ? workspace.projects.filter((project) => project.creatorId === session.identity.id)
+    : [];
+  const displayed = (
+    mine.length ? mine : [sampleProjects[0], sampleProjects[1], sampleProjects[3]]
+  ).filter(
+    (project) =>
+      filter === 'All' ||
+      project.status === filter ||
+      (filter === 'Drafts' && project.status === 'Draft')
+  );
+  const collaborators = people.filter((person) => matchesPerson(person, query)).slice(0, 3);
+
+  function quickCreate(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const type = String(data.get('type'));
+    const description = String(data.get('description'));
+    if (!requireAuth('create a project', () => setComposer({ type, description }))) {
+      return;
+    }
+    setComposer({ type, description });
+  }
+
+  return (
+    <div className="module-columns create-layout">
+      <div className="module-main">
+        <PageHero
+          core="create"
+          title={
+            <>
+              Turn your ideas
+              <br />
+              into real projects.
+            </>
+          }
+          description="Build. Collaborate. Solve. Create a better tomorrow."
+        >
+          <div className="hero-actions">
+            <button
+              className="primary-button"
+              onClick={() =>
+                requireAuth('create a project', () => setComposer({ type: '', description: '' }))
+              }
+            >
+              <Icon name="create" />
+              New Project
+            </button>
+            <button className="secondary-button" onClick={() => navigate('discover')}>
+              Explore Projects <span aria-hidden="true">&#8599;</span>
+            </button>
+          </div>
+        </PageHero>
+
+        <SectionHeader
+          title="Start from a template"
+          action={allTemplates ? 'Show less' : 'View all'}
+          onAction={() => setAllTemplates((value) => !value)}
+        />
+        <div className="template-grid">
+          {projectTemplates.map((template) => (
+            <button
+              className="template-card"
+              key={template.type}
+              onClick={() =>
+                requireAuth('start from a template', () =>
+                  setComposer({ type: template.type, description: '' })
+                )
+              }
+            >
+              <Icon name={template.icon} />
+              <strong>{template.title}</strong>
+              <span>{template.description}</span>
+            </button>
+          ))}
+          {allTemplates &&
+            projectTypes
+              .filter((type) => !projectTemplates.some((template) => template.type === type))
+              .map((type) => (
+                <button
+                  key={type}
+                  className="template-card"
+                  onClick={() =>
+                    requireAuth('create a project', () => setComposer({ type, description: '' }))
+                  }
+                >
+                  <Icon name="create" />
+                  <strong>{type} Project</strong>
+                  <span>Start with an idea of your own.</span>
+                </button>
+              ))}
+        </div>
+
+        <div className="section-with-tabs">
+          <SectionHeader title="Your Projects" />
+          <Tabs
+            label="Project status"
+            values={['All', 'Ongoing', 'Completed', 'Drafts']}
+            value={filter}
+            onChange={setFilter}
+          />
+        </div>
+        {!mine.length && (
+          <p className="sample-label">Start your first project. Explore these examples for inspiration.</p>
+        )}
+        <div className="project-rows">
+          {displayed.map((project) => (
+            <article className="project-row" key={project.id}>
+              <button
+                className="project-row-art"
+                onClick={() => setPreview(project)}
+                aria-label={'View ' + project.title}
+              >
+                <Artwork art={project.art} />
+              </button>
+              <div>
+                <button className="card-title" onClick={() => setPreview(project)}>
+                  {project.title}
+                </button>
+                <p>{project.description}</p>
+                <Tags values={project.tags} />
+              </div>
+              <div className="avatar-stack" aria-label={project.members + ' collaborators'}>
+                {project.collaboratorIds.slice(0, 2).map((id) => (
+                  <Avatar key={id} name={id} personId={id} small />
+                ))}
+                <span>{project.collaboratorIds.length ? '+' + Math.max(0, project.members - 2) : 'You'}</span>
+              </div>
+              <span className={'status-badge status-' + project.status.toLowerCase()}>{project.status}</span>
+              <Dropdown
+                label={'Actions for ' + project.title}
+                trigger={<Icon name="more"/>}
+                items={[
+                  { label: 'View project', action: () => setPreview(project) },
+                  {
+                    label: 'Use as a starting point',
+                    action: () =>
+                      requireAuth('start from this project', () =>
+                        setComposer({ type: project.type, description: project.description })
+                      ),
+                  },
+                  ...(project.creatorId === session?.identity?.id
+                    ? [
+                        {
+                          label: project.status === 'Completed' ? 'Mark ongoing' : 'Mark completed',
+                          action: () =>
+                            workspace.updateProject(
+                              project.id,
+                              project.status === 'Completed' ? 'Ongoing' : 'Completed'
+                            ),
+                        },
+                      ]
+                    : []),
+                ]}
+              />
+            </article>
+          ))}
+          {!displayed.length && <p className="workspace-empty">No projects in this stage yet.</p>}
+        </div>
+      </div>
+
+      <aside className="module-aside">
+        <Panel title="Create Something New" description="Have an idea? Start building today.">
+          <form className="stack-form quick-project" onSubmit={quickCreate}>
+            <textarea
+              aria-label="Describe your project idea"
+              name="description"
+              placeholder="Describe your project idea..."
+              required
+              minLength={10}
+            />
+            <label>
+              Project type
+              <select name="type" required defaultValue="">
+                <option value="">Select a type</option>
+                {projectTypes.map((type) => (
+                  <option key={type}>{type}</option>
+                ))}
+              </select>
+            </label>
+            <button className="primary-button">Create Project</button>
+          </form>
+        </Panel>
+
+        <Panel title="Find Collaborators" description="Get the right people for your project.">
+          <SearchField label="Find collaborators" placeholder="Search skills, roles or people..." value={query} onChange={setQuery} />
+          <div className="chip-buttons">
+            {suggestedRoles.map((role) => (
+              <button
+                key={role}
+                onClick={() =>
+                  setQuery(
+                    (
+                      {
+                        Developer: 'web',
+                        Designer: 'design',
+                        Researcher: 'research',
+                        Hardware: 'electronics',
+                        Writer: 'writing',
+                        Mentor: 'teaching',
+                        Student: 'education',
+                        'Data Analyst': 'data',
+                      } as Record<string, string>
+                    )[role]
+                  )
+                }
+              >
+                {role}
+              </button>
+            ))}
+          </div>
+          {query && (
+            <div className="collaborator-results">
+              {collaborators.map((person) => (
+                <button key={person.id} className="quiet-button" onClick={() => setPerson(person)}>
+                  {person.name}
+                  <span>{person.skills.join(', ')}</span>
+                </button>
+              ))}
+              {!collaborators.length && <p>No people found. Try another skill.</p>}
+            </div>
+          )}
+        </Panel>
+
+        <Panel title="Need Inspiration?" description="Explore what others are building.">
+          <div className="mini-projects">
+            {[sampleProjects[6], sampleProjects[4], sampleProjects[2]].map((project) => (
+              <button key={project.id} onClick={() => setPreview(project)}>
+                <Artwork art={project.art} />
+                <span>
+                  <strong>{project.title}</strong>
+                  <small>{project.tags.join(' / ')}</small>
+                </span>
+              </button>
+            ))}
+          </div>
+        </Panel>
+      </aside>
+
+      <ProjectComposer initial={composer} onClose={() => setComposer(null)} />
+      <ProjectPreview project={preview} onClose={() => setPreview(null)} />
+      <ProfilePreview
+        person={person}
+        onClose={() => setPerson(null)}
+        action={person ? <ConnectionAction person={person} onRespond={() => setPerson(null)} /> : undefined}
+      />
+    </div>
+  );
 }

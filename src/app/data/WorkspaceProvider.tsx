@@ -21,5 +21,10 @@ function useWorkspaceController(userId: string) {
   return { ...state, allProjects:[...state.projects,...sampleProjects.filter(project => !state.projects.some(item => item.id === project.id))], storageError, addProject, updateProject, setLearning, setGoal, toggleSavedProject:(id:string)=>toggle('savedProjects',id), toggleSavedItem:(id:string)=>toggle('savedItems',id), toggleCommunity:(id:string)=>toggle('communities',id), joinProject };
 }
 const Context = createContext<ReturnType<typeof useWorkspaceController> | null>(null);
-export function WorkspaceProvider({children}:{children:ReactNode}) { const {session}=useSession(); const value=useWorkspaceController(session!.identity.id); return <Context.Provider value={value}>{children}</Context.Provider>; }
+export function WorkspaceProvider({children}:{children:ReactNode}) {
+  const {session}=useSession();
+  const userId = session?.identity.id || 'guest';
+  const value=useWorkspaceController(userId);
+  return <Context.Provider value={value}>{children}</Context.Provider>;
+}
 export function useWorkspace() { const value=useContext(Context); if(!value) throw new Error('WorkspaceProvider is required'); return value; }
