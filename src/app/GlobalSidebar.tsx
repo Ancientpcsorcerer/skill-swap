@@ -1,0 +1,3 @@
+import { moduleIds, navigate, type ModuleId } from './navigation';
+import { Icon } from './components/Icon';
+export function GlobalSidebar({active}:{active:ModuleId}) { return <aside className="workspace-sidebar"><nav aria-label="Application navigation">{moduleIds.map(id=><a key={id} href={'#/app/'+id} aria-current={active===id?'page':undefined} onClick={event=>{if(event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();navigate(id);}}}><Icon name={id}/><span>{id[0].toUpperCase()+id.slice(1)}</span></a>)}</nav><div className="sidebar-motto">A MORE<br/>COLLABORATIVE<br/>TOMORROW<span/></div></aside>; }

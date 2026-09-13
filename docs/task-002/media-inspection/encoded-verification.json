@@ -1,0 +1,160 @@
+{
+  "status": "passed",
+  "decoded_frames": 241,
+  "portal_bounds_drift_px": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "max_foreground_mean_delta_0_to_255": 0.005919148214161396,
+  "max_portal_mean_delta_0_to_255": 0.005247169174253941,
+  "max_person_mean_delta_0_to_255": 17.758764266967773,
+  "max_fog_mean_delta_0_to_255": 7.563772678375244,
+  "source_sha256_unchanged": "8c0a07b331f8967166a4d7fdbcc99d82604df3f0937671eec16256abcc307843",
+  "sampled_frames": [
+    {
+      "frame": 0,
+      "portal": [
+        723,
+        939,
+        463,
+        967
+      ],
+      "foreground_mean_delta": 0.0,
+      "portal_mean_delta": 0.0,
+      "person_mean_delta": 0.0,
+      "fog_mean_delta": 0.0
+    },
+    {
+      "frame": 24,
+      "portal": [
+        723,
+        939,
+        463,
+        967
+      ],
+      "foreground_mean_delta": 0.0026372841093689203,
+      "portal_mean_delta": 0.0031851239036768675,
+      "person_mean_delta": 6.61304235458374,
+      "fog_mean_delta": 4.1162567138671875
+    },
+    {
+      "frame": 48,
+      "portal": [
+        723,
+        939,
+        463,
+        967
+      ],
+      "foreground_mean_delta": 0.002863452536985278,
+      "portal_mean_delta": 0.0031851239036768675,
+      "person_mean_delta": 6.29614782333374,
+      "fog_mean_delta": 5.851871490478516
+    },
+    {
+      "frame": 72,
+      "portal": [
+        723,
+        939,
+        463,
+        967
+      ],
+      "foreground_mean_delta": 0.002863452536985278,
+      "portal_mean_delta": 0.005247169174253941,
+      "person_mean_delta": 7.450931072235107,
+      "fog_mean_delta": 6.284236907958984
+    },
+    {
+      "frame": 96,
+      "portal": [
+        723,
+        939,
+        463,
+        967
+      ],
+      "foreground_mean_delta": 0.003645348595455289,
+      "portal_mean_delta": 0.0031851239036768675,
+      "person_mean_delta": 7.0859575271606445,
+      "fog_mean_delta": 7.257817268371582
+    },
+    {
+      "frame": 120,
+      "portal": [
+        723,
+        939,
+        463,
+        967
+      ],
+      "foreground_mean_delta": 0.003659888170659542,
+      "portal_mean_delta": 0.001123078283853829,
+      "person_mean_delta": 10.170875549316406,
+      "fog_mean_delta": 7.203397750854492
+    },
+    {
+      "frame": 144,
+      "portal": [
+        723,
+        939,
+        463,
+        967
+      ],
+      "foreground_mean_delta": 0.003659888170659542,
+      "portal_mean_delta": 0.001123078283853829,
+      "person_mean_delta": 11.28713607788086,
+      "fog_mean_delta": 6.940878868103027
+    },
+    {
+      "frame": 168,
+      "portal": [
+        723,
+        939,
+        463,
+        967
+      ],
+      "foreground_mean_delta": 0.0034474513959139585,
+      "portal_mean_delta": 0.001123078283853829,
+      "person_mean_delta": 12.501237869262695,
+      "fog_mean_delta": 6.656612396240234
+    },
+    {
+      "frame": 192,
+      "portal": [
+        723,
+        939,
+        463,
+        967
+      ],
+      "foreground_mean_delta": 0.0031372776720672846,
+      "portal_mean_delta": 0.005247169174253941,
+      "person_mean_delta": 14.75346565246582,
+      "fog_mean_delta": 6.219012260437012
+    },
+    {
+      "frame": 216,
+      "portal": [
+        723,
+        939,
+        463,
+        967
+      ],
+      "foreground_mean_delta": 0.0038254756946116686,
+      "portal_mean_delta": 0.0028905458748340607,
+      "person_mean_delta": 15.608882904052734,
+      "fog_mean_delta": 6.667891502380371
+    },
+    {
+      "frame": 240,
+      "portal": [
+        723,
+        939,
+        463,
+        967
+      ],
+      "foreground_mean_delta": 0.004401396960020065,
+      "portal_mean_delta": 0.0028905458748340607,
+      "person_mean_delta": 17.675132751464844,
+      "fog_mean_delta": 7.180405139923096
+    }
+  ]
+}

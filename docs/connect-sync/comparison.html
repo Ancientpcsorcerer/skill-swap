@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect source-frame comparison</title>
+<style>
+body{font:16px system-ui;margin:32px;background:#f3f3f1;color:#181818}main{max-width:1500px;margin:auto}
+h1{font-size:28px}p{max-width:1000px;line-height:1.6}.pair{display:grid;grid-template-columns:1fr 1fr;gap:20px}figure{margin:0}img{width:100%;height:auto;display:block}figcaption{padding:12px 0}input{width:min(600px,90%)}code{font-size:14px}a{color:#174988}button{padding:8px 16px;margin:4px}@media(max-width:700px){.pair{grid-template-columns:1fr}}
+</style><main><p><strong>Current implementation:</strong> The user approved using Connect_start for both directions. This comparison documents why the original two-sequence mapping was replaced.</p><h1>Connect: corresponding original frames</h1>
+<p>Both images below use the exact required index formulas at the same absolute progress. These are original files served directly from Cores. No filters, fades, transforms, replacement artwork, or runtime animation are applied.</p>
+<p>At 50%, forward lettering is tilted and the hands are extended. The reverse lettering is upright and the hands have retracted. The background colors also differ. Correct indexing cannot remove these differences in the supplied images.</p>
+<label for="progress">Absolute Connect progress: <output id="value">0.50</output></label><p><input id="progress" type="range" min="0" max="1" step=".01" value=".5"></p>
+<p id="presets"></p><div class="pair"><figure><img id="forward" alt="Original forward sequence frame"><figcaption>Connect_start: <code id="forward-name"></code><br>Index = round(p * 299)</figcaption></figure><figure><img id="reverse" alt="Original reverse sequence frame"><figcaption>Connect_back: <code id="reverse-name"></code><br>Index = round((1 - p) * 299)</figcaption></figure></div>
+<p><a href="asset-comparison.json">Measured background RGB values and source hashes</a></p></main>
+<script>
+const progress=document.querySelector('#progress');
+function show(){
+ const p=Number(progress.value);document.querySelector('#value').value=p.toFixed(2);
+ for(const [direction,position,folder] of [['forward',p,'Connect_start'],['reverse',1-p,'Connect_back']]){
+  const name='ezgif-frame-'+String(Math.round(position*299)+1).padStart(3,'0')+'.jpg';
+  document.querySelector('#'+direction).src='../../Cores/'+folder+'/'+name;
+  document.querySelector('#'+direction+'-name').textContent=name;
+ }
+}
+progress.addEventListener('input',show);
+for(const p of [0,.25,.5,.56,.58,.75,1]){
+ const button=document.createElement('button');button.textContent=p.toFixed(2);
+ button.addEventListener('click',()=>{progress.value=p;show()});document.querySelector('#presets').append(button);
+}show();
+</script></html>

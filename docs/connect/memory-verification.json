@@ -1,0 +1,105 @@
+{
+  "browser": "152.0.4191.66",
+  "samples": [
+    {
+      "cycle": 0,
+      "detachedNodes": 0,
+      "counters": {
+        "documents": 1,
+        "nodes": 291,
+        "jsEventListeners": 214
+      },
+      "cache": {
+        "decoded": 0,
+        "compressed": 0,
+        "fetching": 0,
+        "decoding": 0,
+        "capacity": 0
+      },
+      "heap": {
+        "JSHeapUsedSize": 6553624,
+        "JSHeapTotalSize": 7176192
+      }
+    },
+    {
+      "cycle": 1,
+      "detachedNodes": 0,
+      "counters": {
+        "documents": 1,
+        "nodes": 291,
+        "jsEventListeners": 214
+      },
+      "cache": {
+        "decoded": 0,
+        "compressed": 0,
+        "fetching": 0,
+        "decoding": 0,
+        "capacity": 0
+      },
+      "heap": {
+        "JSHeapUsedSize": 6697928,
+        "JSHeapTotalSize": 7176192
+      }
+    },
+    {
+      "cycle": 2,
+      "detachedNodes": 0,
+      "counters": {
+        "documents": 1,
+        "nodes": 291,
+        "jsEventListeners": 214
+      },
+      "cache": {
+        "decoded": 0,
+        "compressed": 0,
+        "fetching": 0,
+        "decoding": 0,
+        "capacity": 0
+      },
+      "heap": {
+        "JSHeapUsedSize": 6740304,
+        "JSHeapTotalSize": 7176192
+      }
+    },
+    {
+      "cycle": 3,
+      "detachedNodes": 0,
+      "counters": {
+        "documents": 1,
+        "nodes": 291,
+        "jsEventListeners": 214
+      },
+      "cache": {
+        "decoded": 0,
+        "compressed": 0,
+        "fetching": 0,
+        "decoding": 0,
+        "capacity": 0
+      },
+      "heap": {
+        "JSHeapUsedSize": 6755368,
+        "JSHeapTotalSize": 7438336
+      }
+    },
+    {
+      "cycle": 4,
+      "detachedNodes": 0,
+      "counters": {
+        "documents": 1,
+        "nodes": 291,
+        "jsEventListeners": 214
+      },
+      "cache": {
+        "decoded": 0,
+        "compressed": 0,
+        "fetching": 0,
+        "decoding": 0,
+        "capacity": 0
+      },
+      "heap": {
+        "JSHeapUsedSize": 6785256,
+        "JSHeapTotalSize": 7438336
+      }
+    }
+  ]
+}

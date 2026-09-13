@@ -1,0 +1,215 @@
+[
+  {
+    "name": "native-preview",
+    "samples": [
+      {
+        "name": "light",
+        "viewport": [
+          1672,
+          941
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 1,
+        "state": "POST_ZOOM_LIGHT"
+      },
+      {
+        "name": "midpoint",
+        "viewport": [
+          1672,
+          941
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0.499203,
+        "state": "CONNECT_REVEAL"
+      },
+      {
+        "name": "connect",
+        "viewport": [
+          1672,
+          941
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0,
+        "state": "CONNECT_CHECKPOINT_START"
+      },
+      {
+        "name": "reverse-one-pixel",
+        "viewport": [
+          1672,
+          941
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0.00000338559,
+        "state": "CONNECT_REVEAL"
+      },
+      {
+        "name": "reverse-midpoint",
+        "viewport": [
+          1672,
+          941
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0.499203,
+        "state": "CONNECT_REVEAL"
+      },
+      {
+        "name": "reverse-light",
+        "viewport": [
+          1672,
+          941
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 1,
+        "state": "POST_ZOOM_LIGHT"
+      }
+    ]
+  },
+  {
+    "name": "phone-preview",
+    "samples": [
+      {
+        "name": "light",
+        "viewport": [
+          412,
+          839
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 1,
+        "state": "POST_ZOOM_LIGHT"
+      },
+      {
+        "name": "midpoint",
+        "viewport": [
+          412,
+          839
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0.499106,
+        "state": "CONNECT_REVEAL"
+      },
+      {
+        "name": "connect",
+        "viewport": [
+          412,
+          839
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0,
+        "state": "CONNECT_CHECKPOINT_START"
+      },
+      {
+        "name": "reverse-one-pixel",
+        "viewport": [
+          412,
+          839
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0.00000425846,
+        "state": "CONNECT_REVEAL"
+      },
+      {
+        "name": "reverse-midpoint",
+        "viewport": [
+          412,
+          839
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0.499106,
+        "state": "CONNECT_REVEAL"
+      },
+      {
+        "name": "reverse-light",
+        "viewport": [
+          412,
+          839
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 1,
+        "state": "POST_ZOOM_LIGHT"
+      }
+    ]
+  },
+  {
+    "name": "wide-preview",
+    "samples": [
+      {
+        "name": "light",
+        "viewport": [
+          3440,
+          1440
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 1,
+        "state": "POST_ZOOM_LIGHT"
+      },
+      {
+        "name": "midpoint",
+        "viewport": [
+          3440,
+          1440
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0.5,
+        "state": "CONNECT_REVEAL"
+      },
+      {
+        "name": "connect",
+        "viewport": [
+          3440,
+          1440
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0,
+        "state": "CONNECT_CHECKPOINT_START"
+      },
+      {
+        "name": "reverse-one-pixel",
+        "viewport": [
+          3440,
+          1440
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0.00000144609,
+        "state": "CONNECT_REVEAL"
+      },
+      {
+        "name": "reverse-midpoint",
+        "viewport": [
+          3440,
+          1440
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 0.5,
+        "state": "CONNECT_REVEAL"
+      },
+      {
+        "name": "reverse-light",
+        "viewport": [
+          3440,
+          1440
+        ],
+        "overflow": false,
+        "transform": "matrix(12, 0, 0, 12, 0, 0)",
+        "opacity": 1,
+        "state": "POST_ZOOM_LIGHT"
+      }
+    ]
+  }
+]

@@ -1,0 +1,48 @@
+{
+  "build": {
+    "command": "npm.cmd run build -- --logLevel warn",
+    "passed": true,
+    "typeScriptErrors": 0
+  },
+  "browserSuite": {
+    "command": "npm.cmd test -- --project=desktop",
+    "passed": 47,
+    "skipped": 1,
+    "failed": 0,
+    "skipReason": "Existing mobile-only landing test in desktop project",
+    "duration": "3.3 minutes"
+  },
+  "visualQA": {
+    "desktop": [
+      1672,
+      941
+    ],
+    "laptop": [
+      1366,
+      768
+    ],
+    "desktopScreens": [
+      "signup",
+      "profile",
+      "connect",
+      "create",
+      "learn",
+      "discover"
+    ],
+    "laptopScreens": [
+      "profile",
+      "connect",
+      "create",
+      "learn",
+      "discover"
+    ],
+    "automatedAccessibilityViolations": 0,
+    "runtimeErrors": 0,
+    "missingAssets": 0
+  },
+  "preservation": {
+    "uiBoundaryAudit": true,
+    "coreByteAudit": true,
+    "originalReferenceCheck": true
+  }
+}

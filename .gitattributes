@@ -1,0 +1,7 @@
+* text=auto
+/prompt.txt -text
+/reference_0.webp -text
+*.mp4 -text
+*.webp -text
+*.png -text
+*.woff2 -text

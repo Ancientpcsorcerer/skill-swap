@@ -1,0 +1,173 @@
+{
+  "browser": "152.0.4191.66",
+  "results": [
+    {
+      "name": "reference-native",
+      "width": 1280,
+      "height": 956,
+      "status": "passed",
+      "metrics": {
+        "overflow": false,
+        "title": {
+          "x": 68.21875,
+          "y": 208.265625,
+          "width": 294.765625,
+          "height": 72.734375,
+          "right": 362.984375,
+          "bottom": 281
+        },
+        "cta": {
+          "x": 67.671875,
+          "y": 447.265625,
+          "width": 158.65625,
+          "height": 45.171875,
+          "right": 226.328125,
+          "bottom": 492.4375
+        },
+        "stage": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 956,
+          "right": 1280,
+          "bottom": 956
+        },
+        "logoCount": 0,
+        "connect": {
+          "width": 1920,
+          "height": 1080,
+          "fit": "contain",
+          "progress": "0.000000",
+          "overflow": false
+        }
+      }
+    },
+    {
+      "name": "small-phone",
+      "width": 320,
+      "height": 568,
+      "status": "passed",
+      "metrics": {
+        "overflow": false,
+        "title": {
+          "x": 19.34375,
+          "y": 141.265625,
+          "width": 281.3125,
+          "height": 48.765625,
+          "right": 300.65625,
+          "bottom": 190.03125
+        },
+        "cta": {
+          "x": 19.34375,
+          "y": 213.84375,
+          "width": 152,
+          "height": 48,
+          "right": 171.34375,
+          "bottom": 261.84375
+        },
+        "stage": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 568,
+          "right": 320,
+          "bottom": 568
+        },
+        "logoCount": 0,
+        "connect": {
+          "width": 1920,
+          "height": 1080,
+          "fit": "contain",
+          "progress": "0.000000",
+          "overflow": false
+        }
+      }
+    },
+    {
+      "name": "phone-landscape",
+      "width": 844,
+      "height": 390,
+      "status": "passed",
+      "metrics": {
+        "overflow": false,
+        "title": {
+          "x": 24,
+          "y": 109.1875,
+          "width": 163.8125,
+          "height": 41.390625,
+          "right": 187.8125,
+          "bottom": 150.578125
+        },
+        "cta": {
+          "x": 24,
+          "y": 214.5,
+          "width": 142,
+          "height": 44,
+          "right": 166,
+          "bottom": 258.5
+        },
+        "stage": {
+          "x": 0,
+          "y": 0,
+          "width": 844,
+          "height": 390,
+          "right": 844,
+          "bottom": 390
+        },
+        "logoCount": 0,
+        "connect": {
+          "width": 1920,
+          "height": 1080,
+          "fit": "contain",
+          "progress": "0.000000",
+          "overflow": false
+        }
+      }
+    },
+    {
+      "name": "ultrawide",
+      "width": 3440,
+      "height": 1440,
+      "status": "passed",
+      "metrics": {
+        "overflow": false,
+        "title": {
+          "x": 102.75,
+          "y": 313.71875,
+          "width": 515.0625,
+          "height": 127.09375,
+          "right": 617.8125,
+          "bottom": 440.8125
+        },
+        "cta": {
+          "x": 101.9375,
+          "y": 731.3125,
+          "width": 277.234375,
+          "height": 78.9375,
+          "right": 379.171875,
+          "bottom": 810.25
+        },
+        "stage": {
+          "x": 0,
+          "y": 0,
+          "width": 3440,
+          "height": 1440,
+          "right": 3440,
+          "bottom": 1440
+        },
+        "logoCount": 0,
+        "connect": {
+          "width": 1920,
+          "height": 1080,
+          "fit": "contain",
+          "progress": "0.000000",
+          "overflow": false
+        }
+      }
+    },
+    {
+      "name": "landing-video-failure-poster-and-guest-traversal",
+      "status": "passed"
+    }
+  ]
+}

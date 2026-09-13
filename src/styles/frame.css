@@ -1,0 +1,58 @@
+﻿.experience-track {
+  position: relative;
+  height: calc(500vh + var(--connect-scroll-height, 0px));
+  height: calc(500dvh + var(--connect-scroll-height, 0px));
+  background: var(--stage);
+}
+.frame-checkpoint {
+  position: absolute;
+  top: 25vh;
+  top: 25dvh;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+.frame-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: clip;
+  isolation: isolate;
+  background: var(--stage);
+}
+.frame-sticky[data-zoom-complete="true"] { background: #eeebe4; }
+.frame-visual {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  transform: scale(var(--frame-scale));
+  transform-origin: 50% 56%;
+  opacity: var(--portal-opacity);
+}
+.frame-visual[inert] .motion-control { visibility: hidden; }
+.frame-visual .plate::after { opacity: var(--portal-fade-opacity); }
+.landing-layer {
+  position: absolute;
+  inset: 0;
+  opacity: var(--landing-opacity);
+  pointer-events: none;
+}
+.landing-layer button, .landing-layer a, .landing-layer dialog { pointer-events: auto; }
+.landing-layer[inert] { visibility: hidden; }
+.core-underlay {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  background: #eeebe4;
+}
+.frame-sticky[data-zoom-complete="true"] .core-underlay { visibility: visible; }
+.core-underlay[inert] { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .frame-visual { transform: none; }
+  /* A static endpoint preserves the portal light without an animated camera. */
+  .frame-sticky[data-zoom-complete="true"] .frame-visual { transform: scale(var(--frame-scale)); }
+}
+
+
+

@@ -1,0 +1,661 @@
+11:22:32 am [vite] Internal server error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26128:30
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26094:4)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:32 am [vite] Internal server error: Failed to resolve import "virtual:core-frames/learn" from "src/components/core/learn/LearnCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/learn/LearnCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/learn";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/learn/LearnCheckpoint.tsx";
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26128:30
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26094:4)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/learn" from "src/components/core/learn/LearnCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/learn/LearnCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/learn";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/learn/LearnCheckpoint.tsx";
+11:22:32 am [vite] (client) [console.error] [vite] Failed to reload /src/components/core/CoreExperience.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:22:32 am [vite] Internal server error: Failed to resolve import "virtual:core-frames/create" from "src/components/core/create/CreateCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/create/CreateCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/create";
+     |                      ^
+  2  |  // Deliberately unavailable until the actual keycap sequence has been inspected.
+  3  |  // Current Create folders duplicate Connect. Never render them under a Create identity.
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26128:30
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26094:4)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/create" from "src/components/core/create/CreateCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/create/CreateCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/create";
+     |                      ^
+  2  |  // Deliberately unavailable until the actual keycap sequence has been inspected.
+  3  |  // Current Create folders duplicate Connect. Never render them under a Create identity.
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/learn" from "src/components/core/learn/LearnCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/learn/LearnCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/learn";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/learn/LearnCheckpoint.tsx";
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/learn" from "src/components/core/learn/LearnCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/learn/LearnCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/learn";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/learn/LearnCheckpoint.tsx";
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/create" from "src/components/core/create/CreateCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/create/CreateCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/create";
+     |                      ^
+  2  |  // Deliberately unavailable until the actual keycap sequence has been inspected.
+  3  |  // Current Create folders duplicate Connect. Never render them under a Create identity.
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/create" from "src/components/core/create/CreateCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/create/CreateCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/create";
+     |                      ^
+  2  |  // Deliberately unavailable until the actual keycap sequence has been inspected.
+  3  |  // Current Create folders duplicate Connect. Never render them under a Create identity.
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/create" from "src/components/core/create/CreateCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/create/CreateCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/create";
+     |                      ^
+  2  |  // Deliberately unavailable until the actual keycap sequence has been inspected.
+  3  |  // Current Create folders duplicate Connect. Never render them under a Create identity.
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:32 am [vite] (client) [console.error] [vite] Failed to reload /src/app/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:22:32 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:33 am [vite] (client) Pre-transform error: Failed to resolve import "virtual:core-frames/discover" from "src/components/core/discover/DiscoverCheckpoint.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx:1:19
+  1  |  import frames from "virtual:core-frames/discover";
+     |                      ^
+  2  |  import { SequenceCheckpoint } from "../shared/SequenceCheckpoint";
+  3  |  var _jsxFileName = "E:/DATA 25 11 2022/Videos/Skill swap platform/src/components/core/discover/DiscoverCheckpoint.tsx";
+11:22:44 am [vite] (client) Pre-transform error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Create_start" from " virtual:core-frames/create". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/create:1:0
+  1  |  export default {"valid":false,"issue":"Create_start and Create_back duplicate Connect. Correct Create artwork is requ...
+     |  ^
+11:22:44 am [vite] (client) Pre-transform error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Learn_start" from " virtual:core-frames/learn". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/learn:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Learn_start/ezgif-frame-001.jpg","/Cores/Learn_start/ezgif-fra...
+     |  ^
+11:22:44 am [vite] (client) Pre-transform error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Discover_start" from " virtual:core-frames/discover". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/discover:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Discover_start/ezgif-frame-001.jpg","/Cores/Discover_start/ezg...
+     |  ^
+11:22:46 am [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Create_start" from " virtual:core-frames/create". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/create:1:0
+  1  |  export default {"valid":false,"issue":"Create_start and Create_back duplicate Connect. Correct Create artwork is requ...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+11:22:46 am [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Learn_start" from " virtual:core-frames/learn". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/learn:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Learn_start/ezgif-frame-001.jpg","/Cores/Learn_start/ezgif-fra...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+11:22:47 am [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Discover_start" from " virtual:core-frames/discover". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/discover:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Discover_start/ezgif-frame-001.jpg","/Cores/Discover_start/ezg...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+12:39:22 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Learn_start" from " virtual:core-frames/learn". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/learn:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Learn_start/ezgif-frame-001.jpg","/Cores/Learn_start/ezgif-fra...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+12:39:22 pm [vite] (client) Pre-transform error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Learn_start" from " virtual:core-frames/learn". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/learn:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Learn_start/ezgif-frame-001.jpg","/Cores/Learn_start/ezgif-fra...
+     |  ^
+12:39:22 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Discover_start" from " virtual:core-frames/discover". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/discover:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Discover_start/ezgif-frame-001.jpg","/Cores/Discover_start/ezg...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+12:39:22 pm [vite] (client) Pre-transform error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Discover_start" from " virtual:core-frames/discover". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/discover:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Discover_start/ezgif-frame-001.jpg","/Cores/Discover_start/ezg...
+     |  ^
+12:39:22 pm [vite] (client) Pre-transform error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Create_start" from " virtual:core-frames/create". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/create:1:0
+  1  |  export default {"valid":false,"issue":"Create_start and Create_back duplicate Connect. Correct Create artwork is requ...
+     |  ^
+12:39:23 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Create_start" from " virtual:core-frames/create". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/create:1:0
+  1  |  export default {"valid":false,"issue":"Create_start and Create_back duplicate Connect. Correct Create artwork is requ...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+12:39:23 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Learn_start" from " virtual:core-frames/learn". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/learn:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Learn_start/ezgif-frame-001.jpg","/Cores/Learn_start/ezgif-fra...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+12:39:23 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Discover_start" from " virtual:core-frames/discover". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/discover:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Discover_start/ezgif-frame-001.jpg","/Cores/Discover_start/ezg...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+12:39:29 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Create_start" from " virtual:core-frames/create". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/create:1:0
+  1  |  export default {"valid":false,"issue":"Create_start and Create_back duplicate Connect. Correct Create artwork is requ...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+12:39:29 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Learn_start" from " virtual:core-frames/learn". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/learn:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Learn_start/ezgif-frame-001.jpg","/Cores/Learn_start/ezgif-fra...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+12:39:29 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Discover_start" from " virtual:core-frames/discover". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/discover:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Discover_start/ezgif-frame-001.jpg","/Cores/Discover_start/ezg...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+3:03:36 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Discover_start" from " virtual:core-frames/discover". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/discover:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Discover_start/ezgif-frame-001.jpg","/Cores/Discover_start/ezg...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+3:03:36 pm [vite] (client) Pre-transform error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Discover_start" from " virtual:core-frames/discover". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/discover:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Discover_start/ezgif-frame-001.jpg","/Cores/Discover_start/ezg...
+     |  ^
+3:03:36 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Learn_start" from " virtual:core-frames/learn". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/learn:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Learn_start/ezgif-frame-001.jpg","/Cores/Learn_start/ezgif-fra...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+3:03:36 pm [vite] (client) Pre-transform error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Learn_start" from " virtual:core-frames/learn". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/learn:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Learn_start/ezgif-frame-001.jpg","/Cores/Learn_start/ezgif-fra...
+     |  ^
+3:03:36 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Create_start" from " virtual:core-frames/create". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/create:1:0
+  1  |  export default {"valid":false,"issue":"Create_start and Create_back duplicate Connect. Correct Create artwork is requ...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+3:03:36 pm [vite] (client) Pre-transform error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Create_start" from " virtual:core-frames/create". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/create:1:0
+  1  |  export default {"valid":false,"issue":"Create_start and Create_back duplicate Connect. Correct Create artwork is requ...
+     |  ^
+3:04:33 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Create_start" from " virtual:core-frames/create". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/create:1:0
+  1  |  export default {"valid":false,"issue":"Create_start and Create_back duplicate Connect. Correct Create artwork is requ...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+3:04:33 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Learn_start" from " virtual:core-frames/learn". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/learn:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Learn_start/ezgif-frame-001.jpg","/Cores/Learn_start/ezgif-fra...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+3:04:33 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Discover_start" from " virtual:core-frames/discover". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/discover:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Discover_start/ezgif-frame-001.jpg","/Cores/Discover_start/ezg...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+3:05:34 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Discover_start" from " virtual:core-frames/discover". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/discover:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Discover_start/ezgif-frame-001.jpg","/Cores/Discover_start/ezg...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+3:05:35 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Create_start" from " virtual:core-frames/create". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/create:1:0
+  1  |  export default {"valid":false,"issue":"Create_start and Create_back duplicate Connect. Correct Create artwork is requ...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+3:05:35 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Learn_start" from " virtual:core-frames/learn". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/learn:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Learn_start/ezgif-frame-001.jpg","/Cores/Learn_start/ezgif-fra...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+3:06:36 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Create_start" from " virtual:core-frames/create". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/create:1:0
+  1  |  export default {"valid":false,"issue":"Create_start and Create_back duplicate Connect. Correct Create artwork is requ...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+3:06:36 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Learn_start" from " virtual:core-frames/learn". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/learn:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Learn_start/ezgif-frame-001.jpg","/Cores/Learn_start/ezgif-fra...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+3:06:36 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Discover_start" from " virtual:core-frames/discover". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/discover:1:0
+  1  |  export default {valid:true,issue:null,forward:["/Cores/Discover_start/ezgif-frame-001.jpg","/Cores/Discover_start/ezg...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+3:08:01 pm [vite] Internal server error: Failed to resolve import "E:\DATA 25 11 2022\Videos\Skill swap platform\Cores\Create_start" from " virtual:core-frames/create". Does the file exist?
+  Plugin: vite:import-analysis
+  File:  virtual:core-frames/create:1:0
+  1  |  export default {"valid":false,"issue":"Create_start and Create_back duplicate Connect. Correct Create artwork is requ...
+     |  ^
+      at TransformPluginContext._formatLog (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8393:39)
+      at TransformPluginContext.error (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8390:14)
+      at normalizeUrl (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26058:18)
+      at async Promise.all (index 0)
+      at async TransformPluginContext.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:26209:25)
+      at async EnvironmentPluginContainer.transform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:8172:14)
+      at async loadAndTransform (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19634:26)
+      at async viteTransformMiddleware (file:///E:/DATA%2025%2011%202022/Videos/Skill%20swap%20platform/node_modules/vite/dist/node/chunks/node.js:19853:20)
+4:48:07 pm [vite] (client) [Unhandled error] Error: SessionProvider is required
+ > useSession src/app/session/SessionProvider.tsx:16:95
+    14 |    }}>{children}</SessionContext.Provider>;
+    15 |  }
+    16 |  ...t context = useContext(SessionContext); if (!context) throw new Error('SessionProvider is required'); return context;
+       |                                                                 ^
+    17 |  
+ > ProductExperience src/app/ApplicationRoot.tsx?t=1789297912290:14:22
+ > Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:19
+ > renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:21
+ > updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:18
+ > beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:17
+ > runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1045:29
+ > performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:21
+ > workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:40
+ > renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:10
+
+4:48:07 pm [vite] (client) [console.warn] An error occurred in the <ProductExperience> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+4:48:07 pm [vite] (client) [Unhandled error] Error: SessionProvider is required
+ > useSession src/app/session/SessionProvider.tsx:16:95
+    14 |    }}>{children}</SessionContext.Provider>;
+    15 |  }
+    16 |  ...t context = useContext(SessionContext); if (!context) throw new Error('SessionProvider is required'); return context;
+       |                                                                 ^
+    17 |  
+ > ProductExperience src/app/ApplicationRoot.tsx?t=1789297912290:14:22
+ > Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:19
+ > renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:21
+ > updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:18
+ > beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:17
+ > runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1045:29
+ > performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:21
+ > workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:40
+ > renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:10
+
+4:48:07 pm [vite] (client) [console.warn] An error occurred in the <ProductExperience> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+4:48:07 pm [vite] (client) [Unhandled error] Error: SessionProvider is required
+ > useSession src/app/session/SessionProvider.tsx:16:95
+    14 |    }}>{children}</SessionContext.Provider>;
+    15 |  }
+    16 |  ...t context = useContext(SessionContext); if (!context) throw new Error('SessionProvider is required'); return context;
+       |                                                                 ^
+    17 |  
+ > ProductExperience src/app/ApplicationRoot.tsx?t=1789297912290:14:22
+ > Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:19
+ > renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:21
+ > updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:18
+ > beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:17
+ > runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1045:29
+ > performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:21
+ > workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:40
+ > renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:10
+
+4:48:07 pm [vite] (client) [console.warn] An error occurred in the <ProductExperience> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+

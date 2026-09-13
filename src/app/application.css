@@ -1,0 +1,1580 @@
+/* UI roots and scoped descendants. Cinematic styles remain independent. */
+.application-shell, .auth-screen {
+  --workspace-bg:#f2efea;
+  --workspace-ink:#141514;
+  --workspace-muted:#676964;
+  --workspace-line:#dfddd8;
+  --ink:#141514;
+  color-scheme:light;
+  background:var(--workspace-bg);
+  color:var(--workspace-ink);
+  font-size:14px;
+}
+.application-shell {
+  height:100dvh;
+  display:grid;
+  grid-template-columns:224px minmax(0,1fr);
+  grid-template-rows:68px minmax(0,1fr);
+  overflow:hidden;
+}
+:where(.application-shell, .auth-screen) .workspace-topbar {
+  grid-column:1/-1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 40px;
+  border-bottom:1px solid #d5d3cd;
+}
+:where(.application-shell, .auth-screen) .workspace-brand {
+  font-size:22px;
+  letter-spacing:.23em;
+  font-weight:500;
+  white-space:nowrap;
+}
+:where(.application-shell, .auth-screen) .workspace-topbar-actions {
+  display:flex;
+  align-items:center;
+  gap:24px;
+}
+:where(.application-shell, .auth-screen) .workspace-icon-button {
+  display:grid;
+  place-items:center;
+  width:32px;
+  height:36px;
+  background:none;
+  border:0;
+  padding:0;
+}
+:where(.application-shell, .auth-screen) .user-menu {
+  border-left:1px solid #cecdc7;
+  padding-left:30px;
+}
+:where(.application-shell, .auth-screen) .user-menu .dropdown-trigger {
+  font-size:13px;
+  gap:12px;
+}
+:where(.application-shell, .auth-screen) .user-menu .dropdown-trigger>svg {
+  width:16px;
+  height:16px;
+}
+:where(.application-shell, .auth-screen) .workspace-avatar {
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  background:#e1ddd3;
+  color:#4b4e47;
+  overflow:hidden;
+  font-size:23px;
+}
+:where(.application-shell, .auth-screen) .workspace-avatar--small {
+  width:34px;
+  height:34px;
+  font-size:12px;
+}
+:where(.application-shell, .auth-screen) .workspace-avatar .reference-art {
+  width:100%;
+  height:100%;
+}
+:where(.application-shell, .auth-screen) .workspace-sidebar {
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  border-right:1px solid var(--workspace-line);
+  padding:32px 10px 48px 32px;
+}
+:where(.application-shell, .auth-screen) .workspace-sidebar nav {
+  display:flex;
+  flex-direction:column;
+  gap:19px;
+}
+:where(.application-shell, .auth-screen) .workspace-sidebar nav a {
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:25px;
+  min-height:45px;
+  padding:0 12px;
+  border-radius:8px;
+  font-size:14px;
+}
+:where(.application-shell, .auth-screen) .workspace-sidebar nav a:hover {
+  background:#ece9e3;
+}
+:where(.application-shell, .auth-screen) .workspace-sidebar nav a[aria-current] {
+  background:#e7e4de;
+  font-weight:600;
+}
+:where(.application-shell, .auth-screen) .workspace-sidebar nav a[aria-current]::before {
+  position:absolute;
+  content:'';
+  left:-25px;
+  top:8px;
+  width:6px;
+  height:30px;
+  background:#121411;
+  border-radius:1px;
+}
+:where(.application-shell, .auth-screen) .sidebar-motto {
+  margin-left:14px;
+  font-size:13px;
+  line-height:1.6;
+  letter-spacing:.06em;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .sidebar-motto>span {
+  display:block;
+  width:70px;
+  margin-top:27px;
+  border-top:1px solid #a8aba4;
+}
+:where(.application-shell, .auth-screen) .workspace-content {
+  min-width:0;
+  overflow:auto;
+  padding:22px 11px 40px 44px;
+  scrollbar-gutter:stable;
+}
+:where(.application-shell, .auth-screen) .workspace-content:focus {
+  outline:none;
+}
+:where(.application-shell, .auth-screen) .module-columns {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 324px;
+  gap:32px;
+}
+:where(.application-shell, .auth-screen) .create-layout {
+  grid-template-columns:minmax(0,1fr) 348px;
+}
+:where(.application-shell, .auth-screen) .module-main {
+  min-width:0;
+}
+:where(.application-shell, .auth-screen) .module-aside {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  min-width:0;
+}
+:where(.application-shell, .auth-screen) .module-hero {
+  display:grid;
+  grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);
+  gap:28px;
+  min-height:282px;
+  margin-bottom:16px;
+}
+:where(.application-shell, .auth-screen) .connect-module .module-hero {
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:38px;
+}
+:where(.application-shell, .auth-screen) .module-hero-copy {
+  padding-top:17px;
+  min-width:0;
+}
+:where(.application-shell, .auth-screen) .module-label {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-size:12px;
+  letter-spacing:.13em;
+  font-weight:550;
+  margin-bottom:28px;
+}
+:where(.application-shell, .auth-screen) .module-label span {
+  width:60px;
+  border-top:1px solid #8e948d;
+}
+:where(.application-shell, .auth-screen) .module-hero h1 {
+  font-size:clamp(30px,2.65vw,45px);
+  font-weight:400;
+  line-height:1.18;
+  letter-spacing:-.018em;
+}
+:where(.application-shell, .auth-screen) .module-description {
+  font-size:clamp(14px,1.18vw,20px);
+  line-height:1.45;
+  color:#656862;
+  margin-top:14px;
+  white-space:normal;
+}
+:where(.application-shell, .auth-screen) .reference-art {
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+:where(.application-shell, .auth-screen) .module-hero-art {
+  height:282px;
+  border-radius:4px;
+}
+:where(.application-shell, .auth-screen) .create-layout .module-hero-art {
+  height:275px;
+}
+:where(.application-shell, .auth-screen) .module-hero .search-with-filter {
+  margin-top:22px;
+}
+:where(.application-shell, .auth-screen) .connect-module .module-hero-copy .module-description {
+  font-size:19px;
+}
+:where(.application-shell, .auth-screen) .search-with-filter {
+  display:flex;
+  gap:12px;
+  align-items:stretch;
+}
+:where(.application-shell, .auth-screen) .workspace-search {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex:1;
+  min-width:0;
+  min-height:46px;
+  border:1px solid #d4d3ce;
+  border-radius:7px;
+  padding:0 17px;
+  background:#faf8f455;
+}
+:where(.application-shell, .auth-screen) .workspace-search>svg {
+  flex-shrink:0;
+}
+:where(.application-shell, .auth-screen) .workspace-search:focus-within {
+  outline:1px solid #535a50;
+}
+:where(.application-shell, .auth-screen) .workspace-search input {
+  min-width:0;
+  width:100%;
+  flex:1;
+  height:44px;
+  border:0;
+  background:none;
+  outline:0;
+  color:inherit;
+  font:inherit;
+  font-size:13px;
+}
+:where(.application-shell, .auth-screen) .workspace-search input::placeholder {
+  color:#656862;
+  opacity:1;
+}
+:where(.application-shell, .auth-screen) .workspace-search input::-webkit-search-cancel-button {
+  display:none;
+}
+:where(.application-shell, .auth-screen) .filter-control {
+  position:relative;
+  display:grid;
+  place-items:center;
+  flex:0 0 48px;
+  border:1px solid #d4d3ce;
+  border-radius:7px;
+  background:#faf8f455;
+}
+:where(.application-shell, .auth-screen) .filter-control select {
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+  width:100%;
+}
+:where(.application-shell, .auth-screen) .filter-control:focus-within {
+  outline:2px solid #535a50;
+}
+:where(.application-shell, .auth-screen) .module-toolbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  margin:13px 0 18px;
+}
+:where(.application-shell, .auth-screen) .toolbar-end {
+  display:flex;
+  align-items:center;
+  gap:22px;
+  font-size:11px;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .toolbar-end select {
+  border:0;
+  background:transparent;
+  color:#252924;
+  font:inherit;
+  margin-left:8px;
+}
+:where(.application-shell, .auth-screen) .sample-label {
+  font-size:10px;
+  color:#656862;
+  line-height:1.6;
+}
+:where(.application-shell, .auth-screen) .pill-tabs {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+:where(.application-shell, .auth-screen) .pill-tabs button, :where(.application-shell, .auth-screen) .chip-buttons button {
+  border:0;
+  background:#e9e6e0;
+  border-radius:24px;
+  padding:8px 22px;
+  font-size:12px;
+  color:#30352d;
+  white-space:nowrap;
+}
+:where(.application-shell, .auth-screen) .pill-tabs button[aria-selected=true], :where(.application-shell, .auth-screen) .chip-buttons button[aria-pressed=true] {
+  background:#111410;
+  color:#fff;
+}
+:where(.application-shell, .auth-screen) .chip-buttons {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+:where(.application-shell, .auth-screen) .chip-buttons button {
+  font-size:12px;
+  padding:4px 14px;
+}
+:where(.application-shell, .auth-screen) .learning-chips {
+  margin:20px 0 25px;
+  gap:10px;
+}
+:where(.application-shell, .auth-screen) .learning-chips button {
+  padding:8px 15px;
+}
+:where(.application-shell, .auth-screen) .primary-button, :where(.application-shell, .auth-screen) .secondary-button, :where(.application-shell, .auth-screen) .connection-button {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:40px;
+  padding:0 20px;
+  border:1px solid #151713;
+  border-radius:5px;
+  font-size:13px;
+  font-weight:500;
+  background:#141613;
+  color:#fff;
+}
+:where(.application-shell, .auth-screen) .primary-button:hover:not(:disabled), :where(.application-shell, .auth-screen) .connection-button:hover:not(:disabled) {
+  background:#34392f;
+}
+:where(.application-shell, .auth-screen) .secondary-button {
+  background:#faf8f455;
+  color:#161a14;
+  border-color:#d5d4ce;
+}
+:where(.application-shell, .auth-screen) .secondary-button:hover {
+  background:#e8e6e0;
+}
+:where(.application-shell, .auth-screen) .primary-button:disabled, :where(.application-shell, .auth-screen) .connection-button:disabled {
+  cursor:default;
+  opacity:.75;
+}
+:where(.application-shell, .auth-screen) .connection-button {
+  min-height:34px;
+  min-width:87px;
+  padding:0 13px;
+  font-size:11px;
+  transition:background-color 140ms,color 140ms;
+  white-space:nowrap;
+}
+:where(.application-shell, .auth-screen) .connection-button[data-state=settled] {
+  background:#e6e8e0;
+  color:#424b39;
+  border-color:#d5d9ce;
+}
+:where(.application-shell, .auth-screen) .quiet-button, :where(.application-shell, .auth-screen) .workspace-text-button {
+  background:none;
+  border:0;
+  padding:0;
+  color:inherit;
+  font-size:12px;
+  line-height:1.6;
+}
+:where(.application-shell, .auth-screen) .quiet-button:hover, :where(.application-shell, .auth-screen) .workspace-text-button:hover {
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+:where(.application-shell, .auth-screen) .hero-actions {
+  display:flex;
+  gap:12px;
+  margin-top:27px;
+}
+:where(.application-shell, .auth-screen) .hero-actions button {
+  min-height:44px;
+  padding:0 26px;
+}
+:where(.application-shell, .auth-screen) .section-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:25px 0 15px;
+}
+:where(.application-shell, .auth-screen) .section-header h2 {
+  font-size:17px;
+  letter-spacing:-.02em;
+  font-weight:600;
+}
+:where(.application-shell, .auth-screen) .section-header .quiet-button {
+  font-size:11px;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .workspace-panel {
+  margin:0;
+  padding:19px;
+  border:1px solid #e3e0da;
+  border-radius:6px;
+  background:#faf8f488;
+}
+:where(.application-shell, .auth-screen) .workspace-panel h2 {
+  font-size:16px;
+  font-weight:600;
+  letter-spacing:-.02em;
+}
+:where(.application-shell, .auth-screen) .panel-description {
+  font-size:13px;
+  color:#656862;
+  line-height:1.5;
+  margin-top:4px;
+}
+:where(.application-shell, .auth-screen) .workspace-panel .workspace-search {
+  min-height:41px;
+  margin-top:13px;
+  padding:0 12px;
+}
+:where(.application-shell, .auth-screen) .workspace-panel .workspace-search input {
+  height:39px;
+  font-size:12px;
+}
+:where(.application-shell, .auth-screen) .workspace-panel .chip-buttons {
+  margin-top:11px;
+}
+:where(.application-shell, .auth-screen) .workspace-panel blockquote {
+  line-height:1.7;
+}
+:where(.application-shell, .auth-screen) .people-list {
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+:where(.application-shell, .auth-screen) .people-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px 12px;
+}
+:where(.application-shell, .auth-screen) .person-row {
+  display:grid;
+  grid-template-columns:80px minmax(0,1fr) auto auto;
+  align-items:start;
+  gap:17px;
+  padding:14px 20px;
+  border:1px solid #e0ddd7;
+  border-radius:7px;
+  background:#faf8f455;
+  min-width:0;
+}
+:where(.application-shell, .auth-screen) .person-avatar-button {
+  border:0;
+  background:none;
+  padding:0;
+  border-radius:50%;
+}
+:where(.application-shell, .auth-screen) .person-name {
+  border:0;
+  background:none;
+  padding:0;
+  font-size:15px;
+  font-weight:650;
+  text-align:left;
+  line-height:1.45;
+}
+:where(.application-shell, .auth-screen) .person-name:hover {
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+:where(.application-shell, .auth-screen) .person-summary {
+  min-width:0;
+}
+:where(.application-shell, .auth-screen) .person-username {
+  font-size:11px;
+  line-height:1.6;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .person-description {
+  font-size:12px;
+  color:#656862;
+  line-height:1.6;
+  margin:1px 0 5px;
+}
+:where(.application-shell, .auth-screen) .skill-tags {
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+}
+:where(.application-shell, .auth-screen) .skill-tags span {
+  font-size:11px;
+  padding:2px 9px;
+  line-height:1.4;
+  background:#e9e6e0;
+  color:#4f5748;
+  border-radius:10px;
+}
+:where(.application-shell, .auth-screen) .person-match {
+  font-size:10px;
+  line-height:1.5;
+  margin-top:7px;
+  color:#58684c;
+}
+:where(.application-shell, .auth-screen) .person-action {
+  padding-top:3px;
+}
+:where(.application-shell, .auth-screen) .person-row>.workspace-dropdown .dropdown-trigger {
+  padding:3px 0;
+}
+:where(.application-shell, .auth-screen) .person-row>.workspace-dropdown svg {
+  width:18px;
+  height:18px;
+}
+:where(.application-shell, .auth-screen) .person-row--directory .person-description {
+  max-height:39px;
+  overflow:hidden;
+}
+:where(.application-shell, .auth-screen) .workspace-dropdown {
+  position:relative;
+}
+:where(.application-shell, .auth-screen) .dropdown-trigger {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:5px 0;
+  border:0;
+  background:none;
+  font-size:12px;
+}
+:where(.application-shell, .auth-screen) .dropdown-trigger>svg {
+  width:16px;
+  height:16px;
+}
+:where(.application-shell, .auth-screen) .dropdown-menu {
+  position:absolute;
+  right:0;
+  top:calc(100% + 8px);
+  min-width:185px;
+  z-index:50;
+  background:#faf8f3;
+  border:1px solid #d3d4ca;
+  border-radius:5px;
+  padding:6px;
+  box-shadow:0 5px 18px #171e1412;
+}
+:where(.application-shell, .auth-screen) .dropdown-menu button {
+  display:block;
+  text-align:left;
+  width:100%;
+  padding:10px 12px;
+  background:none;
+  border:0;
+  border-radius:3px;
+  font-size:12px;
+  white-space:nowrap;
+}
+:where(.application-shell, .auth-screen) .dropdown-menu button:hover, :where(.application-shell, .auth-screen) .dropdown-menu button:focus {
+  background:#e9e7df;
+}
+:where(.application-shell, .auth-screen) .requests-panel {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+}
+:where(.application-shell, .auth-screen) .requests-panel h2 {
+  display:flex;
+  gap:12px;
+  font-size:17px;
+  font-weight:550;
+  margin:6px 0 16px;
+}
+:where(.application-shell, .auth-screen) .requests-panel h2 span {
+  font-size:12px;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .requests-panel .people-list {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+:where(.application-shell, .auth-screen) .requests-panel .person-row {
+  grid-template-columns:60px minmax(0,1fr) auto;
+  gap:14px;
+}
+:where(.application-shell, .auth-screen) .requests-panel .workspace-avatar {
+  width:60px;
+  height:60px;
+}
+:where(.application-shell, .auth-screen) .requests-panel .person-row>.workspace-dropdown {
+  display:none;
+}
+:where(.application-shell, .auth-screen) .request-response {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+:where(.application-shell, .auth-screen) .request-pending {
+  font-size:12px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+:where(.application-shell, .auth-screen) .request-pending>span:last-child {
+  font-size:10px;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .template-grid {
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+}
+:where(.application-shell, .auth-screen) .template-card {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:7px;
+  text-align:left;
+  padding:22px 22px 16px;
+  min-height:137px;
+  background:#faf8f466;
+  border:1px solid #e4e1da;
+  border-radius:7px;
+}
+:where(.application-shell, .auth-screen) .template-card>svg {
+  margin-bottom:6px;
+  width:27px;
+  height:27px;
+}
+:where(.application-shell, .auth-screen) .template-card strong {
+  font-size:13px;
+  font-weight:600;
+}
+:where(.application-shell, .auth-screen) .template-card>span {
+  font-size:12px;
+  color:#656862;
+  line-height:1.55;
+}
+:where(.application-shell, .auth-screen) .template-card:hover {
+  border-color:#a6afa0;
+}
+:where(.application-shell, .auth-screen) .section-with-tabs {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+:where(.application-shell, .auth-screen) .section-with-tabs .pill-tabs {
+  gap:8px;
+}
+:where(.application-shell, .auth-screen) .section-with-tabs .pill-tabs button {
+  font-size:11px;
+  padding:6px 20px;
+}
+:where(.application-shell, .auth-screen) .project-rows {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:8px;
+}
+:where(.application-shell, .auth-screen) .project-row {
+  display:grid;
+  grid-template-columns:142px minmax(0,1fr) auto auto auto;
+  gap:20px;
+  align-items:center;
+  padding:8px 11px;
+  background:#faf8f488;
+  border:1px solid #e6e2dc;
+  border-radius:6px;
+}
+:where(.application-shell, .auth-screen) .project-row-art {
+  height:68px;
+  padding:0;
+  border:0;
+  background:none;
+  overflow:hidden;
+  border-radius:5px;
+}
+:where(.application-shell, .auth-screen) .card-title {
+  background:none;
+  border:0;
+  padding:0;
+  text-align:left;
+  font-size:13px;
+  font-weight:650;
+  line-height:1.4;
+}
+:where(.application-shell, .auth-screen) .project-row p {
+  font-size:12px;
+  color:#656862;
+  line-height:1.55;
+  margin:3px 0 5px;
+}
+:where(.application-shell, .auth-screen) .member-count {
+  font-size:10px;
+  white-space:nowrap;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .status-badge {
+  padding:4px 15px;
+  border-radius:20px;
+  font-size:11px;
+  background:#e5eade;
+  color:#456232;
+  white-space:nowrap;
+}
+:where(.application-shell, .auth-screen) .status-draft {
+  background:#f1e6d2;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .status-completed {
+  background:#e0e8ec;
+  color:#416273;
+}
+:where(.application-shell, .auth-screen) .stack-form {
+  display:flex;
+  flex-direction:column;
+  gap:13px;
+  margin-top:18px;
+}
+:where(.application-shell, .auth-screen) .stack-form label {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-size:12px;
+}
+:where(.application-shell, .auth-screen) .stack-form input, :where(.application-shell, .auth-screen) .stack-form textarea, :where(.application-shell, .auth-screen) .stack-form select {
+  width:100%;
+  padding:11px 12px;
+  min-height:39px;
+  border:1px solid #d4d4ca;
+  border-radius:5px;
+  background:#fbf9f555;
+  color:#252b20;
+  font:inherit;
+  font-size:12px;
+}
+:where(.application-shell, .auth-screen) .stack-form textarea {
+  resize:vertical;
+  min-height:76px;
+}
+:where(.application-shell, .auth-screen) .stack-form input:focus, :where(.application-shell, .auth-screen) .stack-form textarea:focus, :where(.application-shell, .auth-screen) .stack-form select:focus {
+  outline:1px solid #626e55;
+}
+:where(.application-shell, .auth-screen) .quick-project>textarea {
+  min-height:94px;
+}
+:where(.application-shell, .auth-screen) .workspace-panel .primary-button {
+  width:100%;
+}
+:where(.application-shell, .auth-screen) .collaborator-results {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:15px;
+}
+:where(.application-shell, .auth-screen) .collaborator-results button {
+  text-align:left;
+  font-size:12px;
+}
+:where(.application-shell, .auth-screen) .collaborator-results span {
+  display:block;
+  font-size:10px;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .mini-projects {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:14px;
+}
+:where(.application-shell, .auth-screen) .mini-projects button {
+  display:flex;
+  gap:12px;
+  text-align:left;
+  background:none;
+  border:0;
+  padding:0;
+  align-items:center;
+}
+:where(.application-shell, .auth-screen) .mini-projects svg {
+  width:49px;
+  height:49px;
+  border-radius:5px;
+  flex-shrink:0;
+}
+:where(.application-shell, .auth-screen) .mini-projects strong {
+  font-size:12px;
+  font-weight:550;
+}
+:where(.application-shell, .auth-screen) .mini-projects small {
+  display:block;
+  color:#656862;
+  font-size:11px;
+  margin-top:4px;
+}
+:where(.application-shell, .auth-screen) .learning-path-grid {
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:14px;
+}
+:where(.application-shell, .auth-screen) .learning-path-card {
+  padding:0;
+  text-align:left;
+  border:1px solid #e4e0d9;
+  border-radius:6px;
+  overflow:hidden;
+  background:#faf8f488;
+}
+:where(.application-shell, .auth-screen) .learning-path-card>.reference-art {
+  height:88px;
+}
+:where(.application-shell, .auth-screen) .learning-path-card>span {
+  display:flex;
+  flex-direction:column;
+  padding:12px 11px;
+  gap:5px;
+}
+:where(.application-shell, .auth-screen) .learning-path-card strong {
+  font-size:13px;
+  letter-spacing:-.02em;
+  font-weight:600;
+}
+:where(.application-shell, .auth-screen) .learning-path-card span span {
+  font-size:11px;
+  color:#656862;
+  line-height:1.5;
+}
+:where(.application-shell, .auth-screen) .learning-path-card small {
+  font-size:10px;
+  color:#656862;
+  margin-top:3px;
+}
+:where(.application-shell, .auth-screen) .mentor-grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+:where(.application-shell, .auth-screen) .person-row--mentor {
+  grid-template-columns:58px minmax(0,1fr);
+  gap:10px;
+  padding:15px;
+}
+:where(.application-shell, .auth-screen) .person-row--mentor .workspace-avatar {
+  width:58px;
+  height:58px;
+}
+:where(.application-shell, .auth-screen) .person-row--mentor .person-name {
+  font-size:12px;
+}
+:where(.application-shell, .auth-screen) .person-row--mentor .person-summary {
+  display:contents;
+}
+:where(.application-shell, .auth-screen) .person-row--mentor .person-name, :where(.application-shell, .auth-screen) .person-row--mentor .person-username {
+  grid-column:2;
+}
+:where(.application-shell, .auth-screen) .person-row--mentor .person-name {
+  grid-row:1;
+  align-self:start;
+}
+:where(.application-shell, .auth-screen) .person-row--mentor .person-username {
+  grid-row:1;
+  align-self:end;
+  font-size:10px;
+  padding-bottom:8px;
+}
+:where(.application-shell, .auth-screen) .person-row--mentor .person-description {
+  grid-column:1/-1;
+  font-size:11px;
+  min-height:35px;
+}
+:where(.application-shell, .auth-screen) .person-row--mentor .skill-tags {
+  grid-column:1/-1;
+}
+:where(.application-shell, .auth-screen) .person-row--mentor .skill-tags span {
+  font-size:10px;
+  padding:2px 6px;
+}
+:where(.application-shell, .auth-screen) .person-row--mentor .person-action {
+  grid-column:1/-1;
+  justify-self:end;
+}
+:where(.application-shell, .auth-screen) .module-aside .pill-tabs {
+  margin-top:16px;
+  gap:5px;
+}
+:where(.application-shell, .auth-screen) .module-aside .pill-tabs button {
+  font-size:10px;
+  padding:8px 13px;
+}
+:where(.application-shell, .auth-screen) .my-learning-list {
+  margin-top:16px;
+}
+:where(.application-shell, .auth-screen) .my-learning-list button, :where(.application-shell, .auth-screen) .learning-empty button {
+  display:flex;
+  align-items:center;
+  gap:13px;
+  width:100%;
+  background:none;
+  border:0;
+  text-align:left;
+  padding:0;
+  margin:10px 0;
+}
+:where(.application-shell, .auth-screen) .my-learning-list svg {
+  width:59px;
+  height:56px;
+  flex-shrink:0;
+  border-radius:4px;
+}
+:where(.application-shell, .auth-screen) .my-learning-list button>span {
+  min-width:0;
+  flex:1;
+}
+:where(.application-shell, .auth-screen) .my-learning-list strong {
+  display:block;
+  font-size:12px;
+  font-weight:550;
+  margin-bottom:9px;
+}
+:where(.application-shell, .auth-screen) .my-learning-list small {
+  font-size:10px;
+  color:#656862;
+  display:block;
+}
+:where(.application-shell, .auth-screen) .my-learning-list progress {
+  display:block;
+  width:100%;
+  height:5px;
+  accent-color:#151a10;
+  margin:5px 0;
+}
+:where(.application-shell, .auth-screen) .learning-empty>p {
+  font-size:12px;
+  color:#656862;
+  line-height:1.7;
+}
+:where(.application-shell, .auth-screen) .learning-empty button span {
+  font-size:12px;
+}
+:where(.application-shell, .auth-screen) .learning-empty small {
+  margin-top:6px;
+}
+:where(.application-shell, .auth-screen) .inline-status:empty {
+  display:none;
+}
+:where(.application-shell, .auth-screen) .inline-status {
+  font-size:11px;
+  margin-top:10px;
+}
+:where(.application-shell, .auth-screen) .learning-goal {
+  font-size:12px;
+  line-height:1.7;
+  margin-top:10px;
+  border-top:1px solid #dedfd5;
+  padding-top:9px;
+}
+:where(.application-shell, .auth-screen) .trending-list {
+  list-style:none;
+  counter-reset:trending;
+  margin:14px 0 0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+:where(.application-shell, .auth-screen) .trending-list li {
+  counter-increment:trending;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+:where(.application-shell, .auth-screen) .trending-list li:before {
+  content:counter(trending);
+  display:grid;
+  place-items:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#e9e7df;
+  font-size:11px;
+  flex-shrink:0;
+}
+:where(.application-shell, .auth-screen) .trending-list button {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  gap:10px;
+  background:none;
+  border:0;
+  padding:0;
+  text-align:left;
+  font-size:12px;
+}
+:where(.application-shell, .auth-screen) .trending-list small {
+  display:block;
+  color:#656862;
+  font-size:10px;
+  line-height:1.6;
+  margin-top:3px;
+}
+:where(.application-shell, .auth-screen) .discover-trending {
+  gap:17px;
+  margin-top:20px;
+}
+:where(.application-shell, .auth-screen) .discover-trending li:before {
+  width:29px;
+  height:29px;
+  font-size:13px;
+}
+:where(.application-shell, .auth-screen) .module-aside blockquote {
+  font-size:15px;
+  line-height:1.6;
+  padding:24px 35px;
+}
+:where(.application-shell, .auth-screen) .project-grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:24px;
+}
+:where(.application-shell, .auth-screen) .project-card {
+  border:1px solid #e2dfd7;
+  background:#faf8f477;
+  border-radius:6px;
+  overflow:hidden;
+}
+:where(.application-shell, .auth-screen) .project-art-button {
+  padding:0;
+  border:0;
+  background:none;
+  width:100%;
+  height:108px;
+  display:block;
+}
+:where(.application-shell, .auth-screen) .project-card-copy {
+  padding:10px;
+}
+:where(.application-shell, .auth-screen) .project-card-copy>p {
+  font-size:11px;
+  line-height:1.65;
+  color:#656862;
+  margin:6px 0 8px;
+  min-height:51px;
+}
+:where(.application-shell, .auth-screen) .project-card .card-title {
+  font-size:12px;
+}
+:where(.application-shell, .auth-screen) .project-card .skill-tags span {
+  font-size:10px;
+  padding:2px 6px;
+}
+:where(.application-shell, .auth-screen) .project-card-meta {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:5px;
+  margin-top:14px;
+  font-size:11px;
+}
+:where(.application-shell, .auth-screen) .avatar-stack {
+  display:flex;
+  align-items:center;
+}
+:where(.application-shell, .auth-screen) .avatar-stack .workspace-avatar {
+  width:20px;
+  height:20px;
+  margin-right:-5px;
+  border:1px solid #f7f5ee;
+  font-size:8px;
+}
+:where(.application-shell, .auth-screen) .avatar-stack>span:last-child {
+  font-size:9px;
+  margin-left:8px;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .compact-people {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:16px;
+}
+:where(.application-shell, .auth-screen) .compact-people>div {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  justify-content:space-between;
+}
+:where(.application-shell, .auth-screen) .mini-person {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-width:0;
+  background:none;
+  border:0;
+  padding:0;
+  text-align:left;
+}
+:where(.application-shell, .auth-screen) .mini-person>span:last-child {
+  min-width:0;
+}
+:where(.application-shell, .auth-screen) .mini-person strong {
+  font-size:12px;
+  font-weight:550;
+}
+:where(.application-shell, .auth-screen) .mini-person small {
+  display:block;
+  font-size:10px;
+  line-height:1.5;
+  color:#656862;
+  max-width:145px;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
+}
+:where(.application-shell, .auth-screen) .compact-people .connection-button {
+  min-width:64px;
+  padding:0 7px;
+  font-size:10px;
+  min-height:28px;
+}
+:where(.application-shell, .auth-screen) .panel-link {
+  margin-top:17px;
+}
+:where(.application-shell, .auth-screen) .community-list {
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+  margin-top:17px;
+}
+:where(.application-shell, .auth-screen) .community-list>div {
+  display:flex;
+  gap:11px;
+  align-items:center;
+}
+:where(.application-shell, .auth-screen) .community-list svg {
+  width:46px;
+  height:45px;
+  flex-shrink:0;
+  border-radius:4px;
+}
+:where(.application-shell, .auth-screen) .community-list>div>span {
+  flex:1;
+  min-width:0;
+}
+:where(.application-shell, .auth-screen) .community-list strong {
+  font-size:12px;
+  font-weight:550;
+}
+:where(.application-shell, .auth-screen) .community-list small {
+  display:block;
+  font-size:11px;
+  color:#656862;
+  margin-top:4px;
+}
+:where(.application-shell, .auth-screen) .community-list button {
+  min-height:29px;
+  font-size:10px;
+  padding:0 12px;
+}
+:where(.application-shell, .auth-screen) .exploration-grid, :where(.application-shell, .auth-screen) .community-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:20px;
+}
+:where(.application-shell, .auth-screen) .exploration-card, :where(.application-shell, .auth-screen) .community-card {
+  padding:14px;
+  border:1px solid #e0e0d5;
+  border-radius:6px;
+  background:#faf8f488;
+}
+:where(.application-shell, .auth-screen) .exploration-card svg, :where(.application-shell, .auth-screen) .community-card svg {
+  height:150px;
+  border-radius:4px;
+  margin-bottom:15px;
+}
+:where(.application-shell, .auth-screen) .exploration-card h2, :where(.application-shell, .auth-screen) .community-card h2 {
+  font-size:17px;
+}
+:where(.application-shell, .auth-screen) .exploration-card p, :where(.application-shell, .auth-screen) .community-card p {
+  font-size:13px;
+  color:#656862;
+  line-height:1.7;
+  margin:10px 0;
+}
+:where(.application-shell, .auth-screen) .exploration-card button, :where(.application-shell, .auth-screen) .community-card button {
+  margin-top:15px;
+}
+:where(.application-shell, .auth-screen) .skill-directory {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+:where(.application-shell, .auth-screen) .skill-directory button {
+  display:flex;
+  flex-direction:column;
+  text-align:left;
+  gap:12px;
+  background:#faf8f488;
+  border:1px solid #e0e2d4;
+  border-radius:5px;
+  padding:22px;
+  font-size:15px;
+}
+:where(.application-shell, .auth-screen) .skill-directory span {
+  font-size:11px;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .profile-module {
+  max-width:1150px;
+  padding:16px 0;
+}
+:where(.application-shell, .auth-screen) .profile-module>h1 {
+  font-size:29px;
+  font-weight:500;
+  letter-spacing:-.03em;
+  margin:0 0 28px;
+}
+:where(.application-shell, .auth-screen) .profile-identity {
+  display:flex;
+  align-items:flex-start;
+  gap:24px;
+  padding-bottom:28px;
+}
+:where(.application-shell, .auth-screen) .profile-identity>.workspace-avatar {
+  width:92px;
+  height:92px;
+}
+:where(.application-shell, .auth-screen) .profile-identity>div {
+  flex:1;
+}
+:where(.application-shell, .auth-screen) .profile-identity h2 {
+  font-size:24px;
+  font-weight:550;
+  letter-spacing:-.02em;
+}
+:where(.application-shell, .auth-screen) .profile-identity p {
+  font-size:13px;
+  line-height:1.7;
+  max-width:650px;
+  margin-top:9px;
+  color:#5e6c52;
+}
+:where(.application-shell, .auth-screen) .profile-identity p.profile-handle {
+  margin-top:4px;
+  font-size:12px;
+}
+:where(.application-shell, .auth-screen) .profile-identity small {
+  display:block;
+  margin-top:6px;
+}
+:where(.application-shell, .auth-screen) .profile-skills {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:70px;
+  padding-bottom:38px;
+}
+:where(.application-shell, .auth-screen) .profile-skills .section-header {
+  margin-top:0;
+}
+:where(.application-shell, .auth-screen) .profile-skills p {
+  font-size:12px;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .profile-module>.pill-tabs {
+  border-bottom:1px solid #d7dccd;
+  border-radius:0;
+  padding-bottom:12px;
+}
+:where(.application-shell, .auth-screen) .profile-project-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
+}
+:where(.application-shell, .auth-screen) .profile-empty {
+  border:1px solid #dde1d4;
+  border-radius:5px;
+  padding:28px;
+}
+:where(.application-shell, .auth-screen) .profile-empty h2 {
+  font-size:23px;
+  font-weight:500;
+}
+:where(.application-shell, .auth-screen) .profile-empty p {
+  margin:12px 0 18px;
+  color:#656862;
+  font-size:13px;
+}
+:where(.application-shell, .auth-screen) .profile-core-links {
+  display:flex;
+  gap:12px;
+}
+:where(.application-shell, .auth-screen) .profile-about {
+  padding:20px 0;
+}
+:where(.application-shell, .auth-screen) .profile-about h2 {
+  font-size:16px;
+  margin:22px 0 12px;
+}
+:where(.application-shell, .auth-screen) .profile-about p {
+  font-size:14px;
+  color:#656862;
+  line-height:1.8;
+}
+:where(.application-shell, .auth-screen) .activity-list {
+  list-style:none;
+  padding:0;
+}
+:where(.application-shell, .auth-screen) .activity-list li {
+  border-bottom:1px solid #dce2d2;
+  padding:22px 0;
+}
+:where(.application-shell, .auth-screen) .activity-list h2 {
+  font-size:17px;
+}
+:where(.application-shell, .auth-screen) .activity-list p {
+  margin-top:10px;
+  font-size:13px;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .workspace-dialog {
+  width:min(530px,calc(100vw - 60px));
+  max-height:calc(100dvh - 50px);
+  padding:0;
+  border:1px solid #d4d9cc;
+  border-radius:6px;
+  background:#f5f2eb;
+  color:#18210f;
+  overflow:auto;
+}
+:where(.application-shell, .auth-screen) .workspace-dialog::backdrop {
+  background:#18201266;
+}
+:where(.application-shell, .auth-screen) .workspace-dialog-content {
+  position:relative;
+  padding:44px 34px 30px;
+}
+:where(.application-shell, .auth-screen) .workspace-dialog-close {
+  position:absolute;
+  right:20px;
+  top:15px;
+}
+:where(.application-shell, .auth-screen) .workspace-dialog h2 {
+  font-size:25px;
+  font-weight:500;
+  margin:15px 0;
+}
+:where(.application-shell, .auth-screen) .workspace-dialog h3 {
+  font-size:13px;
+  margin:22px 0 10px;
+}
+:where(.application-shell, .auth-screen) .workspace-dialog p {
+  font-size:13px;
+  line-height:1.8;
+  color:#656862;
+  margin:10px 0;
+}
+:where(.application-shell, .auth-screen) .workspace-dialog .workspace-eyebrow {
+  font-size:10px;
+  letter-spacing:.13em;
+}
+:where(.application-shell, .auth-screen) .workspace-dialog .primary-button {
+  margin-top:18px;
+}
+:where(.application-shell, .auth-screen) .workspace-dialog .reference-art:not(.workspace-avatar .reference-art) {
+  height:170px;
+  border-radius:4px;
+  margin-top:4px;
+}
+:where(.application-shell, .auth-screen) .form-actions {
+  display:flex;
+  gap:12px;
+  justify-content:flex-end;
+  align-items:center;
+  margin-top:10px;
+}
+:where(.application-shell, .auth-screen) .form-actions .primary-button {
+  margin-top:0;
+}
+:where(.application-shell, .auth-screen) .input-hint {
+  font-size:11px;
+  color:#656862;
+  line-height:1.7;
+}
+:where(.application-shell, .auth-screen) .file-drop {
+  border:1px dashed #a8b49a;
+  padding:20px;
+  text-align:center;
+}
+:where(.application-shell, .auth-screen) .file-drop span {
+  font-size:10px;
+  color:#656862;
+}
+:where(.application-shell, .auth-screen) .file-drop input {
+  border:0;
+  padding:8px 0;
+}
+:where(.application-shell, .auth-screen) .project-composer {
+  width:min(640px,calc(100vw - 60px));
+}
+:where(.application-shell, .auth-screen) .workspace-empty {
+  padding:28px 0;
+  color:#656862;
+  line-height:1.8;
+  font-size:13px;
+}
+:where(.application-shell, .auth-screen) .workspace-empty h2 {
+  font-size:18px;
+  color:#2d3c20;
+  margin-bottom:7px;
+}
+:where(.application-shell, .auth-screen) .workspace-sr-only, :where(.application-shell, .auth-screen) .workspace-skip:not(:focus) {
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip-path:inset(50%);
+  white-space:nowrap;
+}
+:where(.application-shell, .auth-screen) .workspace-skip:focus {
+  position:fixed;
+  top:10px;
+  left:240px;
+  z-index:100;
+  background:#f7f6ed;
+  padding:10px;
+  border:1px solid #18260e;
+}
+:where(.application-shell, .auth-screen) .storage-error {
+  position:sticky;
+  bottom:0;
+  padding:12px;
+  background:#f6f2e3;
+  border:1px solid #a39d88;
+}
+.auth-screen {
+  min-height:100dvh;
+  display:grid;
+  grid-template-columns:20% 1fr;
+  background:#f7f4ef;
+}
+:where(.application-shell, .auth-screen) .auth-art {
+  min-height:100dvh;
+  overflow:hidden;
+}
+:where(.application-shell, .auth-screen) .auth-art svg {
+  height:100dvh;
+}
+:where(.application-shell, .auth-screen) .auth-body {
+  padding:36px 50px;
+}
+:where(.application-shell, .auth-screen) .auth-body>.workspace-brand {
+  font-size:18px;
+  letter-spacing:.18em;
+}
+:where(.application-shell, .auth-screen) .auth-form {
+  width:min(560px,100%);
+  margin:clamp(60px,12vh,135px) auto 50px;
+}
+:where(.application-shell, .auth-screen) .auth-form h1 {
+  font-size:25px;
+  font-weight:500;
+  letter-spacing:.025em;
+}
+:where(.application-shell, .auth-screen) .auth-form>p:first-of-type {
+  font-size:13px;
+  line-height:1.7;
+  margin-top:12px;
+  margin-bottom:62px;
+  color:#515a46;
+}
+:where(.application-shell, .auth-screen) .auth-form>label {
+  display:flex;
+  flex-direction:column;
+  font-size:13px;
+  color:#656862;
+  margin-top:22px;
+}
+:where(.application-shell, .auth-screen) .auth-form input {
+  border:0;
+  border-bottom:1px solid #adbaa0;
+  background:none;
+  border-radius:0;
+  min-height:30px;
+  font:inherit;
+  font-size:16px;
+  padding:5px 0;
+  color:#18220e;
+}
+:where(.application-shell, .auth-screen) .auth-form input:focus {
+  outline:0;
+  border-bottom:2px solid #293d17;
+}
+:where(.application-shell, .auth-screen) .auth-form>.input-hint {
+  display:block;
+  margin-top:7px;
+}
+:where(.application-shell, .auth-screen) .auth-form>.primary-button {
+  display:block;
+  width:100%;
+  border-radius:2px;
+  min-height:45px;
+  margin-top:38px;
+  font-size:12px;
+  letter-spacing:.09em;
+}
+:where(.application-shell, .auth-screen) .auth-form p.auth-switch {
+  text-align:center;
+  font-size:12px;
+  margin-top:22px;
+}
+:where(.application-shell, .auth-screen) .auth-switch button {
+  background:none;
+  border:0;
+  font-weight:600;
+  font-size:12px;
+  margin-left:10px;
+}
+:where(.application-shell, .auth-screen) .auth-form p.auth-storage-note {
+  font-size:10px;
+  color:#656862;
+  text-align:center;
+  margin-top:22px;
+}
+:where(.application-shell, .auth-screen) .auth-form p.form-error {
+  font-size:12px;
+  line-height:1.7;
+  margin-top:16px;
+  color:#656862;
+}
+.cinematic-entry{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:4;text-align:center;color:#20221e;}
+.cinematic-entry button{display:flex;align-items:center;justify-content:center;gap:32px;min-height:46px;width:216px;padding:0 20px;border:1px solid #42443c;border-radius:3px;background:#f5f3ee;color:#20221e;font-size:13px;}
+.cinematic-entry button:focus-visible{outline-color:#20221e;}
+
+
+/* Measurements refined against the supplied 1672 x 941 references. */
+:where(.application-shell) .create-layout .module-hero { grid-template-columns:minmax(0,1.23fr) minmax(0,1fr); }
+:where(.application-shell) .create-layout .module-label { margin-bottom:42px; }
+:where(.application-shell) .discover-layout .module-hero { grid-template-columns:minmax(0,1.36fr) minmax(0,1fr); min-height:274px; }
+:where(.application-shell) .discover-layout .module-hero-art { height:268px; }
+:where(.application-shell) .learn-layout .module-description { font-size:clamp(14px,1.04vw,17.5px); }
+:where(.application-shell) .discover-layout .module-description { font-size:clamp(14px,1.08vw,18px); }
+:where(.application-shell) .person-row--directory { grid-template-columns:85px minmax(0,1fr) auto auto; column-gap:27px; padding-top:12px; padding-bottom:12px; }
+:where(.application-shell) .person-row--directory .workspace-avatar { width:85px; height:85px; }
+:where(.application-shell) .person-row--directory .person-description { white-space:nowrap; text-overflow:ellipsis; max-height:none; }
+:where(.application-shell) .learning-chips { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:thin; padding-bottom:4px; }
+:where(.application-shell) .learning-chips button { flex-shrink:0; }
+:where(.application-shell) .person-row--mentor .person-username { align-self:center; padding-bottom:0; }
+:where(.application-shell) .person-row--mentor .skill-tags { grid-row:1; grid-column:2; align-self:end; flex-wrap:nowrap; overflow:hidden; white-space:nowrap; }
+:where(.application-shell) .person-row--mentor .skill-tags span { padding:0; border-radius:0; background:none; }
+:where(.application-shell) .person-row--mentor .person-description { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:35px; }
+:where(.application-shell) .discover-layout .section-header { margin-top:20px; }
+:where(.application-shell) .project-card-copy>p { min-height:45px; }
+:where(.application-shell) .project-card-meta { margin-top:10px; }
+:where(.application-shell) .discover-layout .project-grid ~ .project-grid .project-art-button { height:60px; }
+:where(.application-shell) .discover-trending { gap:13px; }

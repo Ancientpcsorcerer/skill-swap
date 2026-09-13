@@ -1,0 +1,261 @@
+{
+  "method": "Mean original JPEG RGB in x=50..299, y=50..199 (unobstructed background); zero-based frame indices. No images modified.",
+  "counts": {
+    "Connect_start": 300,
+    "Connect_back": 300
+  },
+  "samples": [
+    {
+      "progress": 0,
+      "forward": {
+        "path": "Cores/Connect_start/ezgif-frame-001.jpg",
+        "index": 0,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          243.331,
+          242.981,
+          243.156
+        ],
+        "sha256": "a7f0da455fe6e6e2ecde448bc19d7b41e339b67817d8b465713841e86fc37f8d"
+      },
+      "reverse": {
+        "path": "Cores/Connect_back/ezgif-frame-300.jpg",
+        "index": 299,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          246.38,
+          245.38,
+          240.38
+        ],
+        "sha256": "59b27719767b27b53bcc5fcd86a078efa7585f8c7e99393fc0616653ada12bfc"
+      },
+      "reverse_minus_forward_rgb": [
+        3.049,
+        2.399,
+        -2.776
+      ]
+    },
+    {
+      "progress": 0.25,
+      "forward": {
+        "path": "Cores/Connect_start/ezgif-frame-076.jpg",
+        "index": 75,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          231.318,
+          237.088,
+          237.203
+        ],
+        "sha256": "4cdecafc3577d54d6fa21952caec118690024f5c493773966518245b90e6c489"
+      },
+      "reverse": {
+        "path": "Cores/Connect_back/ezgif-frame-225.jpg",
+        "index": 224,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          242.002,
+          242.266,
+          240.431
+        ],
+        "sha256": "4db670f967b1316b15b5b2192b51da55254d478839503bc401fdb2c03193b252"
+      },
+      "reverse_minus_forward_rgb": [
+        10.684,
+        5.178,
+        3.228
+      ]
+    },
+    {
+      "progress": 0.5,
+      "forward": {
+        "path": "Cores/Connect_start/ezgif-frame-151.jpg",
+        "index": 150,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          230.389,
+          236.389,
+          236.221
+        ],
+        "sha256": "8b98c2445a7d4aaa3110718ee9e58d7b071b30600ca387bfbc7aa9cef22e486d"
+      },
+      "reverse": {
+        "path": "Cores/Connect_back/ezgif-frame-151.jpg",
+        "index": 150,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          236.072,
+          241.006,
+          244.478
+        ],
+        "sha256": "25c71731e80d309a5c86817c1b66d20bf554a0ac572b74e787d16ecab044408d"
+      },
+      "reverse_minus_forward_rgb": [
+        5.683,
+        4.617,
+        8.257
+      ]
+    },
+    {
+      "progress": 0.56,
+      "forward": {
+        "path": "Cores/Connect_start/ezgif-frame-168.jpg",
+        "index": 167,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          230.528,
+          236.707,
+          236.647
+        ],
+        "sha256": "0fad77e92e194b9e40ee547b981acab89f3b01cd3512852a50af1c917347d1f3"
+      },
+      "reverse": {
+        "path": "Cores/Connect_back/ezgif-frame-133.jpg",
+        "index": 132,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          236.128,
+          241.064,
+          245.015
+        ],
+        "sha256": "dbbcc285cf5db72c20c0bd3e8e27e32b3392651eb31efcdb9c163fea3abc13f8"
+      },
+      "reverse_minus_forward_rgb": [
+        5.6,
+        4.357,
+        8.368
+      ]
+    },
+    {
+      "progress": 0.58,
+      "forward": {
+        "path": "Cores/Connect_start/ezgif-frame-174.jpg",
+        "index": 173,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          230.808,
+          237.028,
+          236.955
+        ],
+        "sha256": "c4ae09cd05d608d90a9cbbe8ecc6d4feb93aa50218ba1d517295e2fff112f871"
+      },
+      "reverse": {
+        "path": "Cores/Connect_back/ezgif-frame-127.jpg",
+        "index": 126,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          236.02,
+          240.983,
+          244.998
+        ],
+        "sha256": "f6b9b19f3ab49bfb6e7760982b13814b3632f6683c8fafebb438a38f87b046ef"
+      },
+      "reverse_minus_forward_rgb": [
+        5.212,
+        3.955,
+        8.043
+      ]
+    },
+    {
+      "progress": 0.75,
+      "forward": {
+        "path": "Cores/Connect_start/ezgif-frame-225.jpg",
+        "index": 224,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          230.976,
+          236.976,
+          236.976
+        ],
+        "sha256": "cb94e0db7ed475eca5e96938b3318f732e571d08be854d17f76fd04ff98b83e0"
+      },
+      "reverse": {
+        "path": "Cores/Connect_back/ezgif-frame-076.jpg",
+        "index": 75,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          236.02,
+          240.98,
+          244.434
+        ],
+        "sha256": "7022b948cdb5130ddae2c7bea26d5f228810cbf89449fa247994fbc2ec6495f4"
+      },
+      "reverse_minus_forward_rgb": [
+        5.044,
+        4.004,
+        7.458
+      ]
+    },
+    {
+      "progress": 1,
+      "forward": {
+        "path": "Cores/Connect_start/ezgif-frame-300.jpg",
+        "index": 299,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          231.0,
+          237.0,
+          237.0
+        ],
+        "sha256": "512ad0971eb8d9793f683ea623acc93d39c2499b569629614a1fbaab4656d303"
+      },
+      "reverse": {
+        "path": "Cores/Connect_back/ezgif-frame-001.jpg",
+        "index": 0,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "background_mean_rgb": [
+          235.979,
+          240.934,
+          244.277
+        ],
+        "sha256": "694a61e009f688919ca0edbecf93313a6aa819eaab228307e83510bc69cc9a02"
+      },
+      "reverse_minus_forward_rgb": [
+        4.979,
+        3.934,
+        7.277
+      ]
+    }
+  ]
+}

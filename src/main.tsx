@@ -1,16 +1,15 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import { App } from './App';
-import './styles/globals.css';
+﻿import React from 'react';
+import ReactDOM from 'react-dom/client';
+import '@fontsource-variable/manrope';
+import './styles/tokens.css';
+import './styles/global.css';
+import './styles/landing.css';
+import './styles/dialog.css';
+import './styles/frame.css';
+import './styles/core.css';
+import { ApplicationRoot } from './app/ApplicationRoot';
 
-const rootEl = document.getElementById('root');
-if (!rootEl) throw new Error('Root element #root not found');
-
-createRoot(rootEl).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </StrictMode>,
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode><ApplicationRoot /></React.StrictMode>,
 );
+

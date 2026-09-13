@@ -1,0 +1,229 @@
+{
+  "browser": "152.0.4191.66",
+  "results": [
+    {
+      "name": "reference-native",
+      "width": 1280,
+      "height": 956,
+      "status": "passed",
+      "metrics": {
+        "overflow": false,
+        "title": {
+          "x": 68.21875,
+          "y": 208.265625,
+          "width": 294.765625,
+          "height": 72.734375,
+          "right": 362.984375,
+          "bottom": 281
+        },
+        "cta": {
+          "x": 67.671875,
+          "y": 447.265625,
+          "width": 158.65625,
+          "height": 45.171875,
+          "right": 226.328125,
+          "bottom": 492.4375
+        },
+        "stage": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 956,
+          "right": 1280,
+          "bottom": 956
+        },
+        "logos": [
+          {
+            "left": 322.86090087890625,
+            "right": 434.23590087890625,
+            "bottom": 926.796875
+          },
+          {
+            "left": 509.87652587890625,
+            "right": 620.0484008789062,
+            "bottom": 926.796875
+          },
+          {
+            "left": 699.6421508789062,
+            "right": 800.8296508789062,
+            "bottom": 925.90625
+          },
+          {
+            "left": 883.9702758789062,
+            "right": 983.2827758789062,
+            "bottom": 925.4375
+          }
+        ]
+      }
+    },
+    {
+      "name": "small-phone",
+      "width": 320,
+      "height": 568,
+      "status": "passed",
+      "metrics": {
+        "overflow": false,
+        "title": {
+          "x": 19.34375,
+          "y": 141.265625,
+          "width": 281.3125,
+          "height": 48.765625,
+          "right": 300.65625,
+          "bottom": 190.03125
+        },
+        "cta": {
+          "x": 19.34375,
+          "y": 213.84375,
+          "width": 152,
+          "height": 48,
+          "right": 171.34375,
+          "bottom": 261.84375
+        },
+        "stage": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 568,
+          "right": 320,
+          "bottom": 568
+        },
+        "logos": [
+          {
+            "left": 37.203125,
+            "right": 130.015625,
+            "bottom": 501.078125
+          },
+          {
+            "left": 174.125,
+            "right": 268.734375,
+            "bottom": 500.703125
+          },
+          {
+            "left": 37.203125,
+            "right": 126.34375,
+            "bottom": 547.140625
+          },
+          {
+            "left": 174.125,
+            "right": 263.265625,
+            "bottom": 547.140625
+          }
+        ]
+      }
+    },
+    {
+      "name": "phone-landscape",
+      "width": 844,
+      "height": 390,
+      "status": "passed",
+      "metrics": {
+        "overflow": false,
+        "title": {
+          "x": 24,
+          "y": 109.1875,
+          "width": 163.8125,
+          "height": 41.390625,
+          "right": 187.8125,
+          "bottom": 150.578125
+        },
+        "cta": {
+          "x": 24,
+          "y": 214.5,
+          "width": 142,
+          "height": 44,
+          "right": 166,
+          "bottom": 258.5
+        },
+        "stage": {
+          "x": 0,
+          "y": 0,
+          "width": 844,
+          "height": 390,
+          "right": 844,
+          "bottom": 390
+        },
+        "logos": [
+          {
+            "left": 220.6640625,
+            "right": 302.8828125,
+            "bottom": 376
+          },
+          {
+            "left": 326.8828125,
+            "right": 410.8984375,
+            "bottom": 376
+          },
+          {
+            "left": 434.8984375,
+            "right": 517.1171875,
+            "bottom": 376
+          },
+          {
+            "left": 541.1171875,
+            "right": 623.3359375,
+            "bottom": 376
+          }
+        ]
+      }
+    },
+    {
+      "name": "ultrawide",
+      "width": 3440,
+      "height": 1440,
+      "status": "passed",
+      "metrics": {
+        "overflow": false,
+        "title": {
+          "x": 102.75,
+          "y": 313.71875,
+          "width": 515.0625,
+          "height": 127.09375,
+          "right": 617.8125,
+          "bottom": 440.8125
+        },
+        "cta": {
+          "x": 101.9375,
+          "y": 731.3125,
+          "width": 277.234375,
+          "height": 78.9375,
+          "right": 379.171875,
+          "bottom": 810.25
+        },
+        "stage": {
+          "x": 0,
+          "y": 0,
+          "width": 3440,
+          "height": 1440,
+          "right": 3440,
+          "bottom": 1440
+        },
+        "logos": [
+          {
+            "left": 1242.28369140625,
+            "right": 1410.04931640625,
+            "bottom": 1396.03125
+          },
+          {
+            "left": 1524.00244140625,
+            "right": 1689.95556640625,
+            "bottom": 1396.03125
+          },
+          {
+            "left": 1809.83056640625,
+            "right": 1962.25244140625,
+            "bottom": 1394.671875
+          },
+          {
+            "left": 2087.48681640625,
+            "right": 2237.09619140625,
+            "bottom": 1393.984375
+          }
+        ]
+      }
+    },
+    {
+      "name": "approved-local-video-fallback",
+      "status": "passed"
+    }
+  ]
+}

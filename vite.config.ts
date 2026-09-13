@@ -1,41 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { fileURLToPath, URL } from 'node:url';
+import { coreAssets } from './build/core-assets.ts';
+import { connectAssets } from './build/connect-assets.ts';
 
 export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
-  },
-  server: {
-    host: '0.0.0.0',
-    port: 5173,
-    strictPort: false,
-    // Accept any Host header — needed for trycloudflare.com and other tunnels.
-    // Safe for local dev; do not use in production.
-    allowedHosts: true,
-  },
-  preview: {
-    host: '0.0.0.0',
-    port: 4173,
-    strictPort: false,
-    allowedHosts: true,
-  },
-  build: {
-    target: 'es2022',
-    sourcemap: false,
-    cssCodeSplit: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'three': ['three', '@react-three/fiber', '@react-three/drei'],
-          'gsap': ['gsap'],
-          'lenis': ['lenis'],
-        },
-      },
-    },
-  },
+  plugins: [react(), connectAssets(), coreAssets()],
+  server: { host: '127.0.0.1', port: 5173, strictPort: true },
+  preview: { host: '127.0.0.1', port: 4173, strictPort: true },
 });
+
+

@@ -1,0 +1,29 @@
+[
+  {
+    "viewport": [
+      1672,
+      941
+    ],
+    "overflow": false,
+    "transform": "matrix(12, 0, 0, 12, 0, 0)",
+    "state": "CONNECT_CHECKPOINT_START"
+  },
+  {
+    "viewport": [
+      412,
+      839
+    ],
+    "overflow": false,
+    "transform": "matrix(12, 0, 0, 12, 0, 0)",
+    "state": "CONNECT_CHECKPOINT_START"
+  },
+  {
+    "viewport": [
+      3440,
+      1440
+    ],
+    "overflow": false,
+    "transform": "matrix(12, 0, 0, 12, 0, 0)",
+    "state": "CONNECT_CHECKPOINT_START"
+  }
+]

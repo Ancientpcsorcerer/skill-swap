@@ -1,0 +1,550 @@
+{
+  "browser": "152.0.4191.66",
+  "samples": [
+    {
+      "cycle": 0,
+      "detachedNodes": 0,
+      "counters": {
+        "documents": 1,
+        "nodes": 55,
+        "jsEventListeners": 183
+      },
+      "heap": {
+        "JSHeapUsedSize": 6965172,
+        "JSHeapTotalSize": 7237632
+      }
+    },
+    {
+      "cycle": 1,
+      "detachedNodes": 0,
+      "counters": {
+        "documents": 1,
+        "nodes": 55,
+        "jsEventListeners": 183
+      },
+      "heap": {
+        "JSHeapUsedSize": 7096944,
+        "JSHeapTotalSize": 7761920
+      }
+    },
+    {
+      "cycle": 2,
+      "detachedNodes": 0,
+      "counters": {
+        "documents": 1,
+        "nodes": 55,
+        "jsEventListeners": 183
+      },
+      "heap": {
+        "JSHeapUsedSize": 7210708,
+        "JSHeapTotalSize": 7761920
+      }
+    }
+  ],
+  "activeSamples": [
+    {
+      "cycle": 0,
+      "core": "learn",
+      "progress": 0,
+      "cache": {
+        "decoded": 4,
+        "compressed": 49,
+        "fetching": 2,
+        "decoding": 0,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "learn",
+      "progress": 0.5,
+      "cache": {
+        "decoded": 5,
+        "compressed": 60,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "learn",
+      "progress": 0.4498697916666667,
+      "cache": {
+        "decoded": 8,
+        "compressed": 72,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "learn",
+      "progress": 0.8001302083333334,
+      "cache": {
+        "decoded": 8,
+        "compressed": 84,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "learn",
+      "progress": 0.19986979166666666,
+      "cache": {
+        "decoded": 8,
+        "compressed": 98,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "learn",
+      "progress": 1,
+      "cache": {
+        "decoded": 8,
+        "compressed": 111,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "learn",
+      "progress": 0,
+      "cache": {
+        "decoded": 8,
+        "compressed": 123,
+        "fetching": 2,
+        "decoding": 0,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "discover",
+      "progress": 0,
+      "cache": {
+        "decoded": 3,
+        "compressed": 10,
+        "fetching": 2,
+        "decoding": 1,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "discover",
+      "progress": 0.5,
+      "cache": {
+        "decoded": 6,
+        "compressed": 25,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "discover",
+      "progress": 0.4498697916666667,
+      "cache": {
+        "decoded": 8,
+        "compressed": 48,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "discover",
+      "progress": 0.8001302083333334,
+      "cache": {
+        "decoded": 8,
+        "compressed": 70,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "discover",
+      "progress": 0.19986979166666666,
+      "cache": {
+        "decoded": 8,
+        "compressed": 86,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "discover",
+      "progress": 1,
+      "cache": {
+        "decoded": 8,
+        "compressed": 113,
+        "fetching": 2,
+        "decoding": 0,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 0,
+      "core": "discover",
+      "progress": 0,
+      "cache": {
+        "decoded": 8,
+        "compressed": 127,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "learn",
+      "progress": 0,
+      "cache": {
+        "decoded": 1,
+        "compressed": 17,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "learn",
+      "progress": 0.5,
+      "cache": {
+        "decoded": 5,
+        "compressed": 46,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "learn",
+      "progress": 0.4498697916666667,
+      "cache": {
+        "decoded": 8,
+        "compressed": 72,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "learn",
+      "progress": 0.8001302083333334,
+      "cache": {
+        "decoded": 8,
+        "compressed": 115,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "learn",
+      "progress": 0.19986979166666666,
+      "cache": {
+        "decoded": 8,
+        "compressed": 128,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "learn",
+      "progress": 1,
+      "cache": {
+        "decoded": 8,
+        "compressed": 146,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "learn",
+      "progress": 0,
+      "cache": {
+        "decoded": 8,
+        "compressed": 159,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "discover",
+      "progress": 0,
+      "cache": {
+        "decoded": 2,
+        "compressed": 23,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "discover",
+      "progress": 0.5,
+      "cache": {
+        "decoded": 5,
+        "compressed": 37,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "discover",
+      "progress": 0.4498697916666667,
+      "cache": {
+        "decoded": 8,
+        "compressed": 64,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "discover",
+      "progress": 0.8001302083333334,
+      "cache": {
+        "decoded": 8,
+        "compressed": 84,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "discover",
+      "progress": 0.19986979166666666,
+      "cache": {
+        "decoded": 8,
+        "compressed": 106,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "discover",
+      "progress": 1,
+      "cache": {
+        "decoded": 8,
+        "compressed": 126,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 1,
+      "core": "discover",
+      "progress": 0,
+      "cache": {
+        "decoded": 8,
+        "compressed": 140,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "learn",
+      "progress": 0,
+      "cache": {
+        "decoded": 1,
+        "compressed": 8,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "learn",
+      "progress": 0.5,
+      "cache": {
+        "decoded": 4,
+        "compressed": 47,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "learn",
+      "progress": 0.4498697916666667,
+      "cache": {
+        "decoded": 7,
+        "compressed": 71,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "learn",
+      "progress": 0.8001302083333334,
+      "cache": {
+        "decoded": 8,
+        "compressed": 96,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "learn",
+      "progress": 0.19986979166666666,
+      "cache": {
+        "decoded": 8,
+        "compressed": 125,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "learn",
+      "progress": 1,
+      "cache": {
+        "decoded": 8,
+        "compressed": 144,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "learn",
+      "progress": 0,
+      "cache": {
+        "decoded": 8,
+        "compressed": 181,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "discover",
+      "progress": 0,
+      "cache": {
+        "decoded": 4,
+        "compressed": 26,
+        "fetching": 2,
+        "decoding": 0,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "discover",
+      "progress": 0.5,
+      "cache": {
+        "decoded": 6,
+        "compressed": 45,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "discover",
+      "progress": 0.4498697916666667,
+      "cache": {
+        "decoded": 8,
+        "compressed": 66,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "discover",
+      "progress": 0.8001302083333334,
+      "cache": {
+        "decoded": 8,
+        "compressed": 105,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "discover",
+      "progress": 0.19986979166666666,
+      "cache": {
+        "decoded": 8,
+        "compressed": 127,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "discover",
+      "progress": 1,
+      "cache": {
+        "decoded": 8,
+        "compressed": 150,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    },
+    {
+      "cycle": 2,
+      "core": "discover",
+      "progress": 0,
+      "cache": {
+        "decoded": 8,
+        "compressed": 173,
+        "fetching": 2,
+        "decoding": 2,
+        "capacity": 8
+      }
+    }
+  ]
+}

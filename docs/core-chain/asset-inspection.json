@@ -1,0 +1,128 @@
+{
+  "sequences": [
+    {
+      "folder": "Connect_back",
+      "count": 300,
+      "dimensions": [
+        [
+          1920,
+          1080
+        ]
+      ],
+      "bytes": 10156801,
+      "first": "Cores/Connect_back/ezgif-frame-001.jpg",
+      "last": "Cores/Connect_back/ezgif-frame-300.jpg",
+      "first_sha256": "694a61e009f688919ca0edbecf93313a6aa819eaab228307e83510bc69cc9a02",
+      "last_sha256": "59b27719767b27b53bcc5fcd86a078efa7585f8c7e99393fc0616653ada12bfc"
+    },
+    {
+      "folder": "Connect_start",
+      "count": 300,
+      "dimensions": [
+        [
+          1920,
+          1080
+        ]
+      ],
+      "bytes": 10864597,
+      "first": "Cores/Connect_start/ezgif-frame-001.jpg",
+      "last": "Cores/Connect_start/ezgif-frame-300.jpg",
+      "first_sha256": "a7f0da455fe6e6e2ecde448bc19d7b41e339b67817d8b465713841e86fc37f8d",
+      "last_sha256": "512ad0971eb8d9793f683ea623acc93d39c2499b569629614a1fbaab4656d303"
+    },
+    {
+      "folder": "Create_back",
+      "count": 300,
+      "dimensions": [
+        [
+          1920,
+          1080
+        ]
+      ],
+      "bytes": 10156801,
+      "first": "Cores/Create_back/ezgif-frame-001.jpg",
+      "last": "Cores/Create_back/ezgif-frame-300.jpg",
+      "first_sha256": "694a61e009f688919ca0edbecf93313a6aa819eaab228307e83510bc69cc9a02",
+      "last_sha256": "59b27719767b27b53bcc5fcd86a078efa7585f8c7e99393fc0616653ada12bfc"
+    },
+    {
+      "folder": "Create_start",
+      "count": 300,
+      "dimensions": [
+        [
+          1920,
+          1080
+        ]
+      ],
+      "bytes": 10864597,
+      "first": "Cores/Create_start/ezgif-frame-001.jpg",
+      "last": "Cores/Create_start/ezgif-frame-300.jpg",
+      "first_sha256": "a7f0da455fe6e6e2ecde448bc19d7b41e339b67817d8b465713841e86fc37f8d",
+      "last_sha256": "512ad0971eb8d9793f683ea623acc93d39c2499b569629614a1fbaab4656d303"
+    },
+    {
+      "folder": "Discover_back",
+      "count": 120,
+      "dimensions": [
+        [
+          1920,
+          1080
+        ]
+      ],
+      "bytes": 3436504,
+      "first": "Cores/Discover_back/ezgif-frame-001.jpg",
+      "last": "Cores/Discover_back/ezgif-frame-120.jpg",
+      "first_sha256": "4c4e749000072eee24941a580272fad5731a08d32520d4867a40aca40c4144dd",
+      "last_sha256": "8018d0b160c3715eef5409b4aaf4c397914d698e6a58c1ef549ca7e99a017e03"
+    },
+    {
+      "folder": "Discover_start",
+      "count": 120,
+      "dimensions": [
+        [
+          1920,
+          1080
+        ]
+      ],
+      "bytes": 3647602,
+      "first": "Cores/Discover_start/ezgif-frame-001.jpg",
+      "last": "Cores/Discover_start/ezgif-frame-120.jpg",
+      "first_sha256": "f14278ec2c14940008de0ea835fcfde00b84f0220b080b5d5d18f7132d859d76",
+      "last_sha256": "4268bd776f4bb9bb975ab0778436d97e59badb6fe14989d9bd5407401446feb7"
+    },
+    {
+      "folder": "Learn_back",
+      "count": 300,
+      "dimensions": [
+        [
+          1280,
+          720
+        ]
+      ],
+      "bytes": 7654578,
+      "first": "Cores/Learn_back/ezgif-frame-001.jpg",
+      "last": "Cores/Learn_back/ezgif-frame-300.jpg",
+      "first_sha256": "565851c2df6d6535c07f3017f325009a6f25ffdf545339a3aeeed82cbc7a3797",
+      "last_sha256": "a16778fdc71cff4d9f6b9de0669ab6ec2c698edd93c9fb1ae14055fb3f63cbb3"
+    },
+    {
+      "folder": "Learn_start",
+      "count": 300,
+      "dimensions": [
+        [
+          1920,
+          1080
+        ]
+      ],
+      "bytes": 19216584,
+      "first": "Cores/Learn_start/ezgif-frame-001.jpg",
+      "last": "Cores/Learn_start/ezgif-frame-300.jpg",
+      "first_sha256": "1260ef5faa5b1022492974951564dee3e44c557fbdc8d59febfe8106e48d90bf",
+      "last_sha256": "8928b68d200a09b3bb62637bd73fe3d899aa5807cbd9995d481dfde9307ad10a"
+    }
+  ],
+  "create_duplicates_connect": {
+    "start": true,
+    "back": true
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "inspectedFiles": 2143,
+  "unchanged": 2120,
+  "unchangedAssets": 2066,
+  "changedSource": [
+    "src/app/application.css",
+    "src/app/ApplicationRoot.tsx",
+    "src/app/ApplicationShell.tsx",
+    "src/app/CinematicEntry.tsx",
+    "src/app/GlobalSidebar.tsx",
+    "src/app/GlobalTopBar.tsx",
+    "src/app/navigation.ts",
+    "src/app/components/Avatar.tsx",
+    "src/app/session/SessionProvider.tsx",
+    "src/components/auth/SignupModal.tsx",
+    "src/data/content.ts",
+    "src/modules/connect/ConnectModule.tsx",
+    "src/modules/connect/ConnectProvider.tsx",
+    "src/modules/connect/data.ts",
+    "src/modules/connect/repository.ts",
+    "src/modules/connect/types.ts",
+    "src/modules/connect/components/ConnectionAction.tsx",
+    "src/modules/connect/components/PersonRow.tsx",
+    "src/modules/create/CreateModule.tsx",
+    "src/modules/discover/DiscoverModule.tsx",
+    "src/modules/learn/LearnModule.tsx",
+    "src/modules/profile/ProfileModule.tsx"
+  ],
+  "createdSource": [
+    "src/app/components/Artwork.tsx",
+    "src/app/components/Dropdown.tsx",
+    "src/app/components/Icon.tsx",
+    "src/app/components/PageHero.tsx",
+    "src/app/components/ProjectCard.tsx",
+    "src/app/components/ProjectPreview.tsx",
+    "src/app/components/UI.tsx",
+    "src/app/data/catalog.ts",
+    "src/app/data/models.ts",
+    "src/app/data/WorkspaceProvider.tsx",
+    "src/app/session/apiAuth.ts",
+    "src/app/session/auth.ts",
+    "src/lib/api.ts",
+    "src/modules/auth/AuthModule.tsx",
+    "src/modules/connect/apiRepository.ts",
+    "src/modules/create/ProjectComposer.tsx"
+  ],
+  "deletedSource": [
+    "src/app/components/ModulePlaceholder.tsx"
+  ],
+  "cinematicControllersAndStylesUnchanged": true,
+  "assetRegistrationsAndMappingsUnchanged": true,
+  "referencesUnchanged": true
+}

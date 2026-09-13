@@ -1,0 +1,1139 @@
+[
+  {
+    "viewport": {
+      "width": 1672,
+      "height": 941,
+      "name": "native"
+    },
+    "samples": [
+      {
+        "cycle": 0,
+        "progress": 0,
+        "direction": "forward",
+        "frame": 0,
+        "readyMs": 165,
+        "cache": {
+          "decoded": 1,
+          "compressed": 4,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.40010626992561105,
+        "direction": "forward",
+        "frame": 120,
+        "readyMs": 51,
+        "cache": {
+          "decoded": 4,
+          "compressed": 45,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.4500531349628055,
+        "direction": "forward",
+        "frame": 135,
+        "readyMs": 67,
+        "cache": {
+          "decoded": 8,
+          "compressed": 57,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.4200318809776833,
+        "direction": "reverse",
+        "frame": 126,
+        "readyMs": 50,
+        "cache": {
+          "decoded": 8,
+          "compressed": 67,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.5,
+        "direction": "forward",
+        "frame": 150,
+        "readyMs": 48,
+        "cache": {
+          "decoded": 8,
+          "compressed": 75,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.48007438894792775,
+        "direction": "reverse",
+        "frame": 144,
+        "readyMs": 47,
+        "cache": {
+          "decoded": 8,
+          "compressed": 99,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.7000531349628055,
+        "direction": "forward",
+        "frame": 209,
+        "readyMs": 87,
+        "cache": {
+          "decoded": 8,
+          "compressed": 116,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.2999468650371945,
+        "direction": "reverse",
+        "frame": 90,
+        "readyMs": 51,
+        "cache": {
+          "decoded": 8,
+          "compressed": 126,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.900106269925611,
+        "direction": "forward",
+        "frame": 269,
+        "readyMs": 66,
+        "cache": {
+          "decoded": 8,
+          "compressed": 139,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.15010626992561105,
+        "direction": "reverse",
+        "frame": 45,
+        "readyMs": 65,
+        "cache": {
+          "decoded": 8,
+          "compressed": 155,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 1,
+        "direction": "forward",
+        "frame": 299,
+        "readyMs": 56,
+        "cache": {
+          "decoded": 8,
+          "compressed": 170,
+          "fetching": 2,
+          "decoding": 1,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0,
+        "direction": "reverse",
+        "frame": 0,
+        "readyMs": 39,
+        "cache": {
+          "decoded": 8,
+          "compressed": 192,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 0,
+        "afterExit": true,
+        "counters": {
+          "documents": 1,
+          "nodes": 298,
+          "jsEventListeners": 227
+        },
+        "detachedNodes": 0,
+        "cache": {
+          "decoded": 0,
+          "compressed": 0,
+          "fetching": 0,
+          "decoding": 0,
+          "capacity": 0
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0,
+        "direction": "forward",
+        "frame": 0,
+        "readyMs": 53,
+        "cache": {
+          "decoded": 2,
+          "compressed": 15,
+          "fetching": 2,
+          "decoding": 1,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.40010626992561105,
+        "direction": "forward",
+        "frame": 120,
+        "readyMs": 57,
+        "cache": {
+          "decoded": 5,
+          "compressed": 42,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.4500531349628055,
+        "direction": "forward",
+        "frame": 135,
+        "readyMs": 64,
+        "cache": {
+          "decoded": 8,
+          "compressed": 64,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.4200318809776833,
+        "direction": "reverse",
+        "frame": 126,
+        "readyMs": 51,
+        "cache": {
+          "decoded": 8,
+          "compressed": 92,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.5,
+        "direction": "forward",
+        "frame": 150,
+        "readyMs": 64,
+        "cache": {
+          "decoded": 8,
+          "compressed": 119,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.48007438894792775,
+        "direction": "reverse",
+        "frame": 144,
+        "readyMs": 64,
+        "cache": {
+          "decoded": 8,
+          "compressed": 148,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.7000531349628055,
+        "direction": "forward",
+        "frame": 209,
+        "readyMs": 72,
+        "cache": {
+          "decoded": 8,
+          "compressed": 174,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.2999468650371945,
+        "direction": "reverse",
+        "frame": 90,
+        "readyMs": 53,
+        "cache": {
+          "decoded": 8,
+          "compressed": 195,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.900106269925611,
+        "direction": "forward",
+        "frame": 269,
+        "readyMs": 60,
+        "cache": {
+          "decoded": 8,
+          "compressed": 212,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.15010626992561105,
+        "direction": "reverse",
+        "frame": 45,
+        "readyMs": 55,
+        "cache": {
+          "decoded": 8,
+          "compressed": 227,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 1,
+        "direction": "forward",
+        "frame": 299,
+        "readyMs": 57,
+        "cache": {
+          "decoded": 8,
+          "compressed": 240,
+          "fetching": 2,
+          "decoding": 1,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0,
+        "direction": "reverse",
+        "frame": 0,
+        "readyMs": 54,
+        "cache": {
+          "decoded": 8,
+          "compressed": 254,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 8
+        }
+      },
+      {
+        "cycle": 1,
+        "afterExit": true,
+        "counters": {
+          "documents": 1,
+          "nodes": 298,
+          "jsEventListeners": 227
+        },
+        "detachedNodes": 0,
+        "cache": {
+          "decoded": 0,
+          "compressed": 0,
+          "fetching": 0,
+          "decoding": 0,
+          "capacity": 0
+        }
+      }
+    ]
+  },
+  {
+    "viewport": {
+      "width": 412,
+      "height": 839,
+      "name": "phone"
+    },
+    "samples": [
+      {
+        "cycle": 0,
+        "progress": 0,
+        "direction": "forward",
+        "frame": 0,
+        "readyMs": 156,
+        "cache": {
+          "decoded": 3,
+          "compressed": 14,
+          "fetching": 2,
+          "decoding": 0,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.399880810488677,
+        "direction": "forward",
+        "frame": 120,
+        "readyMs": 57,
+        "cache": {
+          "decoded": 4,
+          "compressed": 36,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.4499404052443385,
+        "direction": "forward",
+        "frame": 135,
+        "readyMs": 79,
+        "cache": {
+          "decoded": 6,
+          "compressed": 54,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.4201430274135876,
+        "direction": "reverse",
+        "frame": 126,
+        "readyMs": 67,
+        "cache": {
+          "decoded": 6,
+          "compressed": 73,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.5,
+        "direction": "forward",
+        "frame": 150,
+        "readyMs": 60,
+        "cache": {
+          "decoded": 6,
+          "compressed": 87,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.4800357568533969,
+        "direction": "reverse",
+        "frame": 144,
+        "readyMs": 54,
+        "cache": {
+          "decoded": 6,
+          "compressed": 106,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.6999404052443385,
+        "direction": "forward",
+        "frame": 209,
+        "readyMs": 58,
+        "cache": {
+          "decoded": 6,
+          "compressed": 120,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.3000595947556615,
+        "direction": "reverse",
+        "frame": 90,
+        "readyMs": 69,
+        "cache": {
+          "decoded": 6,
+          "compressed": 136,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.899880810488677,
+        "direction": "forward",
+        "frame": 269,
+        "readyMs": 99,
+        "cache": {
+          "decoded": 6,
+          "compressed": 160,
+          "fetching": 2,
+          "decoding": 1,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.149880810488677,
+        "direction": "reverse",
+        "frame": 45,
+        "readyMs": 97,
+        "cache": {
+          "decoded": 6,
+          "compressed": 182,
+          "fetching": 2,
+          "decoding": 0,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 1,
+        "direction": "forward",
+        "frame": 299,
+        "readyMs": 58,
+        "cache": {
+          "decoded": 6,
+          "compressed": 197,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0,
+        "direction": "reverse",
+        "frame": 0,
+        "readyMs": 58,
+        "cache": {
+          "decoded": 6,
+          "compressed": 226,
+          "fetching": 2,
+          "decoding": 1,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "afterExit": true,
+        "counters": {
+          "documents": 1,
+          "nodes": 298,
+          "jsEventListeners": 227
+        },
+        "detachedNodes": 0,
+        "cache": {
+          "decoded": 0,
+          "compressed": 0,
+          "fetching": 0,
+          "decoding": 0,
+          "capacity": 0
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0,
+        "direction": "forward",
+        "frame": 0,
+        "readyMs": 45,
+        "cache": {
+          "decoded": 2,
+          "compressed": 12,
+          "fetching": 2,
+          "decoding": 1,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.399880810488677,
+        "direction": "forward",
+        "frame": 120,
+        "readyMs": 63,
+        "cache": {
+          "decoded": 6,
+          "compressed": 41,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.4499404052443385,
+        "direction": "forward",
+        "frame": 135,
+        "readyMs": 50,
+        "cache": {
+          "decoded": 6,
+          "compressed": 67,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.4201430274135876,
+        "direction": "reverse",
+        "frame": 126,
+        "readyMs": 57,
+        "cache": {
+          "decoded": 6,
+          "compressed": 89,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.5,
+        "direction": "forward",
+        "frame": 150,
+        "readyMs": 63,
+        "cache": {
+          "decoded": 6,
+          "compressed": 120,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.4800357568533969,
+        "direction": "reverse",
+        "frame": 144,
+        "readyMs": 48,
+        "cache": {
+          "decoded": 6,
+          "compressed": 141,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.6999404052443385,
+        "direction": "forward",
+        "frame": 209,
+        "readyMs": 67,
+        "cache": {
+          "decoded": 6,
+          "compressed": 164,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.3000595947556615,
+        "direction": "reverse",
+        "frame": 90,
+        "readyMs": 49,
+        "cache": {
+          "decoded": 6,
+          "compressed": 188,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.899880810488677,
+        "direction": "forward",
+        "frame": 269,
+        "readyMs": 50,
+        "cache": {
+          "decoded": 6,
+          "compressed": 210,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.149880810488677,
+        "direction": "reverse",
+        "frame": 45,
+        "readyMs": 53,
+        "cache": {
+          "decoded": 6,
+          "compressed": 231,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 1,
+        "direction": "forward",
+        "frame": 299,
+        "readyMs": 79,
+        "cache": {
+          "decoded": 6,
+          "compressed": 256,
+          "fetching": 2,
+          "decoding": 0,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0,
+        "direction": "reverse",
+        "frame": 0,
+        "readyMs": 38,
+        "cache": {
+          "decoded": 6,
+          "compressed": 264,
+          "fetching": 2,
+          "decoding": 0,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "afterExit": true,
+        "counters": {
+          "documents": 1,
+          "nodes": 298,
+          "jsEventListeners": 227
+        },
+        "detachedNodes": 0,
+        "cache": {
+          "decoded": 0,
+          "compressed": 0,
+          "fetching": 0,
+          "decoding": 0,
+          "capacity": 0
+        }
+      }
+    ]
+  },
+  {
+    "viewport": {
+      "width": 768,
+      "height": 1024,
+      "name": "tablet"
+    },
+    "samples": [
+      {
+        "cycle": 0,
+        "progress": 0,
+        "direction": "forward",
+        "frame": 0,
+        "readyMs": 123,
+        "cache": {
+          "decoded": 1,
+          "compressed": 8,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.39990234375,
+        "direction": "forward",
+        "frame": 120,
+        "readyMs": 68,
+        "cache": {
+          "decoded": 5,
+          "compressed": 42,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.449951171875,
+        "direction": "forward",
+        "frame": 135,
+        "readyMs": 98,
+        "cache": {
+          "decoded": 6,
+          "compressed": 62,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.419921875,
+        "direction": "reverse",
+        "frame": 126,
+        "readyMs": 67,
+        "cache": {
+          "decoded": 6,
+          "compressed": 77,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.5,
+        "direction": "forward",
+        "frame": 150,
+        "readyMs": 64,
+        "cache": {
+          "decoded": 6,
+          "compressed": 93,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.47998046875,
+        "direction": "reverse",
+        "frame": 144,
+        "readyMs": 93,
+        "cache": {
+          "decoded": 6,
+          "compressed": 145,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.699951171875,
+        "direction": "forward",
+        "frame": 209,
+        "readyMs": 62,
+        "cache": {
+          "decoded": 6,
+          "compressed": 161,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.300048828125,
+        "direction": "reverse",
+        "frame": 90,
+        "readyMs": 61,
+        "cache": {
+          "decoded": 6,
+          "compressed": 173,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.89990234375,
+        "direction": "forward",
+        "frame": 269,
+        "readyMs": 60,
+        "cache": {
+          "decoded": 6,
+          "compressed": 189,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0.14990234375,
+        "direction": "reverse",
+        "frame": 45,
+        "readyMs": 74,
+        "cache": {
+          "decoded": 6,
+          "compressed": 205,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 1,
+        "direction": "forward",
+        "frame": 299,
+        "readyMs": 59,
+        "cache": {
+          "decoded": 6,
+          "compressed": 222,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "progress": 0,
+        "direction": "reverse",
+        "frame": 0,
+        "readyMs": 33,
+        "cache": {
+          "decoded": 6,
+          "compressed": 250,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 0,
+        "afterExit": true,
+        "counters": {
+          "documents": 1,
+          "nodes": 298,
+          "jsEventListeners": 227
+        },
+        "detachedNodes": 0,
+        "cache": {
+          "decoded": 0,
+          "compressed": 0,
+          "fetching": 0,
+          "decoding": 0,
+          "capacity": 0
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0,
+        "direction": "forward",
+        "frame": 0,
+        "readyMs": 52,
+        "cache": {
+          "decoded": 2,
+          "compressed": 14,
+          "fetching": 2,
+          "decoding": 1,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.39990234375,
+        "direction": "forward",
+        "frame": 120,
+        "readyMs": 47,
+        "cache": {
+          "decoded": 4,
+          "compressed": 34,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.449951171875,
+        "direction": "forward",
+        "frame": 135,
+        "readyMs": 49,
+        "cache": {
+          "decoded": 6,
+          "compressed": 53,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.419921875,
+        "direction": "reverse",
+        "frame": 126,
+        "readyMs": 50,
+        "cache": {
+          "decoded": 6,
+          "compressed": 76,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.5,
+        "direction": "forward",
+        "frame": 150,
+        "readyMs": 45,
+        "cache": {
+          "decoded": 6,
+          "compressed": 94,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.47998046875,
+        "direction": "reverse",
+        "frame": 144,
+        "readyMs": 67,
+        "cache": {
+          "decoded": 6,
+          "compressed": 124,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.699951171875,
+        "direction": "forward",
+        "frame": 209,
+        "readyMs": 65,
+        "cache": {
+          "decoded": 6,
+          "compressed": 151,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.300048828125,
+        "direction": "reverse",
+        "frame": 90,
+        "readyMs": 55,
+        "cache": {
+          "decoded": 6,
+          "compressed": 178,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.89990234375,
+        "direction": "forward",
+        "frame": 269,
+        "readyMs": 51,
+        "cache": {
+          "decoded": 6,
+          "compressed": 199,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0.14990234375,
+        "direction": "reverse",
+        "frame": 45,
+        "readyMs": 77,
+        "cache": {
+          "decoded": 6,
+          "compressed": 216,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 1,
+        "direction": "forward",
+        "frame": 299,
+        "readyMs": 60,
+        "cache": {
+          "decoded": 6,
+          "compressed": 246,
+          "fetching": 2,
+          "decoding": 2,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "progress": 0,
+        "direction": "reverse",
+        "frame": 0,
+        "readyMs": 44,
+        "cache": {
+          "decoded": 6,
+          "compressed": 263,
+          "fetching": 2,
+          "decoding": 0,
+          "capacity": 6
+        }
+      },
+      {
+        "cycle": 1,
+        "afterExit": true,
+        "counters": {
+          "documents": 1,
+          "nodes": 298,
+          "jsEventListeners": 227
+        },
+        "detachedNodes": 0,
+        "cache": {
+          "decoded": 0,
+          "compressed": 0,
+          "fetching": 0,
+          "decoding": 0,
+          "capacity": 0
+        }
+      }
+    ]
+  }
+]

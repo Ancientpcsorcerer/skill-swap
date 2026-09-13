@@ -1,0 +1,118 @@
+
+  VITE v8.3.0  ready in 519 ms
+
+  ➜  Local:   http://127.0.0.1:5173/
+10:41:01 am [vite] src/components/core/connect/sequence.ts changed, restarting server...
+10:41:01 am [vite] (client) hmr update /src/components/core/connect/ConnectCheckpoint.tsx
+10:41:01 am [vite] (client) hmr update /src/components/core/CoreExperience.tsx
+10:41:01 am [vite] (client) hmr update /src/app/App.tsx
+10:41:01 am [vite] (client) hmr update /src/components/core/connect/ConnectCheckpoint.tsx
+10:41:02 am [vite] server restarted.
+10:43:22 am [vite] (client) page reload docs/connect-sync/comparison.html
+10:51:14 am [vite] build/connect-assets.ts changed, restarting server...
+10:51:14 am [vite] src/components/core/connect/sequence.ts changed, restarting server...
+10:51:14 am [vite] server restarted.
+10:52:54 am [vite] (client) page reload docs/connect-sync/comparison.html
+11:22:31 am [vite] (client) hmr update /src/components/core/CoreExperience.tsx
+11:22:31 am [vite] (client) hmr update /src/app/App.tsx
+11:22:31 am [vite] vite.config.ts changed, restarting server...
+11:22:32 am [vite] (client) hmr update /src/styles/core.css
+11:22:34 am [vite] (client) Re-optimizing dependencies because vite config has changed
+11:22:36 am [vite] server restarted.
+11:22:37 am [vite] (client) [optimizer] scanning dependencies...
+11:22:45 am [vite] (client) [optimizer] bundling dependencies...
+11:25:57 am [vite] (client) hmr update /src/components/core/create/CreateCheckpoint.tsx, /src/components/core/learn/LearnCheckpoint.tsx, /src/components/core/discover/DiscoverCheckpoint.tsx
+11:25:57 am [vite] (client) page reload docs/core-chain/review.html
+11:25:57 am [vite] (client) hmr update /src/components/core/create/CreateCheckpoint.tsx
+11:25:57 am [vite] (client) hmr update /src/components/core/learn/LearnCheckpoint.tsx
+11:25:57 am [vite] (client) hmr update /src/components/core/discover/DiscoverCheckpoint.tsx
+11:25:57 am [vite] (client) hmr update /src/app/App.tsx
+12:39:56 pm [vite] (client) hmr update /src/components/core/learn/LearnCheckpoint.tsx, /src/components/core/discover/DiscoverCheckpoint.tsx, /src/components/core/create/CreateCheckpoint.tsx
+3:00:11 pm [vite] (client) hmr update /src/components/core/shared/SequenceCheckpoint.tsx
+3:00:12 pm [vite] (client) hmr update /src/components/core/CoreSystem.tsx
+3:02:19 pm [vite] (client) hmr update /src/components/core/shared/SequenceCheckpoint.tsx
+3:02:19 pm [vite] (client) hmr update /src/components/core/CoreSystem.tsx
+3:08:47 pm [vite] build/core-assets.ts changed, restarting server...
+3:08:53 pm [vite] server restarted.
+4:24:30 pm [vite] (client) hmr update /src/app/session/SessionProvider.tsx
+4:24:30 pm [vite] (client) hmr update /src/app/ApplicationRoot.tsx, /src/app/ApplicationShell.tsx, /src/app/GlobalTopBar.tsx, /src/app/GlobalSidebar.tsx
+4:24:30 pm [vite] (client) hmr update /src/app/components/Avatar.tsx
+4:24:31 pm [vite] (client) hmr invalidate /src/app/session/SessionProvider.tsx Could not Fast Refresh ("useSession" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+4:24:31 pm [vite] (client) hmr update /src/app/ApplicationRoot.tsx, /src/app/ApplicationShell.tsx, /src/app/GlobalTopBar.tsx, /src/modules/connect/ConnectModule.tsx
+4:28:46 pm [vite] (client) hmr update /src/modules/connect/ConnectProvider.tsx
+4:28:46 pm [vite] (client) hmr update /src/modules/connect/ConnectProvider.tsx
+4:28:46 pm [vite] (client) hmr update /src/modules/connect/ConnectProvider.tsx
+4:28:47 pm [vite] (client) hmr invalidate /src/modules/connect/ConnectProvider.tsx Could not Fast Refresh ("useConnect" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+4:28:47 pm [vite] (client) hmr update /src/app/ApplicationShell.tsx, /src/modules/connect/ConnectModule.tsx, /src/modules/connect/components/RequestsPanel.tsx, /src/modules/connect/components/ConnectionAction.tsx
+4:31:46 pm [vite] (client) hmr update /src/modules/connect/components/PersonRow.tsx
+4:31:46 pm [vite] (client) hmr update /src/modules/connect/ConnectModule.tsx
+4:31:46 pm [vite] (client) hmr update /src/modules/create/CreateModule.tsx
+4:31:46 pm [vite] (client) hmr update /src/modules/connect/components/ConnectionAction.tsx
+4:35:42 pm [vite] (client) hmr update /src/modules/learn/LearnModule.tsx
+4:35:42 pm [vite] (client) hmr update /src/modules/discover/DiscoverModule.tsx
+4:35:42 pm [vite] (client) hmr update /src/modules/profile/ProfileModule.tsx
+4:35:42 pm [vite] (client) hmr update /src/modules/create/ProjectComposer.tsx
+4:41:52 pm [vite] (client) hmr update /src/app/GlobalTopBar.tsx
+4:41:52 pm [vite] (client) hmr update /src/app/GlobalSidebar.tsx
+4:41:52 pm [vite] (client) hmr update /src/app/ApplicationShell.tsx
+4:41:52 pm [vite] (client) hmr update /src/app/ApplicationRoot.tsx
+4:41:52 pm [vite] (client) hmr update /src/app/application.css
+4:41:52 pm [vite] (client) hmr update /src/components/auth/SignupModal.tsx
+4:41:52 pm [vite] (client) hmr update /src/components/auth/SignupModal.tsx, /src/components/landing/Hero.tsx, /src/components/ui/PrimaryCTA.tsx, /src/components/layout/Navigation.tsx
+4:41:52 pm [vite] (client) hmr update /src/app/CinematicEntry.tsx
+4:48:06 pm [vite] (client) hmr update /src/app/components/Avatar.tsx
+4:48:06 pm [vite] (client) hmr update /src/app/session/SessionProvider.tsx
+4:48:06 pm [vite] (client) hmr update /src/modules/create/ProjectComposer.tsx
+4:48:06 pm [vite] (client) hmr update /src/modules/learn/LearnModule.tsx
+4:48:06 pm [vite] (client) hmr update /src/app/data/WorkspaceProvider.tsx
+4:48:06 pm [vite] (client) hmr update /src/modules/discover/DiscoverModule.tsx
+4:48:06 pm [vite] (client) hmr invalidate /src/app/session/SessionProvider.tsx Could not Fast Refresh ("useSession" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+4:48:06 pm [vite] (client) hmr update /src/app/ApplicationRoot.tsx, /src/app/GlobalTopBar.tsx, /src/modules/connect/ConnectModule.tsx, /src/modules/connect/ConnectProvider.tsx, /src/modules/create/CreateModule.tsx, /src/app/data/WorkspaceProvider.tsx, /src/modules/profile/ProfileModule.tsx, /src/modules/auth/AuthModule.tsx
+4:48:07 pm [vite] (client) hmr invalidate /src/app/data/WorkspaceProvider.tsx Could not Fast Refresh ("useWorkspace" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+4:48:07 pm [vite] (client) hmr update /src/modules/create/CreateModule.tsx, /src/app/components/ProjectPreview.tsx, /src/modules/create/ProjectComposer.tsx, /src/modules/learn/LearnModule.tsx, /src/modules/discover/DiscoverModule.tsx, /src/modules/profile/ProfileModule.tsx, /src/app/ApplicationShell.tsx
+4:51:38 pm [vite] (client) hmr update /src/app/session/SessionProvider.tsx
+4:52:56 pm [vite] (client) page reload playwright-report/index.html
+4:52:56 pm [vite] (client) page reload playwright-report/trace/index.html
+4:52:56 pm [vite] (client) page reload playwright-report/trace/snapshot.html
+4:52:56 pm [vite] (client) page reload playwright-report/trace/uiMode.html
+4:52:57 pm [vite] (client) page reload playwright-report/index.html
+4:52:58 pm [vite] (client) page reload playwright-report/trace/index.html
+4:52:58 pm [vite] (client) page reload playwright-report/trace/index.html
+4:52:58 pm [vite] (client) page reload playwright-report/trace/snapshot.html
+4:52:58 pm [vite] (client) page reload playwright-report/trace/uiMode.html
+4:52:58 pm [vite] (client) page reload playwright-report/trace/uiMode.html
+4:52:58 pm [vite] (client) page reload playwright-report/index.html
+4:54:42 pm [vite] (client) hmr update /src/app/application.css
+4:55:43 pm [vite] (client) page reload playwright-report/index.html
+4:55:43 pm [vite] (client) page reload playwright-report/trace/index.html
+4:55:43 pm [vite] (client) page reload playwright-report/trace/snapshot.html
+4:55:43 pm [vite] (client) page reload playwright-report/trace/uiMode.html
+4:55:43 pm [vite] (client) page reload playwright-report/index.html
+4:55:43 pm [vite] (client) page reload playwright-report/trace/index.html
+4:55:43 pm [vite] (client) page reload playwright-report/trace/snapshot.html
+4:55:43 pm [vite] (client) page reload playwright-report/trace/uiMode.html
+4:55:43 pm [vite] (client) page reload playwright-report/index.html
+4:56:49 pm [vite] (client) hmr update /src/app/application.css
+4:58:29 pm [vite] (client) page reload playwright-report/index.html
+4:58:29 pm [vite] (client) page reload playwright-report/trace/index.html
+4:58:29 pm [vite] (client) page reload playwright-report/trace/snapshot.html
+4:58:29 pm [vite] (client) page reload playwright-report/trace/uiMode.html
+4:59:20 pm [vite] (client) hmr update /src/app/components/ModulePlaceholder.tsx
+5:13:16 pm [vite] (client) hmr update /src/app/application.css
+5:13:16 pm [vite] (client) hmr update /src/app/components/Icon.tsx
+5:13:16 pm [vite] (client) hmr update /src/modules/create/CreateModule.tsx, /src/app/data/WorkspaceProvider.tsx, /src/modules/create/ProjectComposer.tsx, /src/modules/learn/LearnModule.tsx, /src/modules/discover/DiscoverModule.tsx
+5:13:17 pm [vite] (client) hmr update /src/modules/create/CreateModule.tsx
+5:18:51 pm [vite] (client) page reload playwright-report/index.html
+5:18:54 pm [vite] (client) page reload playwright-report/index.html
+5:18:54 pm [vite] (client) page reload playwright-report/index.html
+8:06:50 pm [vite] changed tsconfig file detected: E:/DATA 25 11 2022/Videos/Skill swap platform/backend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+8:24:14 pm [vite] (client) hmr update /src/modules/connect/ConnectProvider.tsx
+8:24:51 pm [vite] (client) hmr update /src/app/ApplicationRoot.tsx
+8:34:40 pm [vite] (client) page reload playwright-report/index.html
+8:34:40 pm [vite] (client) page reload playwright-report/index.html
+8:34:40 pm [vite] (client) page reload playwright-report/trace/index.html
+8:34:41 pm [vite] (client) page reload playwright-report/trace/index.html
+8:34:41 pm [vite] (client) page reload playwright-report/trace/snapshot.html
+8:34:41 pm [vite] (client) page reload playwright-report/trace/uiMode.html
+8:34:41 pm [vite] (client) page reload playwright-report/trace/uiMode.html
+8:34:41 pm [vite] (client) page reload playwright-report/index.html

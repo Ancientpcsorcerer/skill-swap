@@ -1,0 +1,40 @@
+dialog { color: var(--ink); font: inherit; }
+.signup-modal {
+  border: 1px solid #ffffff24;
+  padding: 0;
+  background: #101010;
+  border-radius: 24px;
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  box-shadow: 0 28px 100px #0009;
+}
+.signup-modal::backdrop { background: #000b; backdrop-filter: blur(9px); }
+.signup-panel { position: relative; padding: 44px 36px 36px; }
+.modal-close { position: absolute; top: 14px; right: 14px; }
+.signup-mark { width: 27px; height: 42px; margin-bottom: 30px; }
+.signup-panel h2 { font-size: clamp(26px, 6vw, 34px); font-weight: 400; letter-spacing: -.02em; }
+.signup-panel p { margin-top: 16px; font-size: 15px; line-height: 1.7; color: var(--muted); }
+.signup-dismiss { height: 48px; margin-top: 32px; font-size: 16px; padding: 0 24px; }
+.mobile-menu {
+  width: 100%; max-width: none; height: 100%; max-height: none; margin: 0;
+  border: 0; padding: max(24px, env(safe-area-inset-top)) 28px max(28px, env(safe-area-inset-bottom));
+  background: linear-gradient(135deg, #121212f5, #050505fa);
+  backdrop-filter: blur(20px);
+}
+.mobile-menu::backdrop { background: #0009; }
+.menu-close { position: absolute; top: max(26px, env(safe-area-inset-top)); right: max(26px, env(safe-area-inset-right)); }
+.menu-inner { display: flex; flex-direction: column; align-items: flex-start; padding-top: min(21vh, 150px); }
+.menu-eyebrow { color: var(--muted); text-transform: uppercase; letter-spacing: .16em; font-size: 12px; margin-bottom: 32px; }
+.menu-links { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; font-size: max(25px, calc(31 * var(--m))); }
+.menu-links button::after, .menu-links a::after { content: '›'; color: var(--muted); margin-left: 24px; font-size: 24px; }
+.menu-cta { margin-top: 46px; min-height: 50px; padding: 0 28px; font-size: 18px; }
+@media (prefers-reduced-motion: no-preference) {
+  .signup-modal[open] { animation: fade .2s ease; }
+  .mobile-menu[open] { animation: fade .42s var(--ease); }
+  .mobile-menu[open] .menu-eyebrow { animation: rise .42s var(--ease) .06s both; }
+  .mobile-menu[open] .menu-links > :first-child { animation: rise .42s var(--ease) .10s both; }
+  .mobile-menu[open] .menu-links > :nth-child(2) { animation: rise .42s var(--ease) .16s both; }
+  .mobile-menu[open] .menu-cta { animation: rise .42s var(--ease) .22s both; }
+}
+@media (max-width: 360px) { .signup-panel { padding: 44px 24px 28px; } }

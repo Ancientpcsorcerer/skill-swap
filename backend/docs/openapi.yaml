@@ -1,0 +1,234 @@
+openapi: 3.0.3
+info:
+  title: Skill Swap API
+  description: Modular Monolith API backend for the Skill Swap collaborative platform.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3001/api/v1
+    description: Local Development Server
+  - url: https://api.skillswap.render.com/api/v1
+    description: Production Server
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      description: Returns health status, uptime, and database connectivity.
+      responses:
+        '200':
+          description: Service healthy
+        '503':
+          description: Service degraded or disconnected
+
+  /auth/register:
+    post:
+      summary: Register user
+      description: Creates a new user account with hashed credentials.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, username, email, password]
+              properties:
+                name:
+                  type: string
+                  example: Aarav Sharma
+                username:
+                  type: string
+                  example: aarav
+                email:
+                  type: string
+                  example: aarav@example.com
+                password:
+                  type: string
+                  format: password
+                  example: Password123!
+      responses:
+        '201':
+          description: User successfully registered
+
+  /auth/login:
+    post:
+      summary: Log in user
+      description: Authenticates user credentials and sets httpOnly refresh token cookie.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [identifier, password]
+              properties:
+                identifier:
+                  type: string
+                  example: aarav@example.com
+                password:
+                  type: string
+                  format: password
+                  example: Password123!
+      responses:
+        '200':
+          description: Login successful
+
+  /auth/me:
+    get:
+      summary: Current user profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Profile of authenticated user
+
+  /profile:
+    get:
+      summary: Get own profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Current user profile
+    put:
+      summary: Update own profile
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                bio:
+                  type: string
+                location:
+                  type: string
+                skills:
+                  type: array
+                  items:
+                    type: string
+                interests:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Profile updated
+
+  /users:
+    get:
+      summary: Search users
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+        - in: query
+          name: skill
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of matched users
+
+  /connections:
+    get:
+      summary: List connections
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of user connections
+    post:
+      summary: Send connection request
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [addresseeId]
+              properties:
+                addresseeId:
+                  type: string
+                  format: uuid
+      responses:
+        '201':
+          description: Request sent
+
+  /projects:
+    get:
+      summary: List projects
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+        - in: query
+          name: type
+          schema:
+            type: string
+        - in: query
+          name: tag
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of discoverable projects
+    post:
+      summary: Create project
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, description, type]
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                type:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+                required_skills:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '201':
+          description: Project created
+
+  /learning:
+    get:
+      summary: Get user learning state
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Records and goals
+
+  /communities:
+    get:
+      summary: List communities
+      responses:
+        '200':
+          description: List of communities
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
