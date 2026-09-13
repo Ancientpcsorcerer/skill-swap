@@ -1,12 +1,18 @@
 import { Pool, PoolClient, QueryResultRow } from 'pg';
 import { env } from '../config/env';
 
+const isRemoteOrProd =
+  env.NODE_ENV === 'production' ||
+  env.DATABASE_URL.includes('sslmode=require') ||
+  env.DATABASE_URL.includes('timescale.com') ||
+  env.DATABASE_URL.includes('render.com');
+
 export const pool = new Pool({
   connectionString: env.DATABASE_URL,
   max: 20,
   idleTimeoutMillis: 30_000,
-  connectionTimeoutMillis: 5_000,
-  ssl: env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  connectionTimeoutMillis: 10_000,
+  ssl: isRemoteOrProd ? { rejectUnauthorized: false } : false,
 });
 
 pool.on('error', (err) => {

@@ -5,7 +5,7 @@ CREATE EXTENSION IF NOT EXISTS "unaccent";
 
 -- 1. Users
 CREATE TABLE IF NOT EXISTS users (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(80) NOT NULL,
     username VARCHAR(30) NOT NULL UNIQUE,
     email VARCHAR(200) NOT NULL UNIQUE,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- 2. Credentials
 CREATE TABLE IF NOT EXISTS credentials (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     password_hash TEXT NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS credentials (
 
 -- 3. Refresh Tokens
 CREATE TABLE IF NOT EXISTS refresh_tokens (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     token_hash TEXT NOT NULL UNIQUE,
     expires_at TIMESTAMPTZ NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
 
 -- 4. User Skills
 CREATE TABLE IF NOT EXISTS user_skills (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     skill VARCHAR(80) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS user_skills (
 
 -- 5. User Interests
 CREATE TABLE IF NOT EXISTS user_interests (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     interest VARCHAR(80) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS user_interests (
 
 -- 6. User Project Interests
 CREATE TABLE IF NOT EXISTS user_project_interests (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     topic VARCHAR(80) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS user_project_interests (
 
 -- 7. Connections
 CREATE TABLE IF NOT EXISTS connections (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     requester_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     addressee_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     status VARCHAR(20) NOT NULL CHECK (status IN ('pending', 'accepted', 'declined', 'cancelled')),
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS connections (
 
 -- 8. Projects
 CREATE TABLE IF NOT EXISTS projects (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     creator_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
     title VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS project_required_skills (
 
 -- 11. Project Members
 CREATE TABLE IF NOT EXISTS project_members (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     role VARCHAR(30) NOT NULL CHECK (role IN ('owner', 'collaborator', 'invited')),
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS project_members (
 
 -- 12. Project Files
 CREATE TABLE IF NOT EXISTS project_files (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     uploaded_by UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
     original_name VARCHAR(255) NOT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS project_files (
 
 -- 13. Learning Records
 CREATE TABLE IF NOT EXISTS learning_records (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     path_id VARCHAR(50) NOT NULL,
     status VARCHAR(20) NOT NULL CHECK (status IN ('In Progress', 'Saved', 'Completed')),
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS learning_records (
 
 -- 14. Learning Goals
 CREATE TABLE IF NOT EXISTS learning_goals (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     goal VARCHAR(160) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS learning_goals (
 
 -- 15. Saved Items
 CREATE TABLE IF NOT EXISTS saved_items (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     item_type VARCHAR(30) NOT NULL CHECK (item_type IN ('project', 'idea', 'event')),
     item_id VARCHAR(50) NOT NULL,
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS saved_items (
 
 -- 16. Communities
 CREATE TABLE IF NOT EXISTS communities (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL UNIQUE,
     description TEXT NOT NULL,
     category VARCHAR(50) NOT NULL,
@@ -179,7 +179,7 @@ CREATE TABLE IF NOT EXISTS community_memberships (
 
 -- 18. Ideas
 CREATE TABLE IF NOT EXISTS ideas (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     author_id UUID NULL REFERENCES users(id) ON DELETE SET NULL,
     title VARCHAR(200) NOT NULL,
     description TEXT NOT NULL,
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS ideas (
 
 -- 19. Events
 CREATE TABLE IF NOT EXISTS events (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organizer_id UUID NULL REFERENCES users(id) ON DELETE SET NULL,
     title VARCHAR(200) NOT NULL,
     description TEXT NOT NULL,
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS events (
 
 -- 20. Activity
 CREATE TABLE IF NOT EXISTS activity (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     kind VARCHAR(30) NOT NULL CHECK (kind IN ('project', 'learning', 'profile', 'connection')),
     title VARCHAR(200) NOT NULL,
