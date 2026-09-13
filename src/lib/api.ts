@@ -9,7 +9,11 @@ import type {
 
 export const API_BASE =
   (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE_URL) ||
-  'http://localhost:3001/api/v1';
+  (typeof window !== 'undefined' &&
+   window.location.hostname !== 'localhost' &&
+   window.location.hostname !== '127.0.0.1'
+    ? 'https://skill-swap-api-0jym.onrender.com/api/v1'
+    : 'http://localhost:3001/api/v1');
 
 let authToken: string | null = null;
 
