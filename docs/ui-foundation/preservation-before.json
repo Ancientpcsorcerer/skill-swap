@@ -1540,6 +1540,6 @@
   "public/video/portal.mp4": "8c0a07b331f8967166a4d7fdbcc99d82604df3f0937671eec16256abcc307843",
   "reference_0.webp": "630319780a15c0bad228a3ffbbd3e4d1da35148d6ebcafbdd9e2044b6be34a54",
   "prompt.txt": "a61e183f1a3628e2b2ae07b4d343c10fe1f6cc71678284e97c452297f4c29c09",
-  "src/components/landing/BigFrameEnvironment.tsx": "701a7cfc589ee95aa04c8b56a94efe862cc3fd27b3236937a2818f08168b70ca",
+  "src/components/landing/BigFrameEnvironment.tsx": "192b629c8cd95f8d25e86941d393c3eb67004a512a495f6fca14bfe61e7ad19e",
   "vite.config.ts": "8f484cf0998ea0ae64e73e9a1a20643a3b0db265d926b95ee1bbf84f132ac530"
 }

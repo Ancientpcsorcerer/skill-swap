@@ -1455,6 +1455,6 @@
   "src\\styles\\landing.css": "615b9d3cbcda9c4d1b5252731461e08b1bf38bd61c9efa62401a99312a749076",
   "src\\styles\\frame.css": "be881681fa544c0c6f712182350a271ce4aebc106300b6d05ce53eb07ea4d6f0",
   "public\\video\\landing-ambient.mp4": "a72f9a7f0989ce92f0e4c72b7e44eeeed6e6171c5ce44f52b81ba890c52986e6",
-  "src\\components\\landing\\BigFrameEnvironment.tsx": "701a7cfc589ee95aa04c8b56a94efe862cc3fd27b3236937a2818f08168b70ca",
+  "src\\components\\landing\\BigFrameEnvironment.tsx": "192b629c8cd95f8d25e86941d393c3eb67004a512a495f6fca14bfe61e7ad19e",
   "Ideas\\Background_1.png": "8105c818bf0c0b027c0d256f62863c09b84c9d1982940f472fbe892158a0c143"
 }
