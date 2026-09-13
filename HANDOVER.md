@@ -214,3 +214,49 @@ Whenever Codex makes updates to the codebase, follow these rules:
    - **Vercel** automatically rebuilds and deploys the frontend upon git push to `main`.
    - **Render** automatically rebuilds and restarts the backend API upon git push to `main`.
    - Monitor backend health: `curl https://skill-swap-api-0jym.onrender.com/health`.
+
+---
+
+## 8. Automated Full-Stack Testing Suite (TestSprite)
+
+The platform is continuously verified end-to-end using TestSprite cloud test runners across both backend and frontend layers:
+
+### A. Backend Live API & Database Suite
+- **Project ID**: `766833db-83f4-4ae2-b503-f33d6b1b611a` ("Skill Swap API")
+- **Target URL**: `https://skill-swap-api-0jym.onrender.com`
+- **Key Test**: `f4907526-76f4-439a-be58-7d6ac96d47bf` (`Live Full Stack E2E: TigerData DB, Auth, Projects and CORS Security`)
+- **Verified Run**: `e0fab55e-ca24-46f5-8375-fcebf75bd12e` — **Status: Passed**
+- **Dashboard**: [TestSprite Backend Dashboard](https://www.testsprite.com/dashboard/tests/766833db-83f4-4ae2-b503-f33d6b1b611a/test/f4907526-76f4-439a-be58-7d6ac96d47bf)
+- **Coverage**:
+  - Live server health & TigerData PostgreSQL connection check.
+  - User authentication & JWT access token issuance.
+  - Authenticated `/api/v1/auth/me` user profile retrieval.
+  - Multi-table database queries (seeded personas, communities, and projects).
+  - Strict CORS lockdown (validates accepted Vercel origin and rejected unauthorized origins).
+
+### B. Frontend E2E Journey Suite
+- **Project ID**: `87583064-c96c-4a0b-a466-6a0f7a690975` ("Skill Swap Frontend")
+- **Target URL**: `https://skill-swap-xi-lake.vercel.app`
+- **Key Test**: `3a661186-e42f-41aa-8048-0be401778348` (`User can authenticate via modern auth module and access the Skill Swap platform`)
+- **Verified Run**: `885c26f9-4c63-49bc-96a1-64a4d82512d2` — **27/27 Steps Passed**
+- **Dashboard**: [TestSprite Frontend Dashboard](https://www.testsprite.com/dashboard/tests/87583064-c96c-4a0b-a466-6a0f7a690975/test/3a661186-e42f-41aa-8048-0be401778348)
+- **Coverage**:
+  - Landing page navigation & visual readiness.
+  - Authentication modal & tab switching (`Create Account` / `Sign In`).
+  - Google and GitHub social OAuth UI buttons and accessibility labels.
+  - Demo profile credentials loading via quick-login pills.
+  - Form submission, JWT storage, and seamless transition to the Connect workspace module.
+
+### C. CLI Execution Command
+To re-run the TestSprite suites locally:
+```powershell
+$key = (Get-Content ".secrets\testsprite.json" | ConvertFrom-Json).api_key
+$env:TESTSPRITE_API_KEY = $key
+
+# Run backend suite:
+npx.cmd -y @testsprite/testsprite-cli test run f4907526-76f4-439a-be58-7d6ac96d47bf --wait
+
+# Run frontend suite:
+npx.cmd -y @testsprite/testsprite-cli test run 3a661186-e42f-41aa-8048-0be401778348 --wait
+```
+
