@@ -9,12 +9,9 @@
 .plate { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
 .plate-frame {
   position: absolute;
-  left: 50%;
-  top: calc(1 * var(--u));
-  width: calc(1492 * var(--u));
-  height: calc(1054 * var(--u));
-  transform: translateX(calc(-50% - .5 * var(--u)));
-  object-fit: cover;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
@@ -51,6 +48,7 @@
   font-size: max(14px, calc(20.6 * var(--u)));
 }
 .headline {
+  color: #ffffff;
   position: absolute;
   left: calc(75.5 * var(--u));
   top: calc(230.5 * var(--u));
@@ -61,6 +59,8 @@
   white-space: nowrap;
 }
 .pill-cta {
+  background: #ffffff;
+  color: #171815;
   position: absolute;
   left: calc(74.9 * var(--u));
   top: calc(230.5 * var(--u) + 264.5 * var(--h));
@@ -68,6 +68,7 @@
   height: calc(50 * var(--h));
   font-size: max(14px, calc(20.6 * var(--h)));
 }
+.pill-cta:hover { background: #ffffff; }
 .burger { display: none; }
 
 
@@ -94,7 +95,6 @@
       max(calc(24 * var(--m)), env(safe-area-inset-bottom))
       max(calc(26 * var(--m)), env(safe-area-inset-left));
   }
-  .plate-frame { inset: 0; width: 100%; height: 100%; transform: none; object-position: 43% center; }
   
   .topbar { display: flex; align-items: center; justify-content: space-between; min-height: 49px; }
   .brand { position: relative; inset: auto; width: max(27px, calc(31.5 * var(--m))); height: max(42px, calc(48.5 * var(--m))); }
@@ -125,7 +125,6 @@
   .stage { padding-left: calc(48 * var(--m)); padding-right: calc(48 * var(--m)); }
   .hero { margin-top: calc(148 * var(--m)); }
   .headline { font-size: calc(71.6 * var(--m)); }
-  .plate-frame { object-position: 44% center; }
   
 
 }
