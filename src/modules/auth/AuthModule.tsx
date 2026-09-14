@@ -188,7 +188,7 @@ export function AuthModule({
           <form className="auth-form-animated" onSubmit={submit}>
             {currentMode === 'signup' && (
               <div className="input-group">
-                <label htmlFor="name-input">Your Name</label>
+                <label htmlFor="name-input">Name</label>
                 <div className="input-field-wrapper">
                   <input
                     id="name-input"
@@ -206,7 +206,7 @@ export function AuthModule({
             )}
 
             <div className="input-group">
-              <label htmlFor="email-input">Email Address</label>
+              <label htmlFor="email-input">Email</label>
               <div className="input-field-wrapper">
                 <input
                   id="email-input"
@@ -276,6 +276,24 @@ export function AuthModule({
                 'LOG IN'
               )}
             </button>
+
+            <p className="auth-switch" style={{ textAlign: 'center', marginTop: '16px', fontSize: '13px', color: 'var(--sw-ink-muted)' }}>
+              {currentMode === 'signup' ? 'Already have an account?' : 'New to Skill Swap?'}{' '}
+              <button
+                type="button"
+                className="quiet-button"
+                style={{ fontWeight: 700, color: 'var(--sw-ink-primary)', textDecoration: 'underline' }}
+                onClick={() => {
+                  setError('');
+                  setNotice('');
+                  const target = currentMode === 'signup' ? 'login' : 'signup';
+                  setCurrentMode(target);
+                  navigate(target, next);
+                }}
+              >
+                {currentMode === 'signup' ? 'Log in' : 'Sign up'}
+              </button>
+            </p>
           </form>
 
           {/* Quick Demo Login Pill Bar */}

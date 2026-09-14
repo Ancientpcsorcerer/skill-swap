@@ -25,19 +25,18 @@ function ProductExperience(){
   // Landing page with Big Frame portal entry
   if (!route.view) return <CinematicExperience onEnterConnect={() => navigate('connect')} />;
 
-  // Explicit auth routes (#/app/signup or #/app/login)
-  if (authRoute && !session) {
+  // All workspace core routes require authentication; non-authenticated visits present AuthModule
+  if (!session) {
     return (
       <AuthModule
-        key={route.view}
+        key={authRoute ? route.view : 'signup'}
         mode={route.view === 'login' ? 'login' : 'signup'}
-        next={route.next ?? undefined}
+        next={authRoute ? route.next ?? undefined : (route.view as ModuleId)}
       />
     );
   }
 
-  // Active Core Application UI (accessible to both authenticated users and guests)
   const activeModule: ModuleId = authRoute ? (route.next ?? 'profile') : (route.view as ModuleId);
-  return <ApplicationShell key={session?.identity?.id ?? 'guest'} active={activeModule} />;
+  return <ApplicationShell key={session.identity.id} active={activeModule} />;
 }
 export function ApplicationRoot(){return <SessionProvider provider={apiAuth}><ProductExperience/></SessionProvider>;}

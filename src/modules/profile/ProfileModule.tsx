@@ -19,6 +19,8 @@ import { PostPreview } from '../posts/PostPreview';
 import type { Project, User } from '../../app/data/models';
 import type { Person } from '../connect/types';
 import type { Post } from '../posts/types';
+import '../../styles/design-tokens.css';
+import '../../styles/connect-profile-chat.css';
 
 export function ProfileModule() {
   const { session, updateProfile } = useSession();
@@ -158,7 +160,7 @@ export function ProfileModule() {
   return (
     <section className="profile-module">
       {isViewingOther ? (
-        <div className="profile-view-header">
+        <div className="profile-view-header" style={{ marginBottom: '16px' }}>
           <button
             type="button"
             className="quiet-button profile-back-btn"
@@ -169,11 +171,11 @@ export function ProfileModule() {
           <h1>Public Profile</h1>
         </div>
       ) : (
-        <h1>My Profile</h1>
+        <h1 style={{ marginBottom: '16px' }}>My Profile</h1>
       )}
 
       {isGuest && !isViewingOther && (
-        <div className="profile-guest-banner">
+        <div className="profile-guest-banner" style={{ marginBottom: '20px' }}>
           <p>You are viewing Skill Swap as a guest. Sign in to save projects and build connections.</p>
           <button
             type="button"
@@ -189,90 +191,106 @@ export function ProfileModule() {
         <p className="workspace-empty">Loading profile...</p>
       )}
 
-      <div className="profile-identity">
-        <Avatar name={user.name} personId={user.id} />
-        <div>
-          <h2>{user.name}</h2>
-          <p className="profile-handle">@{user.username}</p>
-          <p>{user.bio || 'Share your interests, your ideas and what you would like to build.'}</p>
-          {user.location && <small>{user.location}</small>}
+      {/* Editorial Identity Header Deck */}
+      <div className="profile-identity profile-identity-card">
+        <div className="profile-identity-body">
+          <div className="profile-avatar-lockup">
+            <Avatar name={user.name} personId={user.id} />
+            <div className="profile-user-titles">
+              <h2>{user.name}</h2>
+              <p className="profile-handle">@{user.username}</p>
+              <p className="profile-bio-text">
+                {user.bio || 'Share your interests, your ideas and what you would like to build.'}
+              </p>
+              {user.location && (
+                <small style={{ color: 'var(--sw-ink-muted)', display: 'block', marginBottom: '8px' }}>
+                  📍 {user.location}
+                </small>
+              )}
 
-          <div className="profile-stats-row">
-            {!isViewingOther && (
-              <button
-                type="button"
-                className="profile-stat-badge"
-                onClick={() => setTab('Connections')}
-              >
-                <strong>{connectedPeople.length}</strong>{' '}
-                {connectedPeople.length === 1 ? 'Connection' : 'Connections'}
-              </button>
-            )}
-            <button
-              type="button"
-              className="profile-stat-badge"
-              onClick={() => setTab('Projects')}
-            >
-              <strong>{userProjects.length}</strong>{' '}
-              {userProjects.length === 1 ? 'Project' : 'Projects'}
-            </button>
-            <button
-              type="button"
-              className="profile-stat-badge"
-              onClick={() => setTab('Posts')}
-            >
-              <strong>{userPosts.length}</strong>{' '}
-              {userPosts.length === 1 ? 'Post' : 'Posts'}
-            </button>
-          </div>
-        </div>
-
-        <div className="profile-action-container">
-          {isViewingOther ? (
-            <div className="profile-other-actions">
-              {isTargetConnected ? (
-                <>
-                  <span className="profile-connected-pill">&check; Connected</span>
+              <div className="profile-stats-row">
+                {!isViewingOther && (
                   <button
                     type="button"
-                    className="primary-button"
-                    onClick={() =>
-                      requireAuth('message ' + user.name, () =>
-                        navigate('chat', undefined, false, { user: user.id })
-                      )
-                    }
+                    className="profile-stat-badge"
+                    onClick={() => setTab('Connections')}
                   >
-                    Message
+                    <strong>{connectedPeople.length}</strong>{' '}
+                    {connectedPeople.length === 1 ? 'Connection' : 'Connections'}
                   </button>
-                </>
-              ) : (
-                (() => {
-                  const personObj: Person = people.find((p) => p.id === user.id) || {
-                    id: user.id,
-                    name: user.name,
-                    username: user.username,
-                    description: user.bio,
-                    skills: user.skills,
-                    interests: user.interests,
-                    projectInterests: user.projectInterests,
-                  };
-                  return <ConnectionAction person={personObj} />;
-                })()
-              )}
+                )}
+                <button
+                  type="button"
+                  className="profile-stat-badge"
+                  onClick={() => setTab('Projects')}
+                >
+                  <strong>{userProjects.length}</strong>{' '}
+                  {userProjects.length === 1 ? 'Project' : 'Projects'}
+                </button>
+                <button
+                  type="button"
+                  className="profile-stat-badge"
+                  onClick={() => setTab('Posts')}
+                >
+                  <strong>{userPosts.length}</strong>{' '}
+                  {userPosts.length === 1 ? 'Post' : 'Posts'}
+                </button>
+                <span className="profile-stat-badge">
+                  <strong>{user.skills.length}</strong> Skills
+                </span>
+              </div>
             </div>
-          ) : (
-            <button
-              className="quiet-button"
-              onClick={() => requireAuth('edit profile', () => setEditing(true))}
-            >
-              + Edit Profile
-            </button>
-          )}
+          </div>
+
+          <div className="profile-action-container">
+            {isViewingOther ? (
+              <div className="profile-other-actions" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                {isTargetConnected ? (
+                  <>
+                    <span className="sw-pill-badge sw-pill-badge--active">&check; Connected</span>
+                    <button
+                      type="button"
+                      className="connection-button"
+                      onClick={() =>
+                        requireAuth('message ' + user.name, () =>
+                          navigate('chat', undefined, false, { user: user.id })
+                        )
+                      }
+                    >
+                      Message
+                    </button>
+                  </>
+                ) : (
+                  (() => {
+                    const personObj: Person = people.find((p) => p.id === user.id) || {
+                      id: user.id,
+                      name: user.name,
+                      username: user.username,
+                      description: user.bio,
+                      skills: user.skills,
+                      interests: user.interests,
+                      projectInterests: user.projectInterests,
+                    };
+                    return <ConnectionAction person={personObj} />;
+                  })()
+                )}
+              </div>
+            ) : (
+              <button
+                type="button"
+                className="quiet-button"
+                onClick={() => requireAuth('edit profile', () => setEditing(true))}
+              >
+                + Edit Profile
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="profile-skills">
-        <section>
+      {/* Skills Matrix Deck */}
+      <div className="profile-skills profile-skills-matrix">
+        <section className="skills-matrix-deck">
           <SectionHeader
             title="Skills"
             action={!isViewingOther ? 'Add' : undefined}
@@ -281,10 +299,10 @@ export function ProfileModule() {
           {user.skills.length ? (
             <Tags values={user.skills} />
           ) : (
-            <p>No skills listed yet.</p>
+            <p style={{ color: 'var(--sw-ink-muted)', fontSize: '13px' }}>No skills listed yet.</p>
           )}
         </section>
-        <section>
+        <section className="skills-matrix-deck">
           <SectionHeader
             title="Interested In"
             action={!isViewingOther ? 'Add' : undefined}
@@ -293,11 +311,12 @@ export function ProfileModule() {
           {user.interests.length ? (
             <Tags values={user.interests} />
           ) : (
-            <p>No interests listed yet.</p>
+            <p style={{ color: 'var(--sw-ink-muted)', fontSize: '13px' }}>No interests listed yet.</p>
           )}
         </section>
       </div>
 
+      {/* Content Decks Tabs */}
       <Tabs
         label="Profile sections"
         values={profileTabs}
@@ -324,6 +343,7 @@ export function ProfileModule() {
               <p>{isViewingOther ? 'Projects will appear here when published.' : 'Bring your vision to life and find people to build with.'}</p>
               {!isViewingOther && (
                 <button
+                  type="button"
                   className="primary-button"
                   onClick={() => requireAuth('create a project', () => navigate('create'))}
                 >
@@ -345,7 +365,7 @@ export function ProfileModule() {
               ) : (
                 <p className="workspace-empty">
                   Explore projects and find your next collaboration.{' '}
-                  <button className="quiet-button" onClick={() => navigate('discover')}>
+                  <button type="button" className="quiet-button" onClick={() => navigate('discover')}>
                     Discover projects &rarr;
                   </button>
                 </p>
@@ -452,7 +472,7 @@ export function ProfileModule() {
               <p>
                 Connect with collaborators and mentors across the community to build together.
               </p>
-              <button className="primary-button" onClick={() => navigate('connect')}>
+              <button type="button" className="primary-button" onClick={() => navigate('connect')}>
                 Explore Connect &rarr;
               </button>
             </div>
@@ -506,7 +526,7 @@ export function ProfileModule() {
         {moduleIds
           .filter((id) => id !== 'profile')
           .map((id) => (
-            <button className="secondary-button" key={id} onClick={() => navigate(id)}>
+            <button type="button" className="secondary-button" key={id} onClick={() => navigate(id)}>
               {id === 'chat' ? 'Chat' : id[0].toUpperCase() + id.slice(1)} &rarr;
             </button>
           ))}
@@ -590,7 +610,7 @@ export function ProfileModule() {
               </label>
               <p className="input-hint">Separate skills and interests with commas.</p>
               {error && <p role="alert">{error}</p>}
-              <button className="primary-button">Save Profile</button>
+              <button type="submit" className="primary-button">Save Profile</button>
             </form>
           )}
         </div>

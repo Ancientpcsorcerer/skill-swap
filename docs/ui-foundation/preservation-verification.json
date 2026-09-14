@@ -34,6 +34,7 @@
   ],
   "createdSource": [
     "src/app/components/Artwork.tsx",
+    "src/app/components/ContextualLoom.tsx",
     "src/app/components/Dropdown.tsx",
     "src/app/components/Icon.tsx",
     "src/app/components/PageHero.tsx",
@@ -49,10 +50,12 @@
     "src/lib/api.ts",
     "src/lib/firebaseAuth.ts",
     "src/modules/auth/AuthModule.tsx",
+    "src/modules/chat/ChatContextDrawer.tsx",
     "src/modules/chat/ChatModule.tsx",
     "src/modules/chat/chatService.ts",
     "src/modules/chat/types.ts",
     "src/modules/connect/apiRepository.ts",
+    "src/modules/connect/ReciprocalRadar.tsx",
     "src/modules/create/LiveCardPreview.tsx",
     "src/modules/create/ProjectComposer.tsx",
     "src/modules/create/StudioWorkbench.tsx",
@@ -68,6 +71,7 @@
     "src/modules/posts/PostPreview.tsx",
     "src/modules/posts/postService.ts",
     "src/modules/posts/types.ts",
+    "src/styles/connect-profile-chat.css",
     "src/styles/create-discover.css",
     "src/styles/design-tokens.css",
     "src/styles/learn.css"

@@ -6,7 +6,6 @@ export function GlobalSidebar({ active }: { active: ModuleId }) {
   const { requireAuth } = useAuthGate();
 
   const getLabel = (id: ModuleId) => {
-    if (id === 'profile') return 'My Profile';
     return id[0].toUpperCase() + id.slice(1);
   };
 

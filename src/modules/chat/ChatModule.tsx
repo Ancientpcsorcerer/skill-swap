@@ -6,7 +6,10 @@ import { navigate, useApplicationRoute } from '../../app/navigation';
 import { Avatar } from '../../app/components/Avatar';
 import { Icon } from '../../app/components/Icon';
 import { chatService } from './chatService';
+import { ChatContextDrawer } from './ChatContextDrawer';
 import type { ChatParticipant } from './types';
+import '../../styles/design-tokens.css';
+import '../../styles/connect-profile-chat.css';
 
 function formatTimestamp(isoString: string): string {
   try {
@@ -33,6 +36,7 @@ export function ChatModule() {
   const [inputText, setInputText] = useState('');
   const [filterQuery, setFilterQuery] = useState('');
   const [showCollaboratorsList, setShowCollaboratorsList] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -168,7 +172,7 @@ export function ChatModule() {
 
   return (
     <section className="chat-module">
-      <div className="chat-container">
+      <div className={`chat-container ${drawerOpen && activePartner ? '' : 'drawer-collapsed'}`}>
         {/* LEFT PANE: Conversation List */}
         <aside className="chat-sidebar">
           <div className="chat-sidebar-header">
@@ -302,7 +306,7 @@ export function ChatModule() {
           </div>
         </aside>
 
-        {/* RIGHT PANE: Active Conversation */}
+        {/* CENTER PANE: Active Conversation */}
         <main className="chat-main-pane">
           {activePartner ? (
             <div className="chat-thread-container">
@@ -318,7 +322,15 @@ export function ChatModule() {
                     </p>
                   </div>
                 </div>
-                <div className="chat-thread-actions">
+                <div className="chat-thread-actions" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <button
+                    type="button"
+                    className={`radar-chip ${drawerOpen ? 'is-active' : ''}`}
+                    onClick={() => setDrawerOpen((prev) => !prev)}
+                    title="Toggle Collaborator Dossier Drawer"
+                  >
+                    {drawerOpen ? 'Hide Dossier' : '✦ View Dossier'}
+                  </button>
                   <button
                     type="button"
                     className="quiet-button"
@@ -343,7 +355,7 @@ export function ChatModule() {
                       >
                         {!isMe && <Avatar name={activePartner.name} small />}
                         <div className="chat-message-bubble">
-                          <p className="chat-message-text">{msg.text}</p>
+                          <p className="chat-message-text" style={{ margin: 0 }}>{msg.text}</p>
                           <span className="chat-message-time">
                             {formatTimestamp(msg.createdAt)}
                           </span>
@@ -402,6 +414,15 @@ export function ChatModule() {
             </div>
           )}
         </main>
+
+        {/* RIGHT PANE: Collapsible Context Drawer */}
+        {drawerOpen && activePartner && (
+          <ChatContextDrawer
+            partner={activePartner}
+            session={session}
+            onClose={() => setDrawerOpen(false)}
+          />
+        )}
       </div>
     </section>
   );

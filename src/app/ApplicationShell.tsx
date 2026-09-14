@@ -12,6 +12,7 @@ import { DiscoverModule } from '../modules/discover/DiscoverModule';
 import { ChatModule } from '../modules/chat/ChatModule';
 import { AuthGateProvider, useAuthGate } from './session/AuthGateContext';
 import { SignupModal } from '../components/auth/SignupModal';
+import { ContextualLoom } from './components/ContextualLoom';
 
 const modules = {
   connect: ConnectModule,
@@ -49,6 +50,7 @@ function Shell({ active }: { active: ModuleId }) {
 
   return (
     <div className="application-shell" data-active-module={active}>
+      <div className="sw-grain-overlay" aria-hidden="true" />
       <a
         className="workspace-skip"
         href="#workspace-content"
@@ -75,6 +77,7 @@ function Shell({ active }: { active: ModuleId }) {
           </p>
         )}
       </main>
+      <ContextualLoom activeModule={active} />
       <SignupModal
         open={authModalOpen}
         onClose={closeAuthModal}
