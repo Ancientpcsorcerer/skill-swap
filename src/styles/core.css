@@ -1,13 +1,4 @@
-.core-checkpoint, .connect-environment { position: absolute; inset: 0; }
-.connect-environment {
-  --connect-unit: min(calc(100vw / 1672), calc(100dvh / 941));
-  overflow: clip;
-  background: radial-gradient(ellipse at 48% 38%, #f6f3ed 0%, #eeebe4 65%, #e5e2db 100%);
-}
-.connect-surface { position: absolute; inset: 0; mix-blend-mode: multiply; }
-.connect-slab { position: absolute; overflow: visible; }
-.connect-slab--upper { top: 0; right: 0; width: calc(640 * var(--connect-unit)); height: calc(640 * var(--connect-unit)); }
-.connect-slab--lower { bottom: 0; left: 0; width: calc(600 * var(--connect-unit)); height: calc(600 * var(--connect-unit)); }
+.core-checkpoint { position: absolute; inset: 0; }
 
 
 .connect-checkpoint { overflow: clip; background: #f3f3f1; }

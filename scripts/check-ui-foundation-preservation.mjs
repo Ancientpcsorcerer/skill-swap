@@ -17,8 +17,10 @@ const allowed = new Set([
   'src/app/App.tsx', 'src/components/frame/FrameTransition.tsx', 'src/components/landing/HeroMedia.tsx',
   'src/styles/frame.css', 'src/styles/landing.css', 'src/styles/dialog.css',
   'src/modules/profile/ProfilePreview.tsx', 'src/app/components/Icon.tsx',
+  'src/components/core/connect/ConnectCheckpoint.tsx', 'src/app/components/Artwork.tsx',
+  'src/styles/core.css',
 ]);
-const removed = new Set(['src/app/components/ModulePlaceholder.tsx']);
+const removed = new Set(['src/app/components/ModulePlaceholder.tsx', 'src/components/core/ConnectEnvironment.tsx']);
 const changed = [], deleted = [];
 let unchanged = 0, assets = 0;
 for (const [file, expected] of Object.entries(baseline)) {

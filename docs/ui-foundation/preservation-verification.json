@@ -1,6 +1,6 @@
 {
   "inspectedFiles": 1545,
-  "unchanged": 1516,
+  "unchanged": 1513,
   "unchangedAssets": 1466,
   "changedSource": [
     "src/app/App.tsx",
@@ -13,6 +13,7 @@
     "src/app/components/Avatar.tsx",
     "src/app/session/SessionProvider.tsx",
     "src/components/auth/SignupModal.tsx",
+    "src/components/core/connect/ConnectCheckpoint.tsx",
     "src/components/frame/FrameTransition.tsx",
     "src/components/landing/HeroMedia.tsx",
     "src/data/content.ts",
@@ -28,6 +29,7 @@
     "src/modules/learn/LearnModule.tsx",
     "src/modules/profile/ProfileModule.tsx",
     "src/modules/profile/ProfilePreview.tsx",
+    "src/styles/core.css",
     "src/styles/dialog.css",
     "src/styles/frame.css",
     "src/styles/landing.css"
@@ -77,7 +79,8 @@
     "src/styles/learn.css"
   ],
   "deletedSource": [
-    "src/app/components/ModulePlaceholder.tsx"
+    "src/app/components/ModulePlaceholder.tsx",
+    "src/components/core/ConnectEnvironment.tsx"
   ],
   "cinematicControllersAndStylesUnchanged": true,
   "assetRegistrationsAndMappingsUnchanged": true,

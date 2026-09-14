@@ -7,12 +7,13 @@ import { join } from 'node:path';
 const retired = ['Cores/Connect_start', 'Cores/Connect_back', 'build/connect-assets.ts', 'src/types/connect-assets.d.ts'];
 for (const path of retired) assert(!existsSync(path), 'Retired cinematic path restored: ' + path);
 
-// Authorized changes from Big Frame click-portal milestone:
+// Authorized changes from Big Frame click-portal milestone and Connect environment purge:
 const allowedChanges = new Set([
   'src\\components\\frame\\FrameTransition.tsx',
   'src\\components\\landing\\HeroMedia.tsx',
   'src\\styles\\frame.css',
   'src\\styles\\landing.css',
+  'src\\components\\core\\connect\\ConnectCheckpoint.tsx',
 ]);
 
 const before = JSON.parse(readFileSync('docs/core-chain/preservation-before.json', 'utf8'));
