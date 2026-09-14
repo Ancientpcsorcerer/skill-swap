@@ -13,3 +13,6 @@ playwright-report/
 .env.*
 backend/.env
 .testsprite/
+
+.vercel
+.env*
