@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSession } from '../../app/session/SessionProvider';
 import { SearchField } from '../../app/components/SearchField';
-import { PageHero } from '../../app/components/PageHero';
 import { Tabs, FilterControl } from '../../app/components/UI';
 import { ProfilePreview } from '../profile/ProfilePreview';
 import { useConnect } from './ConnectProvider';
@@ -69,18 +68,27 @@ export function ConnectModule({
 
   return (
     <section className="connect-module">
-      <PageHero
-        core="connect"
-        title={
-          <>
-            Meet people.
-            <br />
-            Share ideas. Build together.
-          </>
-        }
-        description="Find collaborators, mentors and like-minded people."
-      >
-        <div className="search-with-filter">
+      <header className="connect-directory-header">
+        <div className="connect-header-copy">
+          <span className="connect-kicker">✦ THE RECIPROCAL DIRECTORY</span>
+          <h1 className="connect-title">Meet People. Share Skills. Build Together.</h1>
+          <p className="connect-description">
+            Discover polymaths and peer mentors ready for 1-on-1 reciprocal skill swaps.
+          </p>
+          <div className="connect-metrics-bar">
+            <span className="connect-metric-pill">
+              <strong>{people.length}</strong> Creators
+            </span>
+            <span className="connect-metric-pill">
+              <strong>100%</strong> Reciprocal
+            </span>
+            <span className="connect-metric-pill">
+              <strong>0</strong> Platform Currency
+            </span>
+          </div>
+        </div>
+
+        <div className="search-with-filter connect-search-bar">
           <SearchField
             inputRef={search}
             label="Search the people directory"
@@ -94,7 +102,7 @@ export function ConnectModule({
             options={Array.from(new Set(people.flatMap((person) => person.skills))).sort()}
           />
         </div>
-      </PageHero>
+      </header>
 
       <div className="module-toolbar">
         <Tabs
@@ -113,8 +121,8 @@ export function ConnectModule({
           >
             {showRadar ? 'Hide Radar' : '⇄ Show Radar'}
           </button>
-          <span className="sample-label">
-            Example profiles{tab === 'requests' ? ' / ' + count + ' incoming' : ''}
+          <span className="connect-count-indicator">
+            {listed.length} creators{tab === 'requests' ? ' / ' + count + ' incoming' : ''}
           </span>
           <label>
             Sort by{' '}
