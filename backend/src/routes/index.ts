@@ -10,6 +10,7 @@ import { healthRouter } from './health';
 
 export const apiRouter = Router();
 
+apiRouter.use(healthRouter);
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/profile', profileRouter);
 apiRouter.use('/users', usersRouter);
@@ -17,4 +18,3 @@ apiRouter.use('/connections', connectionsRouter);
 apiRouter.use('/projects', projectsRouter);
 apiRouter.use('/learning', learningRouter);
 apiRouter.use('/', discoverRouter);
-apiRouter.use(healthRouter);
