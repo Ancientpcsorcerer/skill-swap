@@ -89,12 +89,8 @@ export function LearnModule() {
   return (
     <div className="module-columns learn-layout learn-module-root">
       <div className="module-main">
-        {/* Editorial Hero with Two-Branch Actions */}
-        <LearnHero
-          activeMode={activeMode}
-          onSelectMode={handleSelectMode}
-          activeCount={inProgressCount}
-        />
+        {/* Editorial Hero */}
+        <LearnHero activeCount={inProgressCount} />
 
         {/* Segmented Mode Switcher */}
         <LearnModeSwitcher
