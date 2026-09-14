@@ -1,0 +1,118 @@
+/* SKILL SWAP — DESIGN SYSTEM TOKENS & FOUNDATIONS */
+
+:root {
+  /* Surface & Canvas Palette (Warm Ivory) */
+  --sw-canvas-base: #fbf9f5;
+  --sw-canvas-warm: #f6f3ed;
+  --sw-canvas-subtle: #eae6dd;
+  --sw-surface: #ffffff;
+  --sw-surface-elevated: #ffffff;
+  --sw-surface-sunken: #f2efe9;
+
+  /* Ink & Typography Palette */
+  --sw-ink-primary: #141514;
+  --sw-ink-secondary: #3b3d39;
+  --sw-ink-muted: #656862;
+  --sw-ink-subtle: #8e948d;
+  --sw-ink-inverse: #fafafa;
+
+  /* Architectural Hairline Borders */
+  --sw-line-standard: #dfddd8;
+  --sw-line-subtle: rgba(20, 21, 20, 0.08);
+  --sw-line-strong: #141514;
+
+  /* Tactile Accents & Brand Accents */
+  --sw-accent-dark: #151a10;
+  --sw-accent-subtle: #d6e2d1;
+  --sw-accent-emerald: #02a270;
+  --sw-accent-blue: #2563eb;
+  --sw-accent-warm: #d97706;
+
+  /* Pill & Control States */
+  --sw-pill-bg: #eae7e0;
+  --sw-pill-active: #141514;
+  --sw-pill-active-ink: #ffffff;
+  --sw-pill-hover: #e2ded5;
+
+  /* Inset Shadows & Glassmorphic Highlights */
+  --sw-shadow-inset: inset 0 0.5px 1px rgba(255, 255, 255, 0.2);
+  --sw-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+  --sw-shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.08), 0 8px 32px rgba(0, 0, 0, 0.04);
+  --sw-shadow-floating: 0 12px 36px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+
+  /* Viscous & Kinetic Easing Curves */
+  --sw-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --sw-ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+  --sw-ease-viscous: cubic-bezier(0.6, 0.6, 0, 1);
+
+  /* Precision Typography */
+  --sw-font-sans: 'Manrope Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --sw-tracking-tight: -0.022em;
+  --sw-tracking-headline: -0.03em;
+  --sw-tracking-caps: 0.12em;
+}
+
+/* Micro-Grain Noise Layer */
+.sw-grain-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.028;
+  z-index: 9999;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Shared Tactile Pill Badge */
+.sw-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: var(--sw-tracking-tight);
+  border-radius: 100px;
+  background: var(--sw-pill-bg);
+  color: var(--sw-ink-secondary);
+  border: 1px solid var(--sw-line-subtle);
+  box-shadow: var(--sw-shadow-inset);
+  transition: background 160ms var(--sw-ease), border-color 160ms var(--sw-ease);
+}
+
+.sw-pill-badge--active {
+  background: var(--sw-pill-active);
+  color: var(--sw-pill-active-ink);
+  border-color: var(--sw-pill-active);
+}
+
+/* Reciprocal Skill Indicator */
+.sw-reciprocal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 500;
+  background: var(--sw-canvas-subtle);
+  border: 1px solid var(--sw-line-standard);
+  color: var(--sw-ink-primary);
+}
+
+.sw-reciprocal-badge .sw-arrow {
+  color: var(--sw-accent-emerald);
+  font-weight: 700;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

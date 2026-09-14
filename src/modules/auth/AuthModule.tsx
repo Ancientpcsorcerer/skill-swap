@@ -125,7 +125,7 @@ export function AuthModule({
           </div>
 
           <div className="auth-header-text">
-            <h1>{currentMode === 'signup' ? 'JOIN THE COMMUNITY' : 'WELCOME BACK'}</h1>
+            <h1>{currentMode === 'signup' ? 'CREATE YOUR ACCOUNT' : 'WELCOME BACK'}</h1>
             <p>Connect, share skills, and build real-world projects with creators worldwide.</p>
           </div>
 
@@ -271,9 +271,9 @@ export function AuthModule({
                   <span className="mini-spinner" /> Connecting...
                 </span>
               ) : currentMode === 'signup' ? (
-                'Create Account →'
+                'SIGN UP'
               ) : (
-                'Sign In →'
+                'LOG IN'
               )}
             </button>
           </form>

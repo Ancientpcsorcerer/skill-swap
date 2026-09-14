@@ -20,9 +20,12 @@ import { postService } from '../posts/postService';
 import { PostCard } from '../posts/PostCard';
 import { PostComposer } from '../posts/PostComposer';
 import { PostPreview } from '../posts/PostPreview';
+import { MasonryFeed } from './MasonryFeed';
 import type { Project } from '../../app/data/models';
 import type { Person } from '../connect/types';
 import type { Post } from '../posts/types';
+import '../../styles/design-tokens.css';
+import '../../styles/create-discover.css';
 
 export function DiscoverModule() {
   const workspace = useWorkspace();
@@ -35,6 +38,7 @@ export function DiscoverModule() {
   const [person, setPerson] = useState<Person | null>(null);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [postComposerOpen, setPostComposerOpen] = useState(false);
+  const [feedMode, setFeedMode] = useState<'standard' | 'masonry'>('standard');
   const savedItems = workspace.savedItems;
 
   // Subscribe to reactive posts
@@ -116,9 +120,47 @@ export function DiscoverModule() {
           />
         </div>
 
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '14px 0 20px 0', flexWrap: 'wrap', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              type="button"
+              className={`discover-chip ${feedMode === 'standard' ? 'discover-chip--active' : ''}`}
+              onClick={() => setFeedMode('standard')}
+            >
+              Structured Showcase
+            </button>
+            <button
+              type="button"
+              className={`discover-chip ${feedMode === 'masonry' ? 'discover-chip--active' : ''}`}
+              onClick={() => setFeedMode('masonry')}
+            >
+              ✦ Living Masonry Feed
+            </button>
+          </div>
+          <span style={{ fontSize: '12px', color: 'var(--sw-ink-subtle)' }}>
+            {feedMode === 'masonry' ? 'Unified cross-domain stream' : 'Categorized curation'}
+          </span>
+        </div>
+
+        {feedMode === 'masonry' && (
+          <div style={{ marginBottom: '32px' }}>
+            <MasonryFeed
+              projects={projects}
+              posts={filteredPosts}
+              communities={filteredCommunities}
+              people={matchedPeople}
+              query={query}
+              category={category}
+              onSelectProject={setProject}
+              onSelectPost={setSelectedPost}
+              onSelectPerson={setPerson}
+            />
+          </div>
+        )}
+
         {showProjects && (
           <>
-            <SectionHeader title="Featured Projects" action="View all" onAction={() => setTab('Projects')} />
+            <SectionHeader title="Featured" action="View all" onAction={() => setTab('Projects')} />
             <div className="project-grid">
               {projects.slice(0, 4).map((proj) => (
                 <ProjectCard key={proj.id} project={proj} onOpen={setProject} />

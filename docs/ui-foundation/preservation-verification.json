@@ -53,7 +53,10 @@
     "src/modules/chat/chatService.ts",
     "src/modules/chat/types.ts",
     "src/modules/connect/apiRepository.ts",
+    "src/modules/create/LiveCardPreview.tsx",
     "src/modules/create/ProjectComposer.tsx",
+    "src/modules/create/StudioWorkbench.tsx",
+    "src/modules/discover/MasonryFeed.tsx",
     "src/modules/learn/ExploreSkillsView.tsx",
     "src/modules/learn/LearnHero.tsx",
     "src/modules/learn/LearningDetailModal.tsx",
@@ -65,6 +68,8 @@
     "src/modules/posts/PostPreview.tsx",
     "src/modules/posts/postService.ts",
     "src/modules/posts/types.ts",
+    "src/styles/create-discover.css",
+    "src/styles/design-tokens.css",
     "src/styles/learn.css"
   ],
   "deletedSource": [

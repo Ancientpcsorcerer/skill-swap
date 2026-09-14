@@ -16,6 +16,7 @@ import { useConnect } from '../connect/ConnectProvider';
 import { matchesPerson } from '../connect/selectors';
 import { ConnectionAction } from '../connect/components/ConnectionAction';
 import { ProjectComposer } from './ProjectComposer';
+import { StudioWorkbench } from './StudioWorkbench';
 import { useAuthGate } from '../../app/session/AuthGateContext';
 import { PostComposer } from '../posts/PostComposer';
 import { PostCard } from '../posts/PostCard';
@@ -24,6 +25,8 @@ import { postService } from '../posts/postService';
 import type { Project } from '../../app/data/models';
 import type { Person } from '../connect/types';
 import type { Post } from '../posts/types';
+import '../../styles/design-tokens.css';
+import '../../styles/create-discover.css';
 
 export function CreateModule() {
   const { session } = useSession();
@@ -136,6 +139,10 @@ export function CreateModule() {
             </button>
           </div>
         </PageHero>
+
+        <div style={{ margin: '28px 0 36px 0' }}>
+          <StudioWorkbench />
+        </div>
 
         <div className="create-type-nav">
           <Tabs
