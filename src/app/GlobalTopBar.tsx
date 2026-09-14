@@ -3,9 +3,8 @@ import { Avatar } from './components/Avatar';
 import { SearchIcon } from './components/SearchField';
 import { Dropdown } from './components/Dropdown';
 import { Icon } from './components/Icon';
-import { moduleIds, navigate } from './navigation';
-
-import { useAuthGate } from './session/AuthGateContext';
+import { navigate } from './navigation';
+import { BrandMark } from '../components/ui/BrandMark';
 
 export function GlobalTopBar({
   onSearch,
@@ -15,33 +14,25 @@ export function GlobalTopBar({
   onOpenAuth?: (mode?: 'signup' | 'login') => void;
 }) {
   const { session, logout } = useSession();
-  const { requireAuth } = useAuthGate();
 
   return (
     <header className="workspace-topbar">
-      <span className="workspace-brand">SKILL SWAP</span>
-      <div className="workspace-topbar-actions">
-        <Dropdown
-          label="Quick Access"
-          trigger={
-            <>
-              Quick Access <Icon name="chevron" />
-            </>
+      <a
+        href="#/"
+        className="workspace-brand-link"
+        aria-label="Skill Swap Home — Return to landing page"
+        title="Return to Landing Page"
+        onClick={(e) => {
+          if (e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+            e.preventDefault();
+            navigate(null);
           }
-          items={moduleIds
-            .filter((id) => id !== 'profile')
-            .map((id) => ({
-              label: id.toUpperCase(),
-              action: () => {
-                if (id === 'chat') {
-                  if (!requireAuth('access Chat', () => navigate('chat'))) {
-                    return;
-                  }
-                }
-                navigate(id);
-              },
-            }))}
-        />
+        }}
+      >
+        <BrandMark className="workspace-brand-logo" />
+      </a>
+
+      <div className="workspace-topbar-actions">
         <button
           type="button"
           className="workspace-icon-button"

@@ -38,11 +38,26 @@
   -webkit-backdrop-filter: blur(12px);
   z-index: 50;
 }
-:where(.application-shell, .auth-screen) .workspace-brand {
-  font-size:22px;
-  letter-spacing:.23em;
-  font-weight:500;
-  white-space:nowrap;
+:where(.application-shell, .auth-screen) .workspace-brand-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 8px;
+  outline: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+:where(.application-shell, .auth-screen) .workspace-brand-link:hover {
+  opacity: 0.82;
+  transform: scale(1.04);
+}
+:where(.application-shell, .auth-screen) .workspace-brand-link:focus-visible {
+  box-shadow: 0 0 0 2px var(--sw-ink-primary, #141514);
+}
+:where(.application-shell, .auth-screen) .workspace-brand-logo {
+  width: 22px;
+  height: 34px;
+  display: block;
 }
 :where(.application-shell, .auth-screen) .workspace-topbar-actions {
   display:flex;
