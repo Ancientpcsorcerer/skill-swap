@@ -91,8 +91,13 @@ export async function performGoogleAuth(): Promise<RealProviderProfile> {
       if (err?.code === 'auth/popup-blocked') {
         throw new Error('Google sign-in pop-up was blocked. Please allow pop-ups for this site.');
       }
-      if (err?.code === 'auth/network-request-failed') {
-        throw new Error('Network error during Google authentication. Please verify internet connection.');
+      if (err?.code === 'auth/unauthorized-domain') {
+        throw new Error(
+          `This domain (${window.location.hostname}) is not authorized in Firebase. In Firebase Console, go to Authentication > Settings > Authorized domains, and add "${window.location.hostname}".`
+        );
+      }
+      if (err?.code?.startsWith('auth/')) {
+        throw new Error(err.message || `Firebase Google Auth error: ${err.code}`);
       }
       throw new Error(err?.message || 'Google authentication failed.');
     }
