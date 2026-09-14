@@ -109,6 +109,21 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   return (data?.data ?? data) as T;
 }
 
+export interface TrendingTopicItem {
+  id: string;
+  name: string;
+  category: string;
+  count: number;
+  type: 'skill' | 'tag' | 'community' | 'project';
+  query: string;
+}
+
+export interface TrendingResponse {
+  topics: TrendingTopicItem[];
+  topSkills: { skill: string; count: number }[];
+  popularCommunities: Community[];
+}
+
 export const api = {
   auth: {
     async register(input: { name: string; username?: string; email: string; password: string }) {
@@ -295,6 +310,11 @@ export const api = {
   },
 
   discover: {
+    async getTrending(): Promise<TrendingResponse> {
+      const res = await request<TrendingResponse>('/trending');
+      return res;
+    },
+
     async getCommunities() {
       const res = await request<{ communities: Community[] }>('/communities');
       return res.communities;
