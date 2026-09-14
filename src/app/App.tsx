@@ -36,7 +36,7 @@ export function App({ onEnterConnect }: { onEnterConnect?: () => void }) {
           <div id="frame" className="frame-checkpoint" aria-hidden="true" />
           <FrameTransition progress={frameProgress} checkpoint={checkpoint} isEntering={isEntering}
             media={<HeroMedia onFrameClick={handleFrameClick} isEntering={isEntering} />}
-            landing={<LandingSection onSignup={() => setSignupOpen(true)} signupOpen={signupOpen} />}>
+            landing={<LandingSection onSignup={handleFrameClick} signupOpen={false} />}>
             <CoreExperience position={0} active={false} available={false} />
           </FrameTransition>
         </section>
