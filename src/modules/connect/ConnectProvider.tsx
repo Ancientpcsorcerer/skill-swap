@@ -1,5 +1,5 @@
 import { useSession } from '../../app/session/SessionProvider';
-import { createContext, useContext, useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from 'react';
 import { type ConnectRepository } from './repository';
 import { createApiConnectRepository } from './apiRepository';
 import type { ConnectTab, ConnectionRequest, Person } from './types';
@@ -50,7 +50,7 @@ function useConnectController(repository: ConnectRepository) {
 const ConnectContext = createContext<ReturnType<typeof useConnectController> | null>(null);
 export function ConnectProvider({ children, repository: supplied }: { children: ReactNode; repository?: ConnectRepository }) {
   const { session } = useSession();
-  const [repository] = useState(() => supplied ?? createApiConnectRepository(session?.identity.id));
+  const repository = useMemo(() => supplied ?? createApiConnectRepository(session?.identity.id), [supplied, session?.identity.id]);
   const controller = useConnectController(repository);
   return <ConnectContext.Provider value={controller}>{children}</ConnectContext.Provider>;
 }

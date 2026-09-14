@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { localAuth, type AuthProvider, type Credentials } from './auth';
 import type { User } from '../data/models';
-import { authenticateWithGoogle } from '../../lib/firebaseAuth';
+import { authenticateWithGoogle, authenticateWithGitHub } from '../../lib/firebaseAuth';
 
 export type ProfileIdentity = User;
 export interface ApplicationSession { mode: 'local'; identity: User }
@@ -11,6 +11,7 @@ export interface SessionContextType {
   signUp: (input: Credentials) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   signInWithGoogle: () => Promise<User>;
+  signInWithGitHub: () => Promise<User>;
   logout: () => void;
   updateProfile: (patch: Partial<User>) => void;
 }
@@ -37,6 +38,11 @@ export function SessionProvider({ children, provider = localAuth }: { children: 
         },
         signInWithGoogle: async () => {
           const user = await authenticateWithGoogle();
+          setSession({ mode: 'local', identity: user });
+          return user;
+        },
+        signInWithGitHub: async () => {
+          const user = await authenticateWithGitHub();
           setSession({ mode: 'local', identity: user });
           return user;
         },

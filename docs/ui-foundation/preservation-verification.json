@@ -1,8 +1,9 @@
 {
   "inspectedFiles": 1545,
-  "unchanged": 1523,
+  "unchanged": 1516,
   "unchangedAssets": 1466,
   "changedSource": [
+    "src/app/App.tsx",
     "src/app/application.css",
     "src/app/ApplicationRoot.tsx",
     "src/app/ApplicationShell.tsx",
@@ -12,6 +13,8 @@
     "src/app/components/Avatar.tsx",
     "src/app/session/SessionProvider.tsx",
     "src/components/auth/SignupModal.tsx",
+    "src/components/frame/FrameTransition.tsx",
+    "src/components/landing/HeroMedia.tsx",
     "src/data/content.ts",
     "src/modules/connect/ConnectModule.tsx",
     "src/modules/connect/ConnectProvider.tsx",
@@ -23,7 +26,11 @@
     "src/modules/create/CreateModule.tsx",
     "src/modules/discover/DiscoverModule.tsx",
     "src/modules/learn/LearnModule.tsx",
-    "src/modules/profile/ProfileModule.tsx"
+    "src/modules/profile/ProfileModule.tsx",
+    "src/modules/profile/ProfilePreview.tsx",
+    "src/styles/dialog.css",
+    "src/styles/frame.css",
+    "src/styles/landing.css"
   ],
   "createdSource": [
     "src/app/components/Artwork.tsx",
@@ -38,10 +45,20 @@
     "src/app/data/WorkspaceProvider.tsx",
     "src/app/session/apiAuth.ts",
     "src/app/session/auth.ts",
+    "src/app/session/AuthGateContext.tsx",
     "src/lib/api.ts",
+    "src/lib/firebaseAuth.ts",
     "src/modules/auth/AuthModule.tsx",
+    "src/modules/chat/ChatModule.tsx",
+    "src/modules/chat/chatService.ts",
+    "src/modules/chat/types.ts",
     "src/modules/connect/apiRepository.ts",
-    "src/modules/create/ProjectComposer.tsx"
+    "src/modules/create/ProjectComposer.tsx",
+    "src/modules/posts/PostCard.tsx",
+    "src/modules/posts/PostComposer.tsx",
+    "src/modules/posts/PostPreview.tsx",
+    "src/modules/posts/postService.ts",
+    "src/modules/posts/types.ts"
   ],
   "deletedSource": [
     "src/app/components/ModulePlaceholder.tsx"

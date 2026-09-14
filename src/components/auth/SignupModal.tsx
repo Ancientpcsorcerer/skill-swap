@@ -17,7 +17,7 @@ interface Props {
 export function SignupModal({ open, onClose, onAuthSuccess, notice, initialMode = 'signup', children }: Props) {
   const dialog = useRef<HTMLDialogElement>(null);
   useModalDialog(dialog, open);
-  const { login, signUp, signInWithGoogle } = useSession();
+  const { login, signUp, signInWithGoogle, signInWithGitHub } = useSession();
   const [tab, setTab] = useState<'signup' | 'login'>(initialMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,21 +46,19 @@ export function SignupModal({ open, onClose, onAuthSuccess, notice, initialMode 
   async function handleGitHubAuth() {
     setBusy(true);
     setError('');
-    setTimeout(async () => {
-      try {
-        await login('aarav@example.com', 'Password123!');
-        if (onAuthSuccess) {
-          onAuthSuccess();
-        } else {
-          navigate('connect');
-        }
-        onClose();
-      } catch (err) {
-        setError(`GitHub sign-in: ${err instanceof Error ? err.message : 'Failed'}`);
-      } finally {
-        setBusy(false);
+    try {
+      await signInWithGitHub();
+      if (onAuthSuccess) {
+        onAuthSuccess();
+      } else {
+        navigate('connect');
       }
-    }, 400);
+      onClose();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'GitHub authentication failed.');
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function handleSubmit(e: FormEvent) {

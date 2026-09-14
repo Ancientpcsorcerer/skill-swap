@@ -10,5 +10,6 @@ playwright-report/
 .secrets*
 .env
 *.env
+.env.*
 backend/.env
 .testsprite/

@@ -9,15 +9,17 @@ import { ProfileModule } from '../modules/profile/ProfileModule';
 import { CreateModule } from '../modules/create/CreateModule';
 import { LearnModule } from '../modules/learn/LearnModule';
 import { DiscoverModule } from '../modules/discover/DiscoverModule';
+import { ChatModule } from '../modules/chat/ChatModule';
 import { AuthGateProvider, useAuthGate } from './session/AuthGateContext';
 import { SignupModal } from '../components/auth/SignupModal';
 
 const modules = {
-  profile: ProfileModule,
   connect: ConnectModule,
   create: CreateModule,
-  learn: LearnModule,
   discover: DiscoverModule,
+  learn: LearnModule,
+  chat: ChatModule,
+  profile: ProfileModule,
 };
 
 function Shell({ active }: { active: ModuleId }) {

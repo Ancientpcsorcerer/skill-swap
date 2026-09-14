@@ -23,12 +23,43 @@ export function ConnectionAction({ person, onRespond }: { person: Person; onResp
     }
   };
 
+  if (connected) {
+    return (
+      <div className="connection-action-connected-group">
+        <button
+          type="button"
+          className="connection-button"
+          data-state="settled"
+          disabled
+        >
+          Connected
+        </button>
+        <button
+          type="button"
+          className="secondary-button connection-message-btn"
+          onClick={() => {
+            if (
+              !requireAuth('message ' + person.name, () =>
+                navigate('chat', undefined, false, { user: person.id })
+              )
+            ) {
+              return;
+            }
+            navigate('chat', undefined, false, { user: person.id });
+          }}
+        >
+          Message
+        </button>
+      </div>
+    );
+  }
+
   return (
     <button
       type="button"
       className="connection-button"
-      data-state={connected || sent ? 'settled' : 'default'}
-      disabled={pending || connected || sent}
+      data-state={sent ? 'settled' : 'default'}
+      disabled={pending || sent}
       aria-label={pending ? 'Sending request to ' + person.name : undefined}
       onClick={() => {
         if (!requireAuth('connect with ' + person.name, handleAction)) {
@@ -37,7 +68,7 @@ export function ConnectionAction({ person, onRespond }: { person: Person; onResp
         handleAction();
       }}
     >
-      {pending ? 'Sending...' : connected ? 'Connected' : sent ? 'Request Sent' : incoming ? 'Respond' : 'Connect'}
+      {pending ? 'Sending...' : sent ? 'Request Sent' : incoming ? 'Respond' : 'Connect'}
     </button>
   );
 }

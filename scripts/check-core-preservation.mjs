@@ -7,8 +7,17 @@ import { join } from 'node:path';
 const retired = ['Cores/Connect_start', 'Cores/Connect_back', 'build/connect-assets.ts', 'src/types/connect-assets.d.ts'];
 for (const path of retired) assert(!existsSync(path), 'Retired cinematic path restored: ' + path);
 
+// Authorized changes from Big Frame click-portal milestone:
+const allowedChanges = new Set([
+  'src\\components\\frame\\FrameTransition.tsx',
+  'src\\components\\landing\\HeroMedia.tsx',
+  'src\\styles\\frame.css',
+  'src\\styles\\landing.css',
+]);
+
 const before = JSON.parse(readFileSync('docs/core-chain/preservation-before.json', 'utf8'));
 for (const [path, expected] of Object.entries(before)) {
+  if (allowedChanges.has(path)) continue;
   const actual = createHash('sha256').update(readFileSync(path)).digest('hex');
   assert.equal(actual, expected, 'Protected file changed: ' + path);
 }

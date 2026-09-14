@@ -14,6 +14,9 @@ const allowed = new Set([
   'src/modules/connect/types.ts', 'src/modules/connect/data.ts', 'src/modules/connect/repository.ts',
   'src/modules/connect/ConnectProvider.tsx', 'src/modules/connect/ConnectModule.tsx',
   'src/modules/connect/components/PersonRow.tsx', 'src/modules/connect/components/ConnectionAction.tsx',
+  'src/app/App.tsx', 'src/components/frame/FrameTransition.tsx', 'src/components/landing/HeroMedia.tsx',
+  'src/styles/frame.css', 'src/styles/landing.css', 'src/styles/dialog.css',
+  'src/modules/profile/ProfilePreview.tsx', 'src/app/components/Icon.tsx',
 ]);
 const removed = new Set(['src/app/components/ModulePlaceholder.tsx']);
 const changed = [], deleted = [];

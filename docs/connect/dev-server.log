@@ -132,3 +132,39 @@
 1:18:09 am [vite] (client) hmr update /src/components/landing/HeroMedia.tsx, /src/components/landing/BigFrameEnvironment.tsx
 1:18:09 am [vite] (client) hmr update /src/components/landing/HeroMedia.tsx, /src/components/landing/BigFrameEnvironment.tsx
 1:18:09 am [vite] (client) hmr update /src/components/landing/HeroMedia.tsx, /src/components/landing/BigFrameEnvironment.tsx
+1:38:48 am [vite] (client) hmr update /src/components/landing/HeroMedia.tsx
+1:38:48 am [vite] (client) hmr update /src/styles/landing.css
+2:07:39 am [vite] (client) hmr update /src/components/landing/HeroMedia.tsx
+2:26:34 am [vite] (client) hmr update /src/components/landing/HeroMedia.tsx
+2:30:43 am [vite] (client) hmr update /src/components/frame/FrameTransition.tsx
+2:30:55 am [vite] (client) hmr update /src/app/App.tsx
+2:31:00 am [vite] (client) hmr update /src/app/App.tsx
+2:31:20 am [vite] (client) hmr update /src/styles/frame.css
+2:31:30 am [vite] (client) hmr update /src/styles/landing.css
+3:11:08 am [vite] (client) hmr update /src/app/session/SessionProvider.tsx
+3:11:09 am [vite] (client) hmr update /src/app/session/SessionProvider.tsx
+3:11:54 am [vite] (client) hmr update /src/components/auth/SignupModal.tsx
+3:11:54 am [vite] (client) hmr update /src/components/auth/SignupModal.tsx
+3:12:35 am [vite] (client) hmr update /src/modules/auth/AuthModule.tsx
+3:12:35 am [vite] (client) hmr update /src/modules/auth/AuthModule.tsx
+3:12:57 am [vite] (client) hmr update /src/modules/auth/AuthModule.tsx
+3:13:25 am [vite] (client) hmr update /src/styles/dialog.css
+3:13:25 am [vite] (client) hmr update /src/styles/dialog.css
+3:13:49 am [vite] (client) hmr update /src/app/application.css
+3:14:10 am [vite] (client) hmr update /src/app/ApplicationRoot.tsx
+3:14:31 am [vite] (client) hmr update /src/app/ApplicationShell.tsx
+3:14:52 am [vite] (client) hmr update /src/app/GlobalTopBar.tsx
+3:15:19 am [vite] (client) hmr update /src/app/data/WorkspaceProvider.tsx
+3:15:33 am [vite] (client) hmr update /src/modules/connect/ConnectModule.tsx
+3:15:53 am [vite] (client) hmr update /src/modules/connect/components/ConnectionAction.tsx
+3:16:31 am [vite] (client) hmr update /src/modules/create/CreateModule.tsx
+3:16:31 am [vite] (client) hmr update /src/modules/create/CreateModule.tsx
+3:17:08 am [vite] (client) hmr update /src/modules/learn/LearnModule.tsx
+3:17:52 am [vite] (client) hmr update /src/modules/discover/DiscoverModule.tsx
+3:18:45 am [vite] (client) hmr update /src/modules/profile/ProfileModule.tsx
+3:19:31 am [vite] (client) hmr update /src/app/application.css
+3:44:12 am [vite] (client) page reload playwright-report/index.html
+3:44:14 am [vite] (client) page reload playwright-report/trace/index.html
+3:44:14 am [vite] (client) page reload playwright-report/trace/snapshot.html
+3:44:14 am [vite] (client) page reload playwright-report/trace/uiMode.html
+3:44:21 am [vite] (client) page reload playwright-report/index.html

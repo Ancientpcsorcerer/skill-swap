@@ -10,7 +10,7 @@ export function AuthModule({
   mode?: 'signup' | 'login';
   next?: ModuleId;
 }) {
-  const { signUp, login, signInWithGoogle } = useSession();
+  const { signUp, login, signInWithGoogle, signInWithGitHub } = useSession();
   const [currentMode, setCurrentMode] = useState<'signup' | 'login'>(mode);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -40,29 +40,18 @@ export function AuthModule({
     setError('');
     setNotice('');
     setBusy(true);
-    if (provider === 'Google') {
-      try {
+    try {
+      if (provider === 'Google') {
         await signInWithGoogle();
-        navigate(next ?? 'connect');
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Google authentication failed.');
-      } finally {
-        setBusy(false);
+      } else {
+        await signInWithGitHub();
       }
-      return;
+      navigate(next ?? 'connect');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : `${provider} authentication failed.`);
+    } finally {
+      setBusy(false);
     }
-
-    // GitHub OAuth integration
-    setTimeout(async () => {
-      try {
-        await login('aarav@example.com', 'Password123!');
-        navigate(next ?? 'connect');
-      } catch (err) {
-        setError(`${provider} sign-in: ${err instanceof Error ? err.message : 'Authentication failed'}`);
-      } finally {
-        setBusy(false);
-      }
-    }, 400);
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {

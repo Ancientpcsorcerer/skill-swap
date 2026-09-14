@@ -5,6 +5,8 @@ import { Dropdown } from './components/Dropdown';
 import { Icon } from './components/Icon';
 import { moduleIds, navigate } from './navigation';
 
+import { useAuthGate } from './session/AuthGateContext';
+
 export function GlobalTopBar({
   onSearch,
   onOpenAuth,
@@ -13,6 +15,7 @@ export function GlobalTopBar({
   onOpenAuth?: (mode?: 'signup' | 'login') => void;
 }) {
   const { session, logout } = useSession();
+  const { requireAuth } = useAuthGate();
 
   return (
     <header className="workspace-topbar">
@@ -29,7 +32,14 @@ export function GlobalTopBar({
             .filter((id) => id !== 'profile')
             .map((id) => ({
               label: id.toUpperCase(),
-              action: () => navigate(id),
+              action: () => {
+                if (id === 'chat') {
+                  if (!requireAuth('access Chat', () => navigate('chat'))) {
+                    return;
+                  }
+                }
+                navigate(id);
+              },
             }))}
         />
         <button

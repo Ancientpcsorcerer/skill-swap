@@ -659,3 +659,7 @@ Visit https://react.dev/link/error-boundaries to learn more about error boundari
 Consider adding an error boundary to your tree to customize error handling behavior.
 Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
 
+2:17:34 am [vite] (client) [console.warn] ⚠️ Backend unreachable, falling back to local auth
+2:17:43 am [vite] (client) [console.warn] ⚠️ Backend unreachable, falling back to local auth
+2:17:54 am [vite] (client) [console.warn] ⚠️ Backend unreachable, falling back to local auth
+2:46:51 am [vite] (client) [console.warn] ⚠️ Backend unreachable, falling back to local auth
