@@ -23,7 +23,7 @@ function ProductExperience(){
   }, [session, authRoute, route.next]);
 
   // Landing page with Big Frame portal entry
-  if (!route.view) return <CinematicExperience onEnterConnect={(core) => navigate((core as ModuleId) || 'connect')} />;
+  if (!route.view) return <CinematicExperience onEnterConnect={() => navigate('connect')} />;
 
   // All workspace core routes require authentication; non-authenticated visits present AuthModule
   if (!session) {

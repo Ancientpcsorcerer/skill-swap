@@ -4,28 +4,22 @@ import { HeroMedia } from '../components/landing/HeroMedia';
 import { SignupModal } from '../components/auth/SignupModal';
 import { FrameTransition } from '../components/frame/FrameTransition';
 import { CoreExperience } from '../components/core/CoreExperience';
-import { CinematicJourney } from '../components/landing/CinematicJourney';
 import { samplePostZoom } from '../lib/checkpoints';
 import type { AuthState, ExperienceState } from '../types/experience';
 
-export function App({ onEnterConnect }: { onEnterConnect?: (targetCore?: string) => void }) {
+export function App({ onEnterConnect }: { onEnterConnect?: () => void }) {
   const [authState] = useState<AuthState>('guest');
   const [signupOpen, setSignupOpen] = useState(false);
   const [isEntering, setIsEntering] = useState(false);
-  const [showJourney, setShowJourney] = useState(false);
   const track = useRef<HTMLElement>(null);
 
   const handleFrameClick = () => {
     if (isEntering) return;
     setIsEntering(true);
-    // Smooth cinematic zoom into portal (680ms), then unveil the Cinematic Journey!
+    // Smooth cinematic zoom into portal, arriving directly at Connect Core UI
     setTimeout(() => {
-      setShowJourney(true);
+      onEnterConnect?.();
     }, 680);
-  };
-
-  const handleEnterCore = (targetCore = 'connect') => {
-    onEnterConnect?.(targetCore);
   };
 
   const frameProgress = 0;
@@ -47,18 +41,6 @@ export function App({ onEnterConnect }: { onEnterConnect?: (targetCore?: string)
           </FrameTransition>
         </section>
       </main>
-
-      {/* Cinematic Narrative Journey: Features, Live Examples, Masteries & Core Gateway */}
-      {showJourney && (
-        <CinematicJourney
-          onEnterCore={handleEnterCore}
-          onExitJourney={() => {
-            setShowJourney(false);
-            setIsEntering(false);
-          }}
-        />
-      )}
-
       <SignupModal open={signupOpen} onClose={() => setSignupOpen(false)} />
     </div>
   );
