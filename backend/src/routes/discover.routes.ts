@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { discoverController } from '../modules/discover/discover.controller';
-import { authenticateToken, optionalAuth } from '../middleware/auth';
+import { authenticateToken } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import {
   createIdeaSchema,
@@ -10,10 +10,13 @@ import {
 
 export const discoverRouter = Router();
 
+// Guard all discover routes: requires valid JWT Bearer token
+discoverRouter.use(authenticateToken);
+
 // Communities
-discoverRouter.get('/communities', optionalAuth, discoverController.getCommunities.bind(discoverController));
-discoverRouter.post('/communities/:id/join', authenticateToken, discoverController.joinCommunity.bind(discoverController));
-discoverRouter.delete('/communities/:id/leave', authenticateToken, discoverController.leaveCommunity.bind(discoverController));
+discoverRouter.get('/communities', discoverController.getCommunities.bind(discoverController));
+discoverRouter.post('/communities/:id/join', discoverController.joinCommunity.bind(discoverController));
+discoverRouter.delete('/communities/:id/leave', discoverController.leaveCommunity.bind(discoverController));
 
 // Ideas
 discoverRouter.get('/ideas', discoverController.getIdeas.bind(discoverController));

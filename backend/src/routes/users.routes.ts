@@ -6,6 +6,9 @@ import { searchUsersQuerySchema } from '../modules/users/users.validation';
 
 export const usersRouter = Router();
 
+// Guard all user routes: requires valid JWT Bearer token
+usersRouter.use(authenticateToken);
+
 usersRouter.get(
   '/',
   validate({ query: searchUsersQuerySchema }),

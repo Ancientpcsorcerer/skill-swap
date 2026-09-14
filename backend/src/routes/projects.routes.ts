@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { projectsController } from '../modules/projects/projects.controller';
-import { authenticateToken, optionalAuth } from '../middleware/auth';
+import { authenticateToken } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import {
   createProjectSchema,
@@ -11,14 +11,16 @@ import {
 
 export const projectsRouter = Router();
 
+// Guard all project routes: requires valid JWT Bearer token
+projectsRouter.use(authenticateToken);
+
 projectsRouter.get(
   '/',
-  optionalAuth,
   validate({ query: searchProjectsQuerySchema }),
   projectsController.listProjects.bind(projectsController)
 );
 
-projectsRouter.get('/:id', optionalAuth, projectsController.getProjectById.bind(projectsController));
+projectsRouter.get('/:id', projectsController.getProjectById.bind(projectsController));
 
 projectsRouter.post(
   '/',
