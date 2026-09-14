@@ -226,21 +226,40 @@ export class UsersService {
     return { users: usersWithSkills, total };
   }
 
-  async getSuggestedUsers(currentUserId: string, limit = 10): Promise<UserRecord[]> {
-    const rows = await query<UserRecord>(
-      `SELECT u.id, u.name, u.username, u.bio, u.location, u.avatar_url, u.created_at, u.updated_at
-       FROM users u
-       WHERE u.id <> $1
-         AND u.deleted_at IS NULL
-         AND NOT EXISTS (
-           SELECT 1 FROM connections c
-           WHERE (c.requester_id = $1 AND c.addressee_id = u.id)
-              OR (c.requester_id = u.id AND c.addressee_id = $1)
-         )
-       ORDER BY u.created_at DESC
-       LIMIT $2`,
-      [currentUserId, limit]
-    );
+  async getSuggestedUsers(currentUserId?: string, limit = 10): Promise<UserRecord[]> {
+    let rows: UserRecord[];
+
+    if (currentUserId) {
+      // Personalized recommendation: match shared skills, exclude connections & self
+      rows = await query<UserRecord>(
+        `SELECT u.id, u.name, u.username, u.bio, u.location, u.avatar_url, u.created_at, u.updated_at
+         FROM users u
+         WHERE u.id <> $1
+           AND u.deleted_at IS NULL
+           AND NOT EXISTS (
+             SELECT 1 FROM connections c
+             WHERE (c.requester_id = $1 AND c.addressee_id = u.id)
+                OR (c.requester_id = u.id AND c.addressee_id = $1)
+           )
+         ORDER BY (
+           SELECT COUNT(*) FROM user_skills us
+           WHERE us.user_id = u.id
+             AND us.skill IN (SELECT skill FROM user_skills WHERE user_id = $1)
+         ) DESC, u.created_at DESC
+         LIMIT $2`,
+        [currentUserId, limit]
+      );
+    } else {
+      // Public / Guest recommendation: top active creators by skills and recency
+      rows = await query<UserRecord>(
+        `SELECT u.id, u.name, u.username, u.bio, u.location, u.avatar_url, u.created_at, u.updated_at
+         FROM users u
+         WHERE u.deleted_at IS NULL
+         ORDER BY (SELECT COUNT(*) FROM user_skills us WHERE us.user_id = u.id) DESC, u.created_at DESC
+         LIMIT $1`,
+        [limit]
+      );
+    }
 
     return Promise.all(
       rows.map(async (u) => {

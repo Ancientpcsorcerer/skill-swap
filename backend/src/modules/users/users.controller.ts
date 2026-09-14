@@ -65,11 +65,8 @@ export class UsersController {
 
   async getSuggestedUsers(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      if (!req.user) {
-        throw new UnauthorizedError('Authentication required');
-      }
       const limit = req.query.limit ? Number(req.query.limit) : 10;
-      const users = await usersService.getSuggestedUsers(req.user.userId, limit);
+      const users = await usersService.getSuggestedUsers(req.user?.userId, limit);
       res.status(200).json({
         success: true,
         data: { users },

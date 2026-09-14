@@ -1,24 +1,22 @@
 import { Router } from 'express';
 import { usersController } from '../modules/users/users.controller';
-import { authenticateToken } from '../middleware/auth';
+import { optionalAuth } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import { searchUsersQuerySchema } from '../modules/users/users.validation';
 
 export const usersRouter = Router();
 
-// Guard all user routes: requires valid JWT Bearer token
-usersRouter.use(authenticateToken);
-
 usersRouter.get(
   '/',
+  optionalAuth,
   validate({ query: searchUsersQuerySchema }),
   usersController.searchUsers.bind(usersController)
 );
 
 usersRouter.get(
   '/suggested',
-  authenticateToken,
+  optionalAuth,
   usersController.getSuggestedUsers.bind(usersController)
 );
 
-usersRouter.get('/:id', usersController.getUserById.bind(usersController));
+usersRouter.get('/:id', optionalAuth, usersController.getUserById.bind(usersController));

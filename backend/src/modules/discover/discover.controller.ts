@@ -3,6 +3,19 @@ import { discoverService } from './discover.service';
 import { UnauthorizedError } from '../../utils/errors';
 
 export class DiscoverController {
+  async getTrending(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const userId = req.user?.userId;
+      const trending = await discoverService.getTrending(userId);
+      res.status(200).json({
+        success: true,
+        data: trending,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async getCommunities(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const userId = req.user?.userId;

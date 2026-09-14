@@ -55,7 +55,81 @@ export interface ActivityRecord {
   created_at: string;
 }
 
+export interface TrendingTopicItem {
+  id: string;
+  name: string;
+  category: string;
+  count: number;
+  type: 'skill' | 'tag' | 'community' | 'project';
+  query: string;
+}
+
+export interface TrendingResponse {
+  topics: TrendingTopicItem[];
+  topSkills: { skill: string; count: number }[];
+  popularCommunities: CommunityRecord[];
+}
+
 export class DiscoverService {
+  async getTrending(userId?: string): Promise<TrendingResponse> {
+    // 1. Top skills by active practitioner count
+    const skillsRows = await query<{ skill: string; count: string }>(
+      `SELECT skill, COUNT(DISTINCT user_id)::text as count
+       FROM user_skills
+       GROUP BY skill
+       ORDER BY COUNT(DISTINCT user_id) DESC, skill ASC
+       LIMIT 6`
+    );
+
+    // 2. Top project tags
+    const tagsRows = await query<{ tag: string; count: string }>(
+      `SELECT tag, COUNT(DISTINCT project_id)::text as count
+       FROM project_tags
+       GROUP BY tag
+       ORDER BY COUNT(DISTINCT project_id) DESC, tag ASC
+       LIMIT 6`
+    );
+
+    // 3. Top communities
+    const communities = await this.getCommunities(userId);
+
+    // Build unified topics array
+    const topics: TrendingTopicItem[] = [];
+
+    for (const row of skillsRows) {
+      topics.push({
+        id: `skill-${row.skill.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
+        name: row.skill,
+        category: 'Skill',
+        count: parseInt(row.count, 10) || 0,
+        type: 'skill',
+        query: row.skill,
+      });
+    }
+
+    for (const row of tagsRows) {
+      if (!topics.some((t) => t.name.toLowerCase() === row.tag.toLowerCase())) {
+        topics.push({
+          id: `tag-${row.tag.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
+          name: row.tag,
+          category: 'Topic',
+          count: parseInt(row.count, 10) || 0,
+          type: 'tag',
+          query: row.tag,
+        });
+      }
+    }
+
+    // Sort topics by count descending
+    topics.sort((a, b) => b.count - a.count);
+
+    return {
+      topics: topics.slice(0, 8),
+      topSkills: skillsRows.map((r) => ({ skill: r.skill, count: parseInt(r.count, 10) || 0 })),
+      popularCommunities: communities.slice(0, 5),
+    };
+  }
+
   async getCommunities(userId?: string): Promise<CommunityRecord[]> {
     const rows = await query<CommunityRecord & { is_member: boolean }>(
       `SELECT c.id, c.name, c.description, c.category, c.art, c.member_count, c.created_at,
