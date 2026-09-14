@@ -1,64 +1,253 @@
-import { useRef, useState, type FormEvent } from 'react';
-import { PageHero } from '../../app/components/PageHero';
-import { SearchField } from '../../app/components/SearchField';
-import { Panel, SectionHeader, Tabs, FilterControl } from '../../app/components/UI';
+import { useEffect, useState, type FormEvent } from 'react';
+import { Panel, Tabs } from '../../app/components/UI';
 import { Artwork } from '../../app/components/Artwork';
-import { useWorkspace } from '../../app/data/WorkspaceProvider';
-import { learningCategories, learningPaths, trendingSkills } from '../../app/data/catalog';
-import { useConnect } from '../connect/ConnectProvider';
-import { matchesPerson } from '../connect/selectors';
-import { PersonRow } from '../connect/components/PersonRow';
-import { ConnectionAction } from '../connect/components/ConnectionAction';
-import { ProfilePreview } from '../profile/ProfilePreview';
-import { useModalDialog } from '../../hooks/useModalDialog';
+import { learningPaths, trendingSkills } from '../../app/data/catalog';
 import { useAuthGate } from '../../app/session/AuthGateContext';
+import { navigate, useApplicationRoute } from '../../app/navigation';
+import { useLearnState } from './useLearnState';
+import { LearnHero } from './LearnHero';
+import { LearnModeSwitcher } from './LearnModeSwitcher';
+import { ExploreSkillsView } from './ExploreSkillsView';
+import { MyProgressView } from './MyProgressView';
+import { LearningDetailModal } from './LearningDetailModal';
 import type { LearningPath } from '../../app/data/models';
-import type { Person } from '../connect/types';
+import '../../styles/learn.css';
 
-export function LearnModule(){
-  const workspace=useWorkspace();
-  const {requireAuth} = useAuthGate();
-  const{people}=useConnect();
-  const[query,setQuery]=useState('');
-  const[category,setCategory]=useState('All');
-  const[learningTab,setLearningTab]=useState('In Progress');
-  const[person,setPerson]=useState<Person|null>(null);
-  const[path,setPath]=useState<LearningPath|null>(null);
-  const[showAll,setShowAll]=useState(false);
-  const[goalMessage,setGoalMessage]=useState('');
-  const dialog=useRef<HTMLDialogElement>(null);
-  useModalDialog(dialog,!!path);
+export function LearnModule() {
+  const route = useApplicationRoute();
+  const { requireAuth } = useAuthGate();
+  const learnState = useLearnState();
 
-  const terms=query.toLowerCase().trim().split(/\s+/).filter(Boolean);
-  const matching=learningPaths.filter(path=>(category==='All'||path.category===category||path.topics.some(topic=>topic.toLowerCase()===category.toLowerCase()))&&terms.every(term=>[path.title,path.description,path.category,...path.topics].join(' ').toLowerCase().includes(term)));
-  const mentorIds=new Set(matching.flatMap(path=>path.mentorIds));
-  const mentors=people.filter(person=>query||category!=='All'?mentorIds.has(person.id)||matchesPerson(person,query||category):showAll||['arjun','ishita','rohan','kavya'].includes(person.id));
-  const tracked=workspace.learning.filter(record=>record.status===learningTab);
-  const records=tracked.flatMap(record=>{const found=learningPaths.find(path=>path.id===record.pathId);return found?[{record,path:found}]:[];});
+  // URL deep-linking synchronization
+  const tabQuery = route.query.get('tab');
+  const pathQuery = route.query.get('path');
 
-  function goal(event:FormEvent<HTMLFormElement>){
-    event.preventDefault();
-    const form=event.currentTarget;
-    const value=String(new FormData(form).get('goal'));
-    if (!requireAuth('set a learning goal', () => {
-      workspace.setGoal(value);
-      form.reset();
-      setGoalMessage('Learning goal saved.');
-    })) {
-      return;
+  const [activeMode, setActiveMode] = useState<'explore' | 'progress'>(() => {
+    return tabQuery === 'progress' ? 'progress' : 'explore';
+  });
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [learningTab, setLearningTab] = useState<'In Progress' | 'Saved' | 'Completed'>('In Progress');
+  const [selectedPath, setSelectedPath] = useState<LearningPath | null>(null);
+  const [asideGoalMessage, setAsideGoalMessage] = useState('');
+
+  // Sync mode with route if tab parameter changes
+  useEffect(() => {
+    if (tabQuery === 'progress' && activeMode !== 'progress') {
+      setActiveMode('progress');
+    } else if (tabQuery === 'explore' && activeMode !== 'explore') {
+      setActiveMode('explore');
     }
-    workspace.setGoal(value);
-    form.reset();
-    setGoalMessage('Learning goal saved.');
+  }, [tabQuery]);
+
+  // Sync path parameter for direct modal deep links
+  useEffect(() => {
+    if (pathQuery) {
+      const found = learningPaths.find((p) => p.id === pathQuery);
+      if (found) {
+        setSelectedPath(found);
+      }
+    }
+  }, [pathQuery]);
+
+  function handleSelectMode(newMode: 'explore' | 'progress') {
+    setActiveMode(newMode);
+    navigate('learn', undefined, false, { tab: newMode });
   }
 
-  return <div className="module-columns learn-layout"><div className="module-main"><PageHero core="learn" title={<>Learn from people.<br/>Grow with a community.</>} description="Find the right mentors, resources and collaborators to learn new skills."><div className="search-with-filter"><SearchField label="Learning search" placeholder="What do you want to learn?" value={query} onChange={setQuery}/><FilterControl value={category} onChange={setCategory} options={learningCategories}/></div></PageHero>
-    <div className="learning-chips chip-buttons">{['All',...learningCategories].map(item=><button key={item} aria-pressed={category===item} onClick={()=>setCategory(item)}>{item}</button>)}</div><SectionHeader title="Popular Learning Paths" action={showAll?'Show less':'View all'} onAction={()=>setShowAll(value=>!value)}/><div className="learning-path-grid">{matching.slice(0,showAll?matching.length:5).map(path=><button className="learning-path-card" key={path.id} onClick={()=>setPath(path)}><Artwork art={path.art}/><span><strong>{path.title}</strong><span>{path.description}</span><small>{path.mentorIds.length} {path.mentorIds.length===1?'mentor':'mentors'} &middot; {path.resources} resources</small></span></button>)}</div>{!matching.length&&<p className="workspace-empty">No paths found. Try a broader topic or another category.</p>}
-    <SectionHeader title="Find Mentors" action={query||category!=='All'?'Clear filters':'View all'} onAction={()=>{setQuery('');setCategory('All');setShowAll(true);}}/><ul className="people-list mentor-grid">{mentors.slice(0,showAll?mentors.length:4).map(person=><PersonRow key={person.id} person={person} onPreview={setPerson} variant="mentor" action={<ConnectionAction person={person}/>}/>)}</ul>{!mentors.length&&<p className="workspace-empty">No matching mentors yet. Try another skill.</p>}
-  </div><aside className="module-aside"><Panel title="My Learning"><Tabs label="My learning status" values={['In Progress','Saved','Completed']} value={learningTab} onChange={setLearningTab}/><div className="my-learning-list">{records.map(({path,record})=><button key={path.id} onClick={()=>setPath(path)}><Artwork art={path.art}/><span><strong>{path.title}</strong><progress max="100" value={record.progress} aria-label={path.title+' progress'}/><small>{record.progress}% &middot; {record.status}</small></span></button>)}{!records.length&&<div className="learning-empty"><p>{learningTab==='In Progress'?'Choose a path and start learning.':learningTab==='Saved'?'Save a path to return to it later.':'Your completed paths will appear here.'}</p>{learningTab==='In Progress'&&learningPaths.slice(0,3).map(path=><button key={path.id} onClick={()=>setPath(path)}><Artwork art={path.art}/><span>{path.title}<small>Explore path &rarr;</small></span></button>)}</div>}</div></Panel>
-    <Panel title="Set a Learning Goal" description="Stay consistent. Build your future."><form className="stack-form" onSubmit={goal}><input name="goal" aria-label="Learning goal" placeholder="What do you want to learn?" required minLength={3} maxLength={160}/><button className="primary-button">Set Goal</button></form><p role="status" className="inline-status">{goalMessage}</p>{workspace.goals.slice(0,3).map(goal=><p key={goal} className="learning-goal">{goal}</p>)}</Panel>
-    <Panel title="Trending Skills"><ol className="trending-list">{trendingSkills.map(skill=><li key={skill}><button onClick={()=>{setCategory('All');setQuery(skill);}}>{skill}<span>&#8599;</span></button></li>)}</ol></Panel><blockquote className="workspace-panel">&ldquo;A skill learned is a door opened to a brighter tomorrow.&rdquo;</blockquote></aside>
-    <ProfilePreview person={person} onClose={()=>setPerson(null)} action={person?<ConnectionAction person={person} onRespond={()=>setPerson(null)}/>:undefined}/>
-    <dialog className="workspace-dialog path-preview" ref={dialog} aria-labelledby="path-preview-title" onCancel={event=>{event.preventDefault();setPath(null);}} onClose={()=>setPath(null)} onClick={event=>{if(event.target===dialog.current)setPath(null);}}><div className="workspace-dialog-content"><button type="button" className="workspace-dialog-close quiet-button" onClick={()=>setPath(null)} autoFocus>Close</button>{path&&<><Artwork art={path.art}/><h2 id="path-preview-title">{path.title}</h2><p>{path.description}. Choose this as your learning focus and connect with people who can help.</p><p>{path.resources} example resources &middot; {path.mentorIds.length} mentors</p><div className="form-actions"><button className="secondary-button" onClick={()=>requireAuth('save this learning path', () => workspace.setLearning(path.id,'Saved'))}>{workspace.learning.find(item=>item.pathId===path.id)?.status==='Saved'?'Saved':'Save path'}</button><button className="primary-button" onClick={()=>requireAuth('start learning this path', () => {workspace.setLearning(path.id,'In Progress');setLearningTab('In Progress');setPath(null);})}>Start Learning</button></div>{workspace.learning.some(item=>item.pathId===path.id)&&<button className="quiet-button" onClick={()=>requireAuth('mark this path completed', () => {workspace.setLearning(path.id,'Completed');setLearningTab('Completed');setPath(null);})}>Mark completed</button>}</>}</div></dialog>
-  </div>;
+  function handleAsideGoalSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const value = String(new FormData(form).get('goal') || '').trim();
+    if (!value) return;
+
+    if (
+      !requireAuth('set a learning goal', async () => {
+        await learnState.addGoal(value);
+        form.reset();
+        setAsideGoalMessage('Learning goal saved.');
+      })
+    ) {
+      return;
+    }
+
+    learnState.addGoal(value);
+    form.reset();
+    setAsideGoalMessage('Learning goal saved.');
+  }
+
+  // Filter tracked records for aside
+  const trackedRecords = learnState.records.filter((r) => r.status === learningTab);
+  const asideMatchedRecords = trackedRecords.flatMap((record) => {
+    const found = learningPaths.find((p) => p.id === record.pathId);
+    return found ? [{ record, path: found }] : [];
+  });
+
+  const inProgressCount = learnState.records.filter((r) => r.status === 'In Progress').length;
+
+  return (
+    <div className="module-columns learn-layout learn-module-root">
+      <div className="module-main">
+        {/* Editorial Hero with Two-Branch Actions */}
+        <LearnHero
+          activeMode={activeMode}
+          onSelectMode={handleSelectMode}
+          activeCount={inProgressCount}
+        />
+
+        {/* Segmented Mode Switcher */}
+        <LearnModeSwitcher
+          activeMode={activeMode}
+          onSelectMode={handleSelectMode}
+          activeProgressCount={inProgressCount}
+        />
+
+        {/* Two-Path Body: Explore Skills vs My Progress */}
+        {activeMode === 'explore' ? (
+          <ExploreSkillsView
+            query={searchQuery}
+            onQueryChange={setSearchQuery}
+            category={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            onSelectPath={setSelectedPath}
+          />
+        ) : (
+          <MyProgressView
+            records={learnState.records}
+            goals={learnState.goals}
+            loading={learnState.loading}
+            isAuthenticated={learnState.isAuthenticated}
+            statusTab={learningTab}
+            onStatusTabChange={setLearningTab}
+            onSelectPath={setSelectedPath}
+            onAddGoal={learnState.addGoal}
+            onDeleteGoal={learnState.deleteGoal}
+            onSwitchToExplore={() => handleSelectMode('explore')}
+          />
+        )}
+      </div>
+
+      {/* Persistent Workspace Aside */}
+      <aside className="module-aside">
+        <Panel title="My Learning">
+          <Tabs
+            label="My learning status"
+            values={['In Progress', 'Saved', 'Completed']}
+            value={learningTab}
+            onChange={(val) => setLearningTab(val as 'In Progress' | 'Saved' | 'Completed')}
+          />
+          <div className="my-learning-list">
+            {asideMatchedRecords.map(({ path, record }) => (
+              <button
+                key={path.id}
+                type="button"
+                onClick={() => setSelectedPath(path)}
+                aria-label={`${path.title}, ${record.progress}% completed`}
+              >
+                <Artwork art={path.art} />
+                <span>
+                  <strong>{path.title}</strong>
+                  <progress
+                    max="100"
+                    value={record.progress}
+                    aria-label={`${path.title} progress`}
+                  />
+                  <small>
+                    {record.progress}% &middot; {record.status}
+                  </small>
+                </span>
+              </button>
+            ))}
+
+            {!asideMatchedRecords.length && (
+              <div className="learning-empty">
+                <p>
+                  {learningTab === 'In Progress'
+                    ? 'Choose a path and start learning.'
+                    : learningTab === 'Saved'
+                    ? 'Save a path to return to it later.'
+                    : 'Your completed paths will appear here.'}
+                </p>
+                {learningTab === 'In Progress' &&
+                  learningPaths.slice(0, 3).map((path) => (
+                    <button
+                      key={path.id}
+                      type="button"
+                      onClick={() => setSelectedPath(path)}
+                      aria-label={`Explore ${path.title}`}
+                    >
+                      <Artwork art={path.art} />
+                      <span>
+                        {path.title}
+                        <small>Explore path &rarr;</small>
+                      </span>
+                    </button>
+                  ))}
+              </div>
+            )}
+          </div>
+        </Panel>
+
+        <Panel title="Set a Learning Goal" description="Stay consistent. Build your future.">
+          <form className="stack-form" onSubmit={handleAsideGoalSubmit}>
+            <input
+              name="goal"
+              aria-label="Learning goal"
+              placeholder="What do you want to learn?"
+              required
+              minLength={3}
+              maxLength={160}
+            />
+            <button type="submit" className="primary-button">
+              Set Goal
+            </button>
+          </form>
+          <p role="status" className="inline-status">
+            {asideGoalMessage}
+          </p>
+          {learnState.goals.slice(0, 3).map((g) => (
+            <p key={g.id} className="learning-goal">
+              {g.goal}
+            </p>
+          ))}
+        </Panel>
+
+        <Panel title="Trending Skills">
+          <ol className="trending-list">
+            {trendingSkills.map((skill) => (
+              <li key={skill}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleSelectMode('explore');
+                    setSelectedCategory('All');
+                    setSearchQuery(skill);
+                  }}
+                >
+                  {skill}
+                  <span>&#8599;</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </Panel>
+
+        <blockquote className="workspace-panel">
+          &ldquo;A skill learned is a door opened to a brighter tomorrow.&rdquo;
+        </blockquote>
+      </aside>
+
+      {/* Learning Detail Modal Environment */}
+      <LearningDetailModal
+        path={selectedPath}
+        onClose={() => setSelectedPath(null)}
+        records={learnState.records}
+        onUpdateRecord={learnState.updateRecord}
+        onStartSuccess={() => {
+          setLearningTab('In Progress');
+        }}
+      />
+    </div>
+  );
 }

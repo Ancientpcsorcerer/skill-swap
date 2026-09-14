@@ -54,11 +54,18 @@
     "src/modules/chat/types.ts",
     "src/modules/connect/apiRepository.ts",
     "src/modules/create/ProjectComposer.tsx",
+    "src/modules/learn/ExploreSkillsView.tsx",
+    "src/modules/learn/LearnHero.tsx",
+    "src/modules/learn/LearningDetailModal.tsx",
+    "src/modules/learn/LearnModeSwitcher.tsx",
+    "src/modules/learn/MyProgressView.tsx",
+    "src/modules/learn/useLearnState.ts",
     "src/modules/posts/PostCard.tsx",
     "src/modules/posts/PostComposer.tsx",
     "src/modules/posts/PostPreview.tsx",
     "src/modules/posts/postService.ts",
-    "src/modules/posts/types.ts"
+    "src/modules/posts/types.ts",
+    "src/styles/learn.css"
   ],
   "deletedSource": [
     "src/app/components/ModulePlaceholder.tsx"
