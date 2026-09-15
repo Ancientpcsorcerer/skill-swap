@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { queryOne } from '../../db/client';
-import { BadRequestError } from '../../utils/errors';
+import { BadRequestError, ForbiddenError, UnauthorizedError } from '../../utils/errors';
 import { env } from '../../config/env';
 
 const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
@@ -95,7 +95,7 @@ export class MediaService {
 
     if (record.is_private) {
       if (!requesterUserId) {
-        throw new BadRequestError('Authentication required to access private media');
+        throw new UnauthorizedError('Authentication required to access private media');
       }
 
       if (record.user_id !== requesterUserId) {
@@ -111,10 +111,10 @@ export class MediaService {
           );
 
           if (!authCheck?.allowed) {
-            throw new BadRequestError('Access denied to private media');
+            throw new ForbiddenError('Access denied to private media');
           }
         } else {
-          throw new BadRequestError('Access denied to private media');
+          throw new ForbiddenError('Access denied to private media');
         }
       }
     }
