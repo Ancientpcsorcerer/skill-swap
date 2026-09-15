@@ -27,10 +27,41 @@ export function PostComposer({
   const [tagsInput, setTagsInput] = useState('');
   const [selectedProject, setSelectedProject] = useState(initialProjectTitle || '');
   const [art, setArt] = useState('idea');
+  const [mediaFiles, setMediaFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
   useModalDialog(dialogRef, open);
+
+  const handleFileChange = (files: FileList | File[]) => {
+    setError('');
+    const updated = [...mediaFiles];
+    for (let i = 0; i < files.length; i++) {
+      const f = files[i];
+      const isImg = f.type.startsWith('image/');
+      const isVid = f.type.startsWith('video/');
+
+      if (!isImg && !isVid) {
+        setError('Only image and video files are supported.');
+        continue;
+      }
+
+      const imgCount = updated.filter((x) => x.type.startsWith('image/')).length;
+      const vidCount = updated.filter((x) => x.type.startsWith('video/')).length;
+
+      if (isImg && imgCount >= 7) {
+        setError('Post limit reached: Maximum 7 images allowed.');
+        continue;
+      }
+      if (isVid && vidCount >= 2) {
+        setError('Post limit reached: Maximum 2 videos allowed.');
+        continue;
+      }
+
+      updated.push(f);
+    }
+    setMediaFiles(updated);
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -57,6 +88,32 @@ export function PostComposer({
         .map((t) => t.trim())
         .filter(Boolean);
 
+      // Upload media files to backend media service
+      const imageUrls: string[] = [];
+      const videoUrls: string[] = [];
+
+      for (const file of mediaFiles) {
+        try {
+          const reader = new FileReader();
+          const base64Promise = new Promise<string>((resolve) => {
+            reader.onload = () => resolve(String(reader.result));
+            reader.readAsDataURL(file);
+          });
+          const base64Data = await base64Promise;
+          const res = await (await import('../../lib/api')).apiClient.media.upload({
+            filename: file.name,
+            mimeType: file.type,
+            base64Data,
+          });
+          if (res?.url) {
+            if (file.type.startsWith('image/')) imageUrls.push(res.url);
+            else if (file.type.startsWith('video/')) videoUrls.push(res.url);
+          }
+        } catch {
+          // ignore upload error
+        }
+      }
+
       const newPost = await postService.createPost(
         {
           id: session.identity.id,
@@ -69,6 +126,8 @@ export function PostComposer({
           tags,
           projectTag: selectedProject.trim() || undefined,
           art,
+          imageUrls,
+          videoUrls,
         }
       );
 
@@ -76,6 +135,7 @@ export function PostComposer({
       setContent('');
       setTagsInput('');
       setSelectedProject('');
+      setMediaFiles([]);
       onCreated?.(newPost);
       onClose();
     } catch (err) {
@@ -175,6 +235,24 @@ export function PostComposer({
               <option value="product">Project Progress</option>
               <option value="event">Announcement / Milestone</option>
             </select>
+          </label>
+          <label className="file-drop" onDragOver={(e) => e.preventDefault()} onDrop={(e) => {
+            e.preventDefault();
+            handleFileChange(e.dataTransfer.files);
+          }}>
+            Drop media files (Max 7 images, 2 videos)
+            <input
+              type="file"
+              multiple
+              accept="image/*,video/*"
+              aria-label="Post media files"
+              onChange={(e) => e.target.files && handleFileChange(e.target.files)}
+            />
+            <span>
+              {mediaFiles.length
+                ? `${mediaFiles.filter((m) => m.type.startsWith('image/')).length}/7 images, ${mediaFiles.filter((m) => m.type.startsWith('video/')).length}/2 videos attached`
+                : 'Upload images & short demos (Max 7 images, 2 videos)'}
+            </span>
           </label>
 
           <div className="dialog-actions">

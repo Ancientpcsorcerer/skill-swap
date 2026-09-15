@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { projectsService } from './projects.service';
-import { UnauthorizedError } from '../../utils/errors';
+import { UnauthorizedError, BadRequestError } from '../../utils/errors';
 
 export class ProjectsController {
   async listProjects(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -14,16 +14,21 @@ export class ProjectsController {
       const limit = req.query.limit ? Number(req.query.limit) : 20;
       const offset = req.query.offset ? Number(req.query.offset) : 0;
 
-      const result = await projectsService.listProjects({
-        q,
-        tag,
-        type,
-        skill,
-        status,
-        creatorId,
-        limit,
-        offset,
-      });
+      const currentUserId = req.user?.userId;
+
+      const result = await projectsService.listProjects(
+        {
+          q,
+          tag,
+          type,
+          skill,
+          status,
+          creatorId,
+          limit,
+          offset,
+        },
+        currentUserId
+      );
 
       res.status(200).json({
         success: true,
@@ -37,7 +42,8 @@ export class ProjectsController {
   async getProjectById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-      const project = await projectsService.getProjectById(id);
+      const currentUserId = req.user?.userId;
+      const project = await projectsService.getProjectById(id, currentUserId);
       res.status(200).json({
         success: true,
         data: { project },
@@ -89,6 +95,105 @@ export class ProjectsController {
         success: true,
         message: 'Project deleted successfully',
       });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // Cover Image Selection (Bug F3)
+  async setCoverImage(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const { cover_image_url } = req.body;
+      if (!cover_image_url) throw new BadRequestError('cover_image_url is required');
+      const project = await projectsService.setCoverImage(id, req.user.userId, cover_image_url);
+      res.json({ success: true, data: { project } });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // Visibility Toggle (Bug F8, F10)
+  async updateVisibility(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const { visibility } = req.body;
+      if (visibility !== 'public' && visibility !== 'private') {
+        throw new BadRequestError('visibility must be either "public" or "private"');
+      }
+      const project = await projectsService.updateVisibility(id, req.user.userId, visibility);
+      res.json({ success: true, data: { project } });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // Follow vs Join (Bug F6)
+  async followProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const result = await projectsService.followProject(id, req.user.userId);
+      res.json({ success: true, data: result });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async unfollowProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const result = await projectsService.unfollowProject(id, req.user.userId);
+      res.json({ success: true, data: result });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async joinProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      await projectsService.joinProject(id, req.user.userId);
+      res.json({ success: true, message: 'Joined project team as collaborator' });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // Recreate Project (Bug F7)
+  async recreateProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const project = await projectsService.recreateProject(id, req.user.userId);
+      res.status(201).json({ success: true, data: { project } });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // Project Updates (Bug F4, F5, F9)
+  async addProjectUpdate(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const update = await projectsService.addProjectUpdate(id, req.user.userId, req.body);
+      res.status(201).json({ success: true, data: { update } });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getProjectUpdates(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const currentUserId = req.user?.userId;
+      const updates = await projectsService.getProjectUpdates(id, currentUserId);
+      res.json({ success: true, data: { updates } });
     } catch (err) {
       next(err);
     }

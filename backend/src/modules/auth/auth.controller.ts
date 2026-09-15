@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { authService } from './auth.service';
 import { env } from '../../config/env';
-import { UnauthorizedError } from '../../utils/errors';
+import { UnauthorizedError, BadRequestError } from '../../utils/errors';
 
 const COOKIE_NAME = 'refreshToken';
 
@@ -133,6 +133,36 @@ export class AuthController {
         success: true,
         data: {
           user,
+        },
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async oauth(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const userAgent = req.headers['user-agent'];
+      const ip = req.ip;
+      const { email, name, username, avatarUrl, provider, providerUid } = req.body;
+
+      if (!email) {
+        throw new BadRequestError('email is required for OAuth authentication');
+      }
+
+      const { user, accessToken, refreshToken } = await authService.oauthLoginOrRegister(
+        { email, name, username, avatarUrl, provider, providerUid },
+        userAgent,
+        ip
+      );
+
+      res.cookie(COOKIE_NAME, refreshToken, getCookieOptions());
+
+      res.status(200).json({
+        success: true,
+        data: {
+          user,
+          accessToken,
         },
       });
     } catch (err) {

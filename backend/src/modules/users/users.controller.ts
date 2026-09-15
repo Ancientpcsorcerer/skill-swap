@@ -75,6 +75,27 @@ export class UsersController {
       next(err);
     }
   }
+
+  async updatePhoto(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const { avatar_url } = req.body;
+      const updated = await usersService.updateProfile(req.user.userId, { avatar_url });
+      res.status(200).json({ success: true, data: { profile: updated } });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async removePhoto(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const updated = await usersService.updateProfile(req.user.userId, { avatar_url: null as any });
+      res.status(200).json({ success: true, data: { profile: updated } });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export const usersController = new UsersController();

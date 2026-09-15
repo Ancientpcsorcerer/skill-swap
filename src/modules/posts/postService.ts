@@ -114,6 +114,36 @@ export const postService = {
       }
     }
     cachedAllPosts = all.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+    // Asynchronously fetch live posts from PostgreSQL backend
+    api.posts.list().then((serverPosts) => {
+      if (serverPosts && serverPosts.length > 0) {
+        const merged = [...cachedAllPosts];
+        for (const sp of serverPosts) {
+          const mapped: Post = {
+            id: sp.id,
+            authorId: sp.author_id,
+            authorName: sp.author_name,
+            authorUsername: sp.author_username,
+            authorAvatarUrl: sp.author_avatar_url,
+            title: sp.title,
+            content: sp.content,
+            tags: sp.tags,
+            projectTag: sp.project_tag || undefined,
+            art: sp.art,
+            imageUrls: sp.image_urls,
+            videoUrls: sp.video_urls,
+            createdAt: sp.created_at,
+          };
+          if (!merged.some((p) => p.id === mapped.id)) {
+            merged.push(mapped);
+          }
+        }
+        cachedAllPosts = merged.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        window.dispatchEvent(new CustomEvent(POST_UPDATE_EVENT));
+      }
+    }).catch(() => {});
+
     return cachedAllPosts;
   },
 
@@ -135,7 +165,7 @@ export const postService = {
       tags.push(input.projectTag);
     }
 
-    const newPost: Post = {
+    let createdPost: Post = {
       id: crypto.randomUUID(),
       authorId: author.id,
       authorName: author.name,
@@ -146,40 +176,50 @@ export const postService = {
       tags,
       projectTag: input.projectTag,
       art: input.art || 'idea',
+      imageUrls: input.imageUrls || [],
+      videoUrls: input.videoUrls || [],
       createdAt: now,
     };
 
-    // Save locally first for instant, resilient responsiveness
-    const current = loadLocalPosts();
-    saveLocalPosts([newPost, ...current]);
-
-    // If authenticated, persist to live backend ideas table as well!
+    // Save to PostgreSQL via apiClient
     try {
-      await api.discover.save('idea', newPost.id).catch(() => {});
-      // Call backend POST /api/v1/ideas if token is present
-      const token = localStorage.getItem('skill-swap.jwt.v1');
-      if (token) {
-        await fetch(
-          `${(typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE_URL) || 'https://skill-swap-api-0jym.onrender.com/api/v1'}/ideas`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              title: newPost.title,
-              description: newPost.content,
-              tags: newPost.tags,
-              art: newPost.art,
-            }),
-          }
-        ).catch(() => {});
+      const serverRecord = await api.posts.create({
+        title: createdPost.title,
+        content: createdPost.content,
+        tags: createdPost.tags,
+        project_tag: createdPost.projectTag,
+        art: createdPost.art,
+        image_urls: createdPost.imageUrls,
+        video_urls: createdPost.videoUrls,
+      });
+
+      if (serverRecord) {
+        createdPost = {
+          id: serverRecord.id,
+          authorId: serverRecord.author_id,
+          authorName: serverRecord.author_name,
+          authorUsername: serverRecord.author_username,
+          authorAvatarUrl: serverRecord.author_avatar_url,
+          title: serverRecord.title,
+          content: serverRecord.content,
+          tags: serverRecord.tags,
+          projectTag: serverRecord.project_tag || undefined,
+          art: serverRecord.art,
+          imageUrls: serverRecord.image_urls,
+          videoUrls: serverRecord.video_urls,
+          createdAt: serverRecord.created_at,
+        };
       }
-    } catch {
-      // ignore backend sync error
+    } catch (err) {
+      console.warn('Backend post creation failed, falling back to local:', err);
     }
 
-    return newPost;
+    // Save locally
+    const current = loadLocalPosts();
+    saveLocalPosts([createdPost, ...current]);
+    cachedAllPosts = [createdPost, ...cachedAllPosts];
+    window.dispatchEvent(new CustomEvent(POST_UPDATE_EVENT));
+
+    return createdPost;
   },
 };

@@ -9,6 +9,8 @@ export interface Post {
   tags: string[];
   projectTag?: string;
   art: string;
+  imageUrls?: string[];
+  videoUrls?: string[];
   createdAt: string;
 }
 
@@ -18,4 +20,6 @@ export interface CreatePostInput {
   tags?: string[];
   projectTag?: string;
   art?: string;
+  imageUrls?: string[];
+  videoUrls?: string[];
 }

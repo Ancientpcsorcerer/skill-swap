@@ -10,6 +10,7 @@ import { LearnModeSwitcher } from './LearnModeSwitcher';
 import { ExploreSkillsView } from './ExploreSkillsView';
 import { MyProgressView } from './MyProgressView';
 import { LearningDetailModal } from './LearningDetailModal';
+import { LearningEnvironment } from './LearningEnvironment';
 import type { LearningPath } from '../../app/data/models';
 import '../../styles/learn.css';
 
@@ -99,8 +100,15 @@ export function LearnModule() {
           activeProgressCount={inProgressCount}
         />
 
-        {/* Two-Path Body: Explore Skills vs My Progress */}
-        {activeMode === 'explore' ? (
+        {/* Immersive Dedicated Learning Environment or Segmented Views */}
+        {selectedPath ? (
+          <LearningEnvironment
+            path={selectedPath}
+            onBack={() => setSelectedPath(null)}
+            record={learnState.records.find((r) => r.pathId === selectedPath.id)}
+            onUpdateRecord={learnState.updateRecord}
+          />
+        ) : activeMode === 'explore' ? (
           <ExploreSkillsView
             query={searchQuery}
             onQueryChange={setSearchQuery}

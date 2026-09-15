@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { projectsController } from '../modules/projects/projects.controller';
-import { authenticateToken } from '../middleware/auth';
+import { authenticateToken, optionalAuth } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import {
   createProjectSchema,
@@ -11,17 +11,18 @@ import {
 
 export const projectsRouter = Router();
 
-// Guard all project routes: requires valid JWT Bearer token
-projectsRouter.use(authenticateToken);
-
+// Public / Guest accessible routes (filtered by visibility)
 projectsRouter.get(
   '/',
+  optionalAuth,
   validate({ query: searchProjectsQuerySchema }),
   projectsController.listProjects.bind(projectsController)
 );
 
-projectsRouter.get('/:id', projectsController.getProjectById.bind(projectsController));
+projectsRouter.get('/:id', optionalAuth, projectsController.getProjectById.bind(projectsController));
+projectsRouter.get('/:id/updates', optionalAuth, projectsController.getProjectUpdates.bind(projectsController));
 
+// Protected mutation routes (require authenticated JWT)
 projectsRouter.post(
   '/',
   authenticateToken,
@@ -42,6 +43,24 @@ projectsRouter.delete(
   projectsController.deleteProject.bind(projectsController)
 );
 
+// Cover image selection (Bug F3)
+projectsRouter.post('/:id/cover', authenticateToken, projectsController.setCoverImage.bind(projectsController));
+
+// Visibility toggle (Bug F8, F10)
+projectsRouter.patch('/:id/visibility', authenticateToken, projectsController.updateVisibility.bind(projectsController));
+
+// Follow vs Join (Bug F6)
+projectsRouter.post('/:id/follow', authenticateToken, projectsController.followProject.bind(projectsController));
+projectsRouter.delete('/:id/follow', authenticateToken, projectsController.unfollowProject.bind(projectsController));
+projectsRouter.post('/:id/join', authenticateToken, projectsController.joinProject.bind(projectsController));
+
+// Recreate Completed Project (Bug F7)
+projectsRouter.post('/:id/recreate', authenticateToken, projectsController.recreateProject.bind(projectsController));
+
+// Project Updates (Bug F4, F5)
+projectsRouter.post('/:id/updates', authenticateToken, projectsController.addProjectUpdate.bind(projectsController));
+
+// Members
 projectsRouter.post(
   '/:id/members',
   authenticateToken,

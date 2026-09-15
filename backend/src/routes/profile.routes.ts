@@ -13,3 +13,5 @@ profileRouter.put(
   validate({ body: updateProfileSchema }),
   usersController.updateProfile.bind(usersController)
 );
+profileRouter.post('/photo', authenticateToken, usersController.updatePhoto.bind(usersController));
+profileRouter.delete('/photo', authenticateToken, usersController.removePhoto.bind(usersController));

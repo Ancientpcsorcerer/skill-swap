@@ -1,225 +1,322 @@
+import { apiClient } from '../../lib/api';
+import { e2eeService } from '../../lib/crypto/e2eeService';
 import type { ChatMessage, ChatConversation, ChatParticipant } from './types';
 
-const CHAT_STORAGE_PREFIX = 'skill-swap.chat.v1.';
-const CHAT_UPDATE_EVENT = 'skill-swap:chat-updated';
+type Subscriber = () => void;
 
-interface UserChatStorage {
-  conversations: Record<string, {
-    partner: ChatParticipant;
-    unreadCount: number;
-    updatedAt: string;
-  }>;
-  messages: Record<string, ChatMessage[]>; // keyed by partnerId
-}
+class ChatStoreService {
+  private subscribers = new Set<Subscriber>();
+  private conversationsMap = new Map<string, ChatConversation>();
+  private messagesMap = new Map<string, ChatMessage[]>(); // Keyed by conversationId
+  private conversationPartnerIndex = new Map<string, string>(); // partnerId -> conversationId
+  private loadingConversations = false;
+  private loadingMessages = new Set<string>();
 
-function getStorageKey(userId: string): string {
-  return `${CHAT_STORAGE_PREFIX}${userId}`;
-}
-
-function loadUserStore(userId: string): UserChatStorage {
-  if (!userId || userId === 'guest') {
-    return { conversations: {}, messages: {} };
-  }
-  try {
-    const raw = localStorage.getItem(getStorageKey(userId));
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed.conversations === 'object' && typeof parsed.messages === 'object') {
-        return parsed as UserChatStorage;
-      }
-    }
-  } catch {
-    // ignore parse error
-  }
-  return { conversations: {}, messages: {} };
-}
-
-function saveUserStore(userId: string, store: UserChatStorage): void {
-  if (!userId || userId === 'guest') return;
-  try {
-    localStorage.setItem(getStorageKey(userId), JSON.stringify(store));
-    window.dispatchEvent(new CustomEvent(CHAT_UPDATE_EVENT, { detail: { userId } }));
-  } catch {
-    // ignore storage quota error
-  }
-}
-
-let cachedConversationsRaw: string | null = null;
-let cachedConversationsUserId: string = '';
-let cachedConversationsList: ChatConversation[] = [];
-
-let cachedMessagesRaw: string | null = null;
-let cachedMessagesKey: string = '';
-let cachedMessagesList: ChatMessage[] = [];
-
-export const chatService = {
-  subscribe(callback: () => void): () => void {
-    const handler = () => callback();
-    window.addEventListener(CHAT_UPDATE_EVENT, handler);
-    window.addEventListener('storage', handler);
+  subscribe = (callback: Subscriber): (() => void) => {
+    this.subscribers.add(callback);
     return () => {
-      window.removeEventListener(CHAT_UPDATE_EVENT, handler);
-      window.removeEventListener('storage', handler);
+      this.subscribers.delete(callback);
     };
-  },
+  };
 
-  getConversations(userId: string): ChatConversation[] {
-    if (!userId || userId === 'guest') {
-      return [];
-    }
-    const key = getStorageKey(userId);
-    let raw: string | null = null;
-    try {
-      raw = localStorage.getItem(key);
-    } catch {
-      // ignore
-    }
-
-    if (raw === cachedConversationsRaw && userId === cachedConversationsUserId) {
-      return cachedConversationsList;
-    }
-
-    cachedConversationsRaw = raw;
-    cachedConversationsUserId = userId;
-    const store = loadUserStore(userId);
-    const convos: ChatConversation[] = [];
-
-    for (const [partnerId, convData] of Object.entries(store.conversations)) {
-      const msgs = store.messages[partnerId] || [];
-      const lastMessage = msgs.length > 0 ? msgs[msgs.length - 1] : undefined;
-      convos.push({
-        id: partnerId,
-        partnerId,
-        partner: convData.partner,
-        lastMessage,
-        unreadCount: convData.unreadCount || 0,
-        updatedAt: convData.updatedAt || (lastMessage ? lastMessage.createdAt : new Date().toISOString()),
-      });
-    }
-
-    cachedConversationsList = convos.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-    return cachedConversationsList;
-  },
-
-  getMessages(userId: string, partnerId: string): ChatMessage[] {
-    if (!userId || userId === 'guest' || !partnerId) {
-      return [];
-    }
-    const key = `${getStorageKey(userId)}:${partnerId}`;
-    let raw: string | null = null;
-    try {
-      raw = localStorage.getItem(getStorageKey(userId));
-    } catch {
-      // ignore
-    }
-
-    if (raw === cachedMessagesRaw && key === cachedMessagesKey) {
-      return cachedMessagesList;
-    }
-
-    cachedMessagesRaw = raw;
-    cachedMessagesKey = key;
-    const store = loadUserStore(userId);
-    cachedMessagesList = store.messages[partnerId] || [];
-    return cachedMessagesList;
-  },
-
-  sendMessage(
-    currentUserId: string,
-    partner: ChatParticipant,
-    text: string
-  ): ChatMessage {
-    const trimmed = text.trim();
-    if (!trimmed) {
-      throw new Error('Message cannot be empty');
-    }
-
-    const store = loadUserStore(currentUserId);
-    const now = new Date().toISOString();
-    const message: ChatMessage = {
-      id: crypto.randomUUID(),
-      senderId: currentUserId,
-      recipientId: partner.id,
-      text: trimmed,
-      createdAt: now,
-    };
-
-    const existingMsgs = store.messages[partner.id] || [];
-    store.messages[partner.id] = [...existingMsgs, message];
-
-    store.conversations[partner.id] = {
-      partner,
-      unreadCount: 0,
-      updatedAt: now,
-    };
-
-    saveUserStore(currentUserId, store);
-
-    // If partner is another local user account, also deliver the message to partner's isolated inbox
-    try {
-      const partnerStore = loadUserStore(partner.id);
-      const partnerExisting = partnerStore.messages[currentUserId] || [];
-      partnerStore.messages[currentUserId] = [...partnerExisting, message];
-      
-      // Load current user profile info for partner's conversation entry
-      let currentSenderInfo: ChatParticipant = {
-        id: currentUserId,
-        name: 'Collaborator',
-        username: 'collaborator',
-      };
+  private notify() {
+    this.subscribers.forEach((cb) => {
       try {
-        const sessionRaw = localStorage.getItem('skill-swap.session.v1');
-        if (sessionRaw) {
-          const sess = JSON.parse(sessionRaw);
-          if (sess?.identity) {
-            currentSenderInfo = {
-              id: sess.identity.id,
-              name: sess.identity.name,
-              username: sess.identity.username,
-              avatarUrl: sess.identity.avatarUrl,
-              bio: sess.identity.bio,
-              location: sess.identity.location,
-              skills: sess.identity.skills,
-            };
-          }
-        }
-      } catch {
-        // fallback
+        cb();
+      } catch (err) {
+        console.error('Chat store subscriber error:', err);
       }
+    });
+  }
 
-      partnerStore.conversations[currentUserId] = {
-        partner: currentSenderInfo,
-        unreadCount: (partnerStore.conversations[currentUserId]?.unreadCount || 0) + 1,
-        updatedAt: now,
-      };
-      saveUserStore(partner.id, partnerStore);
-    } catch {
-      // ignore
+  /**
+   * Returns currently loaded conversations from memory
+   */
+  getConversations(currentUserId: string): ChatConversation[] {
+    if (!currentUserId || currentUserId === 'guest') return [];
+
+    // Trigger asynchronous fetch if not loaded
+    if (this.conversationsMap.size === 0 && !this.loadingConversations) {
+      this.fetchConversations(currentUserId);
     }
 
-    return message;
-  },
+    return Array.from(this.conversationsMap.values()).sort(
+      (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+  }
 
-  markConversationRead(userId: string, partnerId: string): void {
-    const store = loadUserStore(userId);
-    if (store.conversations[partnerId] && store.conversations[partnerId].unreadCount > 0) {
-      store.conversations[partnerId].unreadCount = 0;
-      saveUserStore(userId, store);
+  /**
+   * Fetches conversation list from the backend API
+   */
+  async fetchConversations(currentUserId: string): Promise<ChatConversation[]> {
+    if (!currentUserId || currentUserId === 'guest') return [];
+    this.loadingConversations = true;
+    try {
+      const serverConvos = await apiClient.chat.getConversations();
+      for (const sc of serverConvos) {
+        let lastMessage: ChatMessage | undefined;
+        if (sc.last_msg_cipher && sc.last_msg_iv && sc.last_msg_tag) {
+          const decryptedText = await e2eeService.decryptMessage(sc.id, {
+            ciphertext: sc.last_msg_cipher,
+            iv: sc.last_msg_iv,
+            authTag: sc.last_msg_tag,
+          });
+          lastMessage = {
+            id: sc.last_msg_id,
+            senderId: sc.last_msg_sender,
+            conversationId: sc.id,
+            text: decryptedText,
+            createdAt: sc.last_msg_created || sc.updated_at,
+            status: 'delivered',
+          };
+        }
+
+        const partner: ChatParticipant = {
+          id: sc.partner.id,
+          name: sc.partner.name,
+          username: sc.partner.username,
+          avatarUrl: sc.partner.avatar_url,
+          bio: sc.partner.bio,
+          skills: sc.partner.skills || [],
+        };
+
+        const convo: ChatConversation = {
+          id: sc.id,
+          partnerId: partner.id,
+          partner,
+          lastMessage,
+          unreadCount: 0,
+          updatedAt: sc.updated_at,
+        };
+
+        this.conversationsMap.set(sc.id, convo);
+        this.conversationPartnerIndex.set(partner.id, sc.id);
+      }
+      this.notify();
+      return Array.from(this.conversationsMap.values());
+    } catch (err) {
+      console.warn('Could not fetch conversations from server:', err);
+      return Array.from(this.conversationsMap.values());
+    } finally {
+      this.loadingConversations = false;
     }
-  },
+  }
 
-  ensureConversation(userId: string, partner: ChatParticipant): void {
-    const store = loadUserStore(userId);
-    if (!store.conversations[partner.id]) {
-      store.conversations[partner.id] = {
+  /**
+   * Resolves or creates a canonical conversation with a partner
+   */
+  async ensureConversation(currentUserId: string, partner: ChatParticipant): Promise<ChatConversation | null> {
+    if (!currentUserId || !partner?.id) return null;
+
+    // Check if already in memory
+    const existingId = this.conversationPartnerIndex.get(partner.id);
+    if (existingId && this.conversationsMap.has(existingId)) {
+      return this.conversationsMap.get(existingId)!;
+    }
+
+    try {
+      const serverConvo = await apiClient.chat.getOrCreateConversation(partner.id);
+      const convo: ChatConversation = {
+        id: serverConvo.id,
+        partnerId: partner.id,
         partner,
         unreadCount: 0,
-        updatedAt: new Date().toISOString(),
+        updatedAt: serverConvo.updated_at,
       };
-      if (!store.messages[partner.id]) {
-        store.messages[partner.id] = [];
-      }
-      saveUserStore(userId, store);
+
+      this.conversationsMap.set(serverConvo.id, convo);
+      this.conversationPartnerIndex.set(partner.id, serverConvo.id);
+      this.notify();
+      return convo;
+    } catch (err) {
+      console.error('Failed to create or get conversation:', err);
+      return null;
     }
-  },
-};
+  }
+
+  /**
+   * Returns loaded messages for a conversation
+   */
+  getMessages(conversationId: string): ChatMessage[] {
+    if (!conversationId) return [];
+
+    // Trigger asynchronous fetch if not loaded
+    if (!this.messagesMap.has(conversationId) && !this.loadingMessages.has(conversationId)) {
+      this.fetchMessages(conversationId);
+    }
+
+    return this.messagesMap.get(conversationId) || [];
+  }
+
+  /**
+   * Fetches and decrypts message history from PostgreSQL backend
+   */
+  async fetchMessages(conversationId: string): Promise<ChatMessage[]> {
+    if (!conversationId || this.loadingMessages.has(conversationId)) {
+      return this.messagesMap.get(conversationId) || [];
+    }
+
+    this.loadingMessages.add(conversationId);
+    try {
+      const serverMessages = await apiClient.chat.getMessages(conversationId);
+      const decryptedList: ChatMessage[] = [];
+
+      for (const sm of serverMessages) {
+        const text = await e2eeService.decryptMessage(conversationId, {
+          ciphertext: sm.ciphertext,
+          iv: sm.iv,
+          authTag: sm.auth_tag,
+        });
+
+        decryptedList.push({
+          id: sm.id,
+          senderId: sm.sender_id,
+          conversationId: sm.conversation_id,
+          text,
+          createdAt: sm.created_at,
+          status: 'delivered',
+        });
+      }
+
+      this.messagesMap.set(conversationId, decryptedList);
+      this.notify();
+      return decryptedList;
+    } catch (err) {
+      console.error('Failed to fetch message history:', err);
+      return this.messagesMap.get(conversationId) || [];
+    } finally {
+      this.loadingMessages.delete(conversationId);
+    }
+  }
+
+  /**
+   * Sends an encrypted message: optimistic UI -> real network request -> server persistence
+   */
+  async sendMessage(
+    currentUserId: string,
+    conversationId: string,
+    partner: ChatParticipant,
+    text: string
+  ): Promise<ChatMessage> {
+    const trimmed = text.trim();
+    if (!trimmed) throw new Error('Message cannot be empty');
+
+    const tempId = `temp-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const now = new Date().toISOString();
+
+    const optimisticMsg: ChatMessage = {
+      id: tempId,
+      senderId: currentUserId,
+      recipientId: partner.id,
+      conversationId,
+      text: trimmed,
+      createdAt: now,
+      status: 'sending',
+    };
+
+    // 1. Optimistic UI update
+    const currentList = this.messagesMap.get(conversationId) || [];
+    this.messagesMap.set(conversationId, [...currentList, optimisticMsg]);
+
+    const convo = this.conversationsMap.get(conversationId);
+    if (convo) {
+      convo.lastMessage = optimisticMsg;
+      convo.updatedAt = now;
+    }
+    this.notify();
+
+    // 2. Client-side E2EE encryption
+    try {
+      const encrypted = await e2eeService.encryptMessage(conversationId, trimmed);
+
+      // 3. Real network HTTP POST request to backend API
+      const serverRecord = await apiClient.chat.sendMessage(conversationId, {
+        ciphertext: encrypted.ciphertext,
+        iv: encrypted.iv,
+        authTag: encrypted.authTag,
+        ratchetHeader: encrypted.ratchetHeader,
+      });
+
+      // 4. Reconcile optimistic message with authoritative server record
+      const updatedList = (this.messagesMap.get(conversationId) || []).map((m) => {
+        if (m.id === tempId) {
+          return {
+            ...m,
+            id: serverRecord.id,
+            createdAt: serverRecord.created_at,
+            status: 'delivered' as const,
+          };
+        }
+        return m;
+      });
+
+      this.messagesMap.set(conversationId, updatedList);
+      if (convo) {
+        convo.lastMessage = {
+          ...optimisticMsg,
+          id: serverRecord.id,
+          createdAt: serverRecord.created_at,
+          status: 'delivered',
+        };
+        convo.updatedAt = serverRecord.created_at;
+      }
+      this.notify();
+
+      return {
+        ...optimisticMsg,
+        id: serverRecord.id,
+        createdAt: serverRecord.created_at,
+        status: 'delivered',
+      };
+    } catch (err: any) {
+      console.error('Chat send failed over network:', err);
+
+      // 5. Mark failed on error so user can retry
+      const failedList = (this.messagesMap.get(conversationId) || []).map((m) => {
+        if (m.id === tempId) {
+          return {
+            ...m,
+            status: 'failed' as const,
+            error: err.message || 'Network delivery failed',
+          };
+        }
+        return m;
+      });
+
+      this.messagesMap.set(conversationId, failedList);
+      this.notify();
+      throw err;
+    }
+  }
+
+  /**
+   * Retries sending a failed message
+   */
+  async retryMessage(
+    currentUserId: string,
+    conversationId: string,
+    partner: ChatParticipant,
+    messageId: string
+  ): Promise<void> {
+    const list = this.messagesMap.get(conversationId) || [];
+    const target = list.find((m) => m.id === messageId);
+    if (!target) return;
+
+    // Remove failed message and resend
+    this.messagesMap.set(
+      conversationId,
+      list.filter((m) => m.id !== messageId)
+    );
+    await this.sendMessage(currentUserId, conversationId, partner, target.text);
+  }
+
+  markConversationRead(_currentUserId: string, _partnerId: string): void {
+    // Unread count is purely local visual state
+  }
+
+  getConversationIdForPartner(partnerId: string): string | undefined {
+    return this.conversationPartnerIndex.get(partnerId);
+  }
+}
+
+export const chatService = new ChatStoreService();

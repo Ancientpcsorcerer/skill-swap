@@ -23,4 +23,5 @@ authRouter.post(
 
 authRouter.post('/refresh', authController.refresh.bind(authController));
 authRouter.post('/logout', authController.logout.bind(authController));
+authRouter.post('/oauth', authLimiter, authController.oauth.bind(authController));
 authRouter.get('/me', authenticateToken, authController.me.bind(authController));

@@ -213,6 +213,121 @@ CREATE TABLE IF NOT EXISTS activity (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- ALTER existing tables for new columns
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS visibility VARCHAR(20) NOT NULL DEFAULT 'public';
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS cover_image_url TEXT NULL;
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS recreated_from_id UUID NULL REFERENCES projects(id) ON DELETE SET NULL;
+
+-- 21. Project Followers
+CREATE TABLE IF NOT EXISTS project_followers (
+    project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (project_id, user_id)
+);
+
+-- 22. Project Authorized Connections (for private projects)
+CREATE TABLE IF NOT EXISTS project_authorized_connections (
+    project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (project_id, user_id)
+);
+
+-- 23. Project Updates
+CREATE TABLE IF NOT EXISTS project_updates (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    author_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    title VARCHAR(150) NOT NULL,
+    body TEXT NOT NULL,
+    image_urls TEXT[] NOT NULL DEFAULT '{}',
+    video_urls TEXT[] NOT NULL DEFAULT '{}',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 24. Posts
+CREATE TABLE IF NOT EXISTS posts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    author_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(200) NOT NULL,
+    content TEXT NOT NULL,
+    tags TEXT[] NOT NULL DEFAULT '{}',
+    project_tag VARCHAR(100) NULL,
+    art VARCHAR(50) NOT NULL DEFAULT 'idea',
+    image_urls TEXT[] NOT NULL DEFAULT '{}',
+    video_urls TEXT[] NOT NULL DEFAULT '{}',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 25. Chat Conversations
+CREATE TABLE IF NOT EXISTS chat_conversations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    participant_one_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    participant_two_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT chk_participant_order CHECK (participant_one_id < participant_two_id),
+    CONSTRAINT uq_conversation_pair UNIQUE (participant_one_id, participant_two_id)
+);
+
+-- 26. Chat Messages
+CREATE TABLE IF NOT EXISTS chat_messages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    conversation_id UUID NOT NULL REFERENCES chat_conversations(id) ON DELETE CASCADE,
+    sender_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    ciphertext TEXT NOT NULL,
+    iv VARCHAR(64) NOT NULL,
+    auth_tag VARCHAR(64) NOT NULL,
+    ratchet_header JSONB NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 27. Crypto Public Key Directory (E2EE)
+CREATE TABLE IF NOT EXISTS user_crypto_keys (
+    user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    identity_public_key TEXT NOT NULL,
+    signed_prekey TEXT NOT NULL,
+    signed_prekey_signature TEXT NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS user_one_time_prekeys (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    key_id VARCHAR(64) NOT NULL,
+    public_key TEXT NOT NULL,
+    consumed_at TIMESTAMPTZ NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT uq_user_otk UNIQUE (user_id, key_id)
+);
+
+-- 28. Media Assets & Private Gate
+CREATE TABLE IF NOT EXISTS media_assets (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    uploader_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    file_path TEXT NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    mime_type VARCHAR(100) NOT NULL,
+    size_bytes BIGINT NOT NULL,
+    is_private BOOLEAN NOT NULL DEFAULT false,
+    project_id UUID NULL REFERENCES projects(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 27. Media Uploads
+CREATE TABLE IF NOT EXISTS media_uploads (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    url TEXT NOT NULL,
+    media_type VARCHAR(20) NOT NULL CHECK (media_type IN ('image', 'video')),
+    mime_type VARCHAR(100) NOT NULL,
+    size_bytes BIGINT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- Indexes for performance and search
 CREATE INDEX IF NOT EXISTS idx_users_username_trgm ON users USING GIN (username gin_trgm_ops);
 CREATE INDEX IF NOT EXISTS idx_users_name_trgm ON users USING GIN (name gin_trgm_ops);
@@ -221,3 +336,8 @@ CREATE INDEX IF NOT EXISTS idx_projects_fts ON projects USING GIN (to_tsvector('
 CREATE INDEX IF NOT EXISTS idx_activity_user_created ON activity (user_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_connections_users ON connections (requester_id, addressee_id, status);
 CREATE INDEX IF NOT EXISTS idx_refresh_tokens_hash ON refresh_tokens (token_hash);
+CREATE INDEX IF NOT EXISTS idx_project_updates_project ON project_updates (project_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_posts_author ON posts (author_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_chat_messages_conv ON chat_messages (conversation_id, created_at ASC);
+CREATE INDEX IF NOT EXISTS idx_chat_conv_participants ON chat_conversations (participant_one_id, participant_two_id);
+

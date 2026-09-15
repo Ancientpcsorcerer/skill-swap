@@ -6,6 +6,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
   hashToken,
+  AuthTokenPayload,
 } from '../../utils/tokens';
 import {
   ConflictError,
@@ -13,6 +14,7 @@ import {
   NotFoundError,
 } from '../../utils/errors';
 import { env } from '../../config/env';
+import { usersService } from '../users/users.service';
 
 export interface UserRecord {
   id: string;
@@ -241,6 +243,78 @@ export class AuthService {
       interests,
       project_interests: projectInterests,
     };
+  }
+
+  async oauthLoginOrRegister(
+    profile: {
+      email: string;
+      name: string;
+      username?: string;
+      avatarUrl?: string | null;
+      provider?: string;
+      providerUid?: string;
+    },
+    userAgent?: string,
+    ipAddress?: string
+  ): Promise<{ user: UserRecord; accessToken: string; refreshToken: string }> {
+    const cleanEmail = profile.email.toLowerCase().trim();
+    const cleanName = profile.name?.trim() || cleanEmail.split('@')[0] || 'User';
+    let baseUsername =
+      profile.username?.trim().toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 24) ||
+      cleanEmail.split('@')[0].replace(/[^a-z0-9_]/g, '').slice(0, 24) ||
+      'creator';
+
+    // 1. Check if user with this email already exists
+    let user = await queryOne<UserRecord>(
+      `SELECT id, name, username, email, bio, location, avatar_url, created_at, updated_at
+       FROM users WHERE email = $1 AND deleted_at IS NULL`,
+      [cleanEmail]
+    );
+
+    if (user) {
+      if (!user.avatar_url && profile.avatarUrl) {
+        await query(`UPDATE users SET avatar_url = $1, updated_at = NOW() WHERE id = $2`, [
+          profile.avatarUrl,
+          user.id,
+        ]);
+        user.avatar_url = profile.avatarUrl;
+      }
+    } else {
+      const existingUserWithUsername = await queryOne<{ id: string }>(
+        `SELECT id FROM users WHERE username = $1`,
+        [baseUsername]
+      );
+      if (existingUserWithUsername) {
+        baseUsername = `${baseUsername.slice(0, 20)}_${Math.floor(1000 + Math.random() * 9000)}`;
+      }
+
+      user = await queryOne<UserRecord>(
+        `INSERT INTO users (name, username, email, avatar_url)
+         VALUES ($1, $2, $3, $4)
+         RETURNING id, name, username, email, bio, location, avatar_url, created_at, updated_at`,
+        [cleanName, baseUsername, cleanEmail, profile.avatarUrl || null]
+      );
+    }
+
+    const payload: AuthTokenPayload = {
+      userId: user!.id,
+      email: user!.email,
+      role: 'member',
+    };
+
+    const accessToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken();
+    const tokenHash = hashToken(refreshToken);
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+    await query(
+      `INSERT INTO refresh_tokens (user_id, token_hash, expires_at, user_agent, ip_address)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [user!.id, tokenHash, expiresAt, userAgent, ipAddress]
+    );
+
+    const fullProfile = await usersService.getProfile(user!.id);
+    return { user: fullProfile, accessToken, refreshToken };
   }
 
   private async getUserSkills(userId: string): Promise<string[]> {

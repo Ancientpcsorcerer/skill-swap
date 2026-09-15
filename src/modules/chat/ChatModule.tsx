@@ -112,6 +112,15 @@ export function ChatModule() {
   }
 
   const activeConversation = conversations.find((c) => c.partnerId === selectedPartnerId);
+  const conversationId = activeConversation?.id || (selectedPartnerId ? chatService.getConversationIdForPartner(selectedPartnerId) : undefined);
+
+  // When conversation ID becomes available or selected partner changes, fetch history from backend
+  useEffect(() => {
+    if (conversationId) {
+      chatService.fetchMessages(conversationId);
+    }
+  }, [conversationId]);
+
   const activePartner =
     activeConversation?.partner ||
     (() => {
@@ -128,17 +137,25 @@ export function ChatModule() {
       return null;
     })();
 
-  const activeMessages = selectedPartnerId
-    ? chatService.getMessages(currentUserId, selectedPartnerId)
+  const activeMessages = conversationId
+    ? chatService.getMessages(conversationId)
     : [];
 
-  const handleSend = (e?: FormEvent) => {
+  const handleSend = async (e?: FormEvent) => {
     e?.preventDefault();
     if (!inputText.trim() || !activePartner) return;
+    const textToSend = inputText.trim();
+    setInputText('');
+    inputRef.current?.focus();
+
     try {
-      chatService.sendMessage(currentUserId, activePartner, inputText);
-      setInputText('');
-      inputRef.current?.focus();
+      let conv = activeConversation;
+      if (!conv) {
+        conv = (await chatService.ensureConversation(currentUserId, activePartner)) || undefined;
+      }
+      if (conv) {
+        await chatService.sendMessage(currentUserId, conv.id, activePartner, textToSend);
+      }
     } catch (err) {
       console.error('Failed to send message:', err);
     }
@@ -151,7 +168,7 @@ export function ChatModule() {
     }
   };
 
-  const startChatWithCollaborator = (collaborator: (typeof connectedCollaborators)[0]) => {
+  const startChatWithCollaborator = async (collaborator: (typeof connectedCollaborators)[0]) => {
     const participant: ChatParticipant = {
       id: collaborator.id,
       name: collaborator.name,
@@ -159,9 +176,12 @@ export function ChatModule() {
       bio: collaborator.description,
       skills: collaborator.skills,
     };
-    chatService.ensureConversation(currentUserId, participant);
+    const conv = await chatService.ensureConversation(currentUserId, participant);
     setSelectedPartnerId(collaborator.id);
     setShowCollaboratorsList(false);
+    if (conv) {
+      chatService.fetchMessages(conv.id);
+    }
   };
 
   const filteredConversations = conversations.filter(
@@ -356,9 +376,36 @@ export function ChatModule() {
                         {!isMe && <Avatar name={activePartner.name} small />}
                         <div className="chat-message-bubble">
                           <p className="chat-message-text" style={{ margin: 0 }}>{msg.text}</p>
-                          <span className="chat-message-time">
-                            {formatTimestamp(msg.createdAt)}
-                          </span>
+                          <div className="chat-message-meta" style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end', marginTop: '4px' }}>
+                            <span className="chat-message-time">
+                              {formatTimestamp(msg.createdAt)}
+                            </span>
+                            {isMe && msg.status === 'sending' && (
+                              <span className="chat-status-pill sending" title="Sending...">⏳</span>
+                            )}
+                            {isMe && msg.status === 'delivered' && (
+                              <span className="chat-status-pill delivered" title="Delivered to server">✓</span>
+                            )}
+                            {isMe && msg.status === 'failed' && (
+                              <button
+                                type="button"
+                                className="chat-retry-pill"
+                                onClick={() => conversationId && activePartner && chatService.retryMessage(currentUserId, conversationId, activePartner, msg.id)}
+                                title="Delivery failed. Click to retry."
+                                style={{
+                                  background: 'rgba(239, 68, 68, 0.2)',
+                                  color: '#f87171',
+                                  border: '1px solid rgba(239, 68, 68, 0.4)',
+                                  borderRadius: '9999px',
+                                  fontSize: '0.7rem',
+                                  padding: '1px 6px',
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                ⚠️ Failed &middot; Retry
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </div>
                     );

@@ -1,6 +1,8 @@
 import type {
   User,
   Project,
+  ProjectUpdate,
+  PostItem,
   LearningRecord,
   Community,
   ExplorationItem,
@@ -279,6 +281,122 @@ export const api = {
     async delete(id: string) {
       return request(`/projects/${id}`, { method: 'DELETE' });
     },
+
+    async setCoverImage(id: string, coverImageUrl: string) {
+      const res = await request<{ project: Project }>(`/projects/${id}/cover`, {
+        method: 'POST',
+        body: JSON.stringify({ cover_image_url: coverImageUrl }),
+      });
+      return res.project;
+    },
+
+    async updateVisibility(id: string, visibility: 'public' | 'private') {
+      const res = await request<{ project: Project }>(`/projects/${id}/visibility`, {
+        method: 'PATCH',
+        body: JSON.stringify({ visibility }),
+      });
+      return res.project;
+    },
+
+    async follow(id: string) {
+      return request(`/projects/${id}/follow`, { method: 'POST' });
+    },
+
+    async unfollow(id: string) {
+      return request(`/projects/${id}/follow`, { method: 'DELETE' });
+    },
+
+    async join(id: string) {
+      return request(`/projects/${id}/join`, { method: 'POST' });
+    },
+
+    async recreate(id: string) {
+      const res = await request<{ project: Project }>(`/projects/${id}/recreate`, {
+        method: 'POST',
+      });
+      return res.project;
+    },
+
+    async getUpdates(id: string) {
+      const res = await request<{ updates: ProjectUpdate[] }>(`/projects/${id}/updates`);
+      return res.updates;
+    },
+
+    async addUpdate(id: string, data: { title: string; body: string; image_urls?: string[]; video_urls?: string[] }) {
+      const res = await request<{ update: ProjectUpdate }>(`/projects/${id}/updates`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+      return res.update;
+    },
+  },
+
+  chat: {
+    async getConversations() {
+      const res = await request<{ conversations: any[] }>('/chat/conversations');
+      return res.conversations;
+    },
+
+    async getOrCreateConversation(partnerId: string) {
+      const res = await request<{ conversation: { id: string; partner: any; updated_at: string } }>('/chat/conversations', {
+        method: 'POST',
+        body: JSON.stringify({ partnerId }),
+      });
+      return res.conversation;
+    },
+
+    async getMessages(conversationId: string) {
+      const res = await request<{ messages: any[] }>(`/chat/conversations/${conversationId}/messages`);
+      return res.messages;
+    },
+
+    async sendMessage(conversationId: string, payload: { ciphertext: string; iv: string; authTag: string; ratchetHeader?: Record<string, unknown> }) {
+      const res = await request<{ message: any }>(`/chat/conversations/${conversationId}/messages`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      return res.message;
+    },
+  },
+
+  crypto: {
+    async registerKeys(data: { identityPublicKey: string; signedPrekey: string; signedPrekeySignature: string; oneTimePrekeys?: Array<{ keyId: string; publicKey: string }> }) {
+      return request('/crypto/prekeys', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+
+    async getPrekeyBundle(userId: string) {
+      const res = await request<{ bundle: any }>(`/crypto/prekey-bundle/${userId}`);
+      return res.bundle;
+    },
+  },
+
+  media: {
+    async upload(data: { filename: string; mimeType: string; base64Data: string; isPrivate?: boolean; projectId?: string }) {
+      const res = await request<{ media: { id: string; url: string; media_type: 'image' | 'video'; mime_type: string; size_bytes: number } }>('/media/upload', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+      return res.media;
+    },
+  },
+
+  posts: {
+    async list(authorId?: string) {
+      const url = authorId ? `/posts?authorId=${encodeURIComponent(authorId)}` : '/posts';
+      const res = await request<{ posts: PostItem[] }>(url);
+      return res.posts;
+    },
+
+    async create(data: { title: string; content: string; tags?: string[]; project_tag?: string; art?: string; image_urls?: string[]; video_urls?: string[] }) {
+      const res = await request<{ post: PostItem }>('/posts', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+      return res.post;
+    },
   },
 
   learning: {
@@ -361,3 +479,5 @@ export const api = {
     },
   },
 };
+
+export const apiClient = api;
