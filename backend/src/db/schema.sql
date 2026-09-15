@@ -317,16 +317,24 @@ CREATE TABLE IF NOT EXISTS media_assets (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- 27. Media Uploads
+-- 29. Media Uploads
 CREATE TABLE IF NOT EXISTS media_uploads (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     url TEXT NOT NULL,
+    storage_path TEXT NULL,
     media_type VARCHAR(20) NOT NULL CHECK (media_type IN ('image', 'video')),
     mime_type VARCHAR(100) NOT NULL,
     size_bytes BIGINT NOT NULL,
+    is_private BOOLEAN NOT NULL DEFAULT false,
+    project_id UUID NULL REFERENCES projects(id) ON DELETE SET NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Ensure columns exist if table was already created in earlier migration
+ALTER TABLE media_uploads ADD COLUMN IF NOT EXISTS storage_path TEXT;
+ALTER TABLE media_uploads ADD COLUMN IF NOT EXISTS is_private BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE media_uploads ADD COLUMN IF NOT EXISTS project_id UUID NULL REFERENCES projects(id) ON DELETE SET NULL;
 
 -- Indexes for performance and search
 CREATE INDEX IF NOT EXISTS idx_users_username_trgm ON users USING GIN (username gin_trgm_ops);
