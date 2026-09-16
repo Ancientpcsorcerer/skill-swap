@@ -1,6 +1,18 @@
 export type Skill = string;
 export type Interest = string;
-export interface User { id: string; name: string; username: string; email: string; bio: string; location: string; skills: Skill[]; interests: Interest[]; projectInterests: string[] }
+export interface User {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
+  bio: string;
+  location: string;
+  skills: Skill[];
+  interests: Interest[];
+  projectInterests: string[];
+  avatarUrl?: string | null;
+  avatar_url?: string | null;
+}
 export interface Project {
   id: string;
   title: string;

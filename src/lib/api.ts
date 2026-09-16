@@ -155,6 +155,23 @@ export const api = {
       return res.user;
     },
 
+    async oauth(input: {
+      email: string;
+      name: string;
+      username?: string;
+      avatarUrl?: string | null;
+      provider: string;
+      providerUid?: string;
+    }) {
+      const res = await request<{ user: User; accessToken: string }>('/auth/oauth', {
+        method: 'POST',
+        body: JSON.stringify(input),
+        skipAuth: true,
+      });
+      setApiToken(res.accessToken);
+      return res;
+    },
+
     async me() {
       const res = await request<{ user: User }>('/auth/me');
       return res.user;
@@ -179,6 +196,21 @@ export const api = {
       const res = await request<{ profile: User }>('/profile', {
         method: 'PUT',
         body: JSON.stringify(data),
+      });
+      return res.profile;
+    },
+
+    async updatePhoto(avatarUrl: string): Promise<User> {
+      const res = await request<{ profile: User }>('/profile/photo', {
+        method: 'POST',
+        body: JSON.stringify({ avatar_url: avatarUrl }),
+      });
+      return res.profile;
+    },
+
+    async removePhoto(): Promise<User> {
+      const res = await request<{ profile: User }>('/profile/photo', {
+        method: 'DELETE',
       });
       return res.profile;
     },

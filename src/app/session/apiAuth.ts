@@ -1,12 +1,15 @@
 import type { User } from '../data/models';
-import { api } from '../../lib/api';
-import { localAuth, type AuthProvider, type Credentials } from './auth';
+import { api, getApiToken, setApiToken } from '../../lib/api';
+import type { AuthProvider, Credentials } from './auth';
 
 const ACTIVE_USER_CACHE_KEY = 'skill-swap.active-user.v1';
 
 export const apiAuth: AuthProvider = {
   restore(): User | null {
-    // Check cached active user first
+    // Only restore active user if a valid bearer token is present
+    const token = getApiToken();
+    if (!token) return null;
+
     try {
       const cached = localStorage.getItem(ACTIVE_USER_CACHE_KEY);
       if (cached) {
@@ -16,40 +19,19 @@ export const apiAuth: AuthProvider = {
       // fallback
     }
 
-    // Fallback to localAuth
-    return localAuth.restore();
+    return null;
   },
 
   async signUp(input: Credentials): Promise<User> {
-    try {
-      const user = await api.auth.register(input);
-      localStorage.setItem(ACTIVE_USER_CACHE_KEY, JSON.stringify(user));
-      return user;
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      // If network error (backend unreachable), fallback to localAuth
-      if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('fetch failed')) {
-        console.warn('⚠️ Backend unreachable, falling back to local auth');
-        return localAuth.signUp(input);
-      }
-      throw err;
-    }
+    const user = await api.auth.register(input);
+    localStorage.setItem(ACTIVE_USER_CACHE_KEY, JSON.stringify(user));
+    return user;
   },
 
   async login(email: string, password: string): Promise<User> {
-    try {
-      const user = await api.auth.login(email, password);
-      localStorage.setItem(ACTIVE_USER_CACHE_KEY, JSON.stringify(user));
-      return user;
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      // If network error, fallback to localAuth
-      if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('fetch failed')) {
-        console.warn('⚠️ Backend unreachable, falling back to local auth');
-        return localAuth.login(email, password);
-      }
-      throw err;
-    }
+    const user = await api.auth.login(email, password);
+    localStorage.setItem(ACTIVE_USER_CACHE_KEY, JSON.stringify(user));
+    return user;
   },
 
   logout(): void {
@@ -57,7 +39,7 @@ export const apiAuth: AuthProvider = {
       localStorage.removeItem(ACTIVE_USER_CACHE_KEY);
       api.auth.logout().catch(() => {});
     } finally {
-      localAuth.logout();
+      setApiToken(null);
     }
   },
 
@@ -67,6 +49,6 @@ export const apiAuth: AuthProvider = {
     api.profile.update(user).catch((err) => {
       console.warn('Could not sync profile update to backend:', err);
     });
-    return localAuth.update(user);
+    return user;
   },
 };

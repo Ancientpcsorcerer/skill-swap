@@ -3,7 +3,6 @@ import { api } from './api';
 
 const ACTIVE_USER_KEY = 'skill-swap.active-user.v1';
 const ACTIVE_ACCOUNT_KEY = 'skill-swap.active-account.v1';
-const ACCOUNTS_KEY = 'skill-swap.accounts.v1';
 
 export interface RealProviderProfile {
   provider: 'google' | 'github';
@@ -373,100 +372,47 @@ export async function linkAndEstablishUser(profile: RealProviderProfile): Promis
     cleanEmail.split('@')[0].replace(/[^a-z0-9_]/g, '').slice(0, 24) ||
     'creator';
 
-  const providerUserId = `usr_${profile.provider}_${profile.uid}`;
-
-  // Check if an existing account exists on this device for this provider identity or email
-  let existingUser: User | null = null;
+  // Authoritative Backend PostgreSQL synchronization via OAuth endpoint
   try {
-    const rawAccounts = JSON.parse(localStorage.getItem(ACCOUNTS_KEY) ?? '[]');
-    if (Array.isArray(rawAccounts)) {
-      const match = rawAccounts.find(
-        (a: any) =>
-          a?.user?.id === providerUserId ||
-          (a?.user?.email && a.user.email.toLowerCase() === cleanEmail)
-      );
-      if (match?.user) {
-        existingUser = match.user;
-      }
-    }
-  } catch {}
-
-  let user: User;
-  if (existingUser) {
-    // Restore existing user account while updating name/email from the provider
-    user = {
-      ...existingUser,
-      name: cleanName || existingUser.name,
-      email: cleanEmail || existingUser.email,
-      username: existingUser.username || cleanUsername,
-    };
-  } else {
-    // Create a new user record strictly derived from the real provider identity
-    user = {
-      id: providerUserId,
+    const res = await api.auth.oauth({
+      email: cleanEmail,
       name: cleanName,
       username: cleanUsername,
-      email: cleanEmail,
-      bio: '',
-      location: '',
-      skills: [],
-      interests: [],
-      projectInterests: [],
-    };
-  }
+      avatarUrl: profile.avatar_url || null,
+      provider: profile.provider,
+      providerUid: profile.uid,
+    });
 
-  // Attempt to link/register with the backend PostgreSQL database
-  const oauthPassword = `OAuth_${profile.provider}_${profile.uid}_Secret`;
-  try {
-    const loggedIn = await api.auth.login(cleanEmail, oauthPassword).catch(() => null);
-    if (loggedIn) {
-      user = {
-        ...user,
-        id: loggedIn.id,
-        name: loggedIn.name || user.name,
-        username: loggedIn.username || user.username,
-        bio: loggedIn.bio || user.bio,
-        location: loggedIn.location || user.location,
-        skills: loggedIn.skills?.length ? loggedIn.skills : user.skills,
-        interests: loggedIn.interests?.length ? loggedIn.interests : user.interests,
-        projectInterests: loggedIn.projectInterests?.length ? loggedIn.projectInterests : user.projectInterests,
+    if (res?.user) {
+      const authUser: User = {
+        id: res.user.id,
+        name: res.user.name || cleanName,
+        username: res.user.username || cleanUsername,
+        email: res.user.email || cleanEmail,
+        avatarUrl: res.user.avatarUrl || (res.user as any).avatar_url || profile.avatar_url || null,
+        bio: res.user.bio || '',
+        location: res.user.location || '',
+        skills: res.user.skills || [],
+        interests: res.user.interests || [],
+        projectInterests: res.user.projectInterests || [],
       };
-    } else {
-      const registered = await api.auth
-        .register({
-          name: cleanName,
-          username: cleanUsername,
-          email: cleanEmail,
-          password: oauthPassword,
-        })
-        .catch(() => null);
-      if (registered) {
-        user = {
-          ...user,
-          id: registered.id,
-          name: registered.name,
-          username: registered.username,
-        };
-      }
+
+      // Cache active user profile for fast startup
+      try {
+        localStorage.setItem(ACTIVE_ACCOUNT_KEY, authUser.id);
+        localStorage.setItem(ACTIVE_USER_KEY, JSON.stringify(authUser));
+      } catch {}
+
+      return authUser;
     }
-  } catch {
-    // If backend is unreachable, continue with device-local persistence
+  } catch (err: any) {
+    console.error('Failed to link OAuth identity with backend PostgreSQL:', err);
+    throw new Error(
+      err?.message || 'Failed to authenticate with backend server. Please try again.'
+    );
   }
 
-  // Save to local device account store
-  try {
-    const rawAccounts = JSON.parse(localStorage.getItem(ACCOUNTS_KEY) ?? '[]');
-    const filtered = Array.isArray(rawAccounts)
-      ? rawAccounts.filter((a: any) => a?.user?.id !== user.id && a?.user?.email !== cleanEmail)
-      : [];
-    filtered.push({ user, salt: profile.provider, passwordHash: 'oauth' });
-    localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(filtered));
-  } catch {}
-
-  localStorage.setItem(ACTIVE_ACCOUNT_KEY, user.id);
-  localStorage.setItem(ACTIVE_USER_KEY, JSON.stringify(user));
-
-  return user;
+  throw new Error('Authentication failed to return a valid user identity.');
 }
 
 /**
