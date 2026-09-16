@@ -21,8 +21,12 @@ function useConnectController(repository: ConnectRepository) {
   const [reload, setReload] = useState(0);
   useEffect(() => {
     let cancelled = false; mounted.current = true;
-    Promise.all([repository.listPeople(), repository.listRequests()]).then(([people, requests]) => {
-      if (!cancelled) dispatch({ type: 'loaded', people, requests });
+    Promise.allSettled([repository.listPeople(), repository.listRequests()]).then(([peopleRes, requestsRes]) => {
+      if (!cancelled) {
+        const people = peopleRes.status === 'fulfilled' ? peopleRes.value : [];
+        const requests = requestsRes.status === 'fulfilled' ? requestsRes.value : [];
+        dispatch({ type: 'loaded', people, requests });
+      }
     }).catch(error => { if (!cancelled) dispatch({ type: 'error', message: error instanceof Error ? error.message : 'People could not be loaded.' }); });
     return () => { cancelled = true; mounted.current = false; };
   }, [repository, reload]);

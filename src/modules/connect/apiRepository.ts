@@ -5,7 +5,7 @@ import type { ConnectionRequest, Person } from './types';
 export function createApiConnectRepository(userId?: string): ConnectRepository {
   return {
     async listPeople(): Promise<Person[]> {
-      const data = await api.users.search({ limit: 50 });
+      const data = await api.users.search({ limit: 100 });
       if (data && Array.isArray(data.users)) {
         return data.users.map((u) => ({
           id: u.id,

@@ -25,7 +25,7 @@ export function LearningEnvironment({
   onUpdateRecord,
 }: LearningEnvironmentProps) {
   const { requireAuth } = useAuthGate();
-  const { people } = useConnect();
+  const { people, loading: isPeopleLoading } = useConnect();
   const [progress, setProgress] = useState(record?.progress || 0);
   const [status, setStatus] = useState<'In Progress' | 'Saved' | 'Completed'>(
     record?.status || 'In Progress'
@@ -193,7 +193,11 @@ export function LearningEnvironment({
           {/* Real Backend Mentor Section */}
           <div className="learning-env-card learning-env-mentor-card">
             <span className="learning-env-section-kicker">Learning with</span>
-            {matchingMentors.length > 0 ? (
+            {isPeopleLoading && people.length === 0 ? (
+              <div className="learning-env-empty-box">
+                <p>Connecting to mentor roster...</p>
+              </div>
+            ) : matchingMentors.length > 0 ? (
               <div className="learning-env-mentor-list">
                 {matchingMentors.slice(0, 2).map((mentor) => (
                   <div key={mentor.id} className="learning-env-mentor-item">
