@@ -4,6 +4,7 @@ import { useAuthGate } from '../../app/session/AuthGateContext';
 import { useWorkspace } from '../../app/data/WorkspaceProvider';
 import { useModalDialog } from '../../hooks/useModalDialog';
 import { postService } from './postService';
+import { api } from '../../lib/api';
 import type { Post } from './types';
 
 export function PostComposer({
@@ -100,7 +101,7 @@ export function PostComposer({
             reader.readAsDataURL(file);
           });
           const base64Data = await base64Promise;
-          const res = await (await import('../../lib/api')).apiClient.media.upload({
+          const res = await api.media.upload({
             filename: file.name,
             mimeType: file.type,
             base64Data,
