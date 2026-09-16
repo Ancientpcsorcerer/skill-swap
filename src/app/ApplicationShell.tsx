@@ -14,6 +14,8 @@ import { AuthGateProvider, useAuthGate } from './session/AuthGateContext';
 import { SignupModal } from '../components/auth/SignupModal';
 import { ContextualLoom } from './components/ContextualLoom';
 
+import { ErrorBoundary } from './components/ErrorBoundary';
+
 const modules = {
   connect: ConnectModule,
   create: CreateModule,
@@ -70,7 +72,9 @@ function Shell({ active }: { active: ModuleId }) {
       />
       <GlobalSidebar active={active} />
       <main id="workspace-content" className="workspace-content" ref={main} tabIndex={-1}>
-        <Module searchRequest={searchRequest} onSearchHandled={handledSearch} />
+        <ErrorBoundary moduleName={active} key={active}>
+          <Module searchRequest={searchRequest} onSearchHandled={handledSearch} />
+        </ErrorBoundary>
         {storageError && (
           <p role="alert" className="storage-error">
             {storageError}

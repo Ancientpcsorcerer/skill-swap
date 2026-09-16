@@ -4,6 +4,9 @@ import type { ChatMessage, ChatConversation, ChatParticipant } from './types';
 
 type Subscriber = () => void;
 
+const EMPTY_CONVERSATIONS: ChatConversation[] = [];
+const EMPTY_MESSAGES: ChatMessage[] = [];
+
 class ChatStoreService {
   private subscribers = new Set<Subscriber>();
   private conversationsMap = new Map<string, ChatConversation>();
@@ -11,6 +14,7 @@ class ChatStoreService {
   private conversationPartnerIndex = new Map<string, string>(); // partnerId -> conversationId
   private loadingConversations = false;
   private loadingMessages = new Set<string>();
+  private sortedConversationsCache: ChatConversation[] = EMPTY_CONVERSATIONS;
 
   subscribe = (callback: Subscriber): (() => void) => {
     this.subscribers.add(callback);
@@ -29,27 +33,35 @@ class ChatStoreService {
     });
   }
 
+  private rebuildConversationsCache() {
+    if (this.conversationsMap.size === 0) {
+      this.sortedConversationsCache = EMPTY_CONVERSATIONS;
+    } else {
+      this.sortedConversationsCache = Array.from(this.conversationsMap.values()).sort(
+        (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
+    }
+  }
+
   /**
-   * Returns currently loaded conversations from memory
+   * Returns currently loaded conversations from memory with referential stability
    */
   getConversations(currentUserId: string): ChatConversation[] {
-    if (!currentUserId || currentUserId === 'guest') return [];
+    if (!currentUserId || currentUserId === 'guest') return EMPTY_CONVERSATIONS;
 
     // Trigger asynchronous fetch if not loaded
     if (this.conversationsMap.size === 0 && !this.loadingConversations) {
       this.fetchConversations(currentUserId);
     }
 
-    return Array.from(this.conversationsMap.values()).sort(
-      (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    );
+    return this.sortedConversationsCache;
   }
 
   /**
    * Fetches conversation list from the backend API
    */
   async fetchConversations(currentUserId: string): Promise<ChatConversation[]> {
-    if (!currentUserId || currentUserId === 'guest') return [];
+    if (!currentUserId || currentUserId === 'guest') return EMPTY_CONVERSATIONS;
     this.loadingConversations = true;
     try {
       const serverConvos = await apiClient.chat.getConversations();
@@ -92,11 +104,12 @@ class ChatStoreService {
         this.conversationsMap.set(sc.id, convo);
         this.conversationPartnerIndex.set(partner.id, sc.id);
       }
+      this.rebuildConversationsCache();
       this.notify();
-      return Array.from(this.conversationsMap.values());
+      return this.sortedConversationsCache;
     } catch (err) {
       console.warn('Could not fetch conversations from server:', err);
-      return Array.from(this.conversationsMap.values());
+      return this.sortedConversationsCache;
     } finally {
       this.loadingConversations = false;
     }
@@ -126,6 +139,7 @@ class ChatStoreService {
 
       this.conversationsMap.set(serverConvo.id, convo);
       this.conversationPartnerIndex.set(partner.id, serverConvo.id);
+      this.rebuildConversationsCache();
       this.notify();
       return convo;
     } catch (err) {
@@ -138,14 +152,14 @@ class ChatStoreService {
    * Returns loaded messages for a conversation
    */
   getMessages(conversationId: string): ChatMessage[] {
-    if (!conversationId) return [];
+    if (!conversationId) return EMPTY_MESSAGES;
 
     // Trigger asynchronous fetch if not loaded
     if (!this.messagesMap.has(conversationId) && !this.loadingMessages.has(conversationId)) {
       this.fetchMessages(conversationId);
     }
 
-    return this.messagesMap.get(conversationId) || [];
+    return this.messagesMap.get(conversationId) || EMPTY_MESSAGES;
   }
 
   /**
@@ -223,6 +237,7 @@ class ChatStoreService {
       convo.lastMessage = optimisticMsg;
       convo.updatedAt = now;
     }
+    this.rebuildConversationsCache();
     this.notify();
 
     // 2. Client-side E2EE encryption
@@ -260,6 +275,7 @@ class ChatStoreService {
         };
         convo.updatedAt = serverRecord.created_at;
       }
+      this.rebuildConversationsCache();
       this.notify();
 
       return {

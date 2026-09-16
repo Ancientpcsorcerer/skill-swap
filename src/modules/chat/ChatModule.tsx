@@ -7,7 +7,7 @@ import { Avatar } from '../../app/components/Avatar';
 import { Icon } from '../../app/components/Icon';
 import { chatService } from './chatService';
 import { ChatContextDrawer } from './ChatContextDrawer';
-import type { ChatParticipant } from './types';
+import type { ChatParticipant, ChatConversation, ChatMessage } from './types';
 import '../../styles/design-tokens.css';
 import '../../styles/connect-profile-chat.css';
 
@@ -25,6 +25,9 @@ function formatTimestamp(isoString: string): string {
   }
 }
 
+const EMPTY_CONVERSATIONS: ChatConversation[] = [];
+const EMPTY_MESSAGES: ChatMessage[] = [];
+
 export function ChatModule() {
   const { session } = useSession();
   const { openAuthModal } = useAuthGate();
@@ -40,11 +43,11 @@ export function ChatModule() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Subscribe to reactive chat store updates
+  // Subscribe to reactive chat store updates with referential stability
   const conversations = useSyncExternalStore(
     chatService.subscribe,
     () => chatService.getConversations(currentUserId),
-    () => []
+    () => EMPTY_CONVERSATIONS
   );
 
   // Connected collaborators (status === 'accepted')
@@ -137,9 +140,11 @@ export function ChatModule() {
       return null;
     })();
 
-  const activeMessages = conversationId
-    ? chatService.getMessages(conversationId)
-    : [];
+  const activeMessages = useSyncExternalStore(
+    chatService.subscribe,
+    () => (conversationId ? chatService.getMessages(conversationId) : EMPTY_MESSAGES),
+    () => EMPTY_MESSAGES
+  );
 
   const handleSend = async (e?: FormEvent) => {
     e?.preventDefault();
