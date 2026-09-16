@@ -15,6 +15,8 @@ export function createApiConnectRepository(userId?: string): ConnectRepository {
           interests: u.interests || [],
           projectInterests: u.projectInterests || [],
           description: u.bio || 'Skill Swap collaborator',
+          avatarUrl: u.avatarUrl || u.avatar_url || null,
+          avatar_url: u.avatarUrl || u.avatar_url || null,
         }));
       }
       return [];
@@ -45,14 +47,15 @@ export function createApiConnectRepository(userId?: string): ConnectRepository {
     },
 
     async respondToRequest(id: string, response: 'accepted' | 'declined'): Promise<ConnectionRequest> {
+      let conn: any;
       if (response === 'accepted') {
-        await api.connections.accept(id);
+        conn = (await api.connections.accept(id)) as any;
       } else {
-        await api.connections.decline(id);
+        conn = (await api.connections.decline(id)) as any;
       }
       return {
         id,
-        personId: '',
+        personId: conn?.requester_id || conn?.partner?.id || '',
         direction: 'incoming',
         status: response,
       };
