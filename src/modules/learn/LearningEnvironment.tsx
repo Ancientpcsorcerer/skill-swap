@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Artwork } from '../../app/components/Artwork';
+import { Avatar } from '../../app/components/Avatar';
 import { useAuthGate } from '../../app/session/AuthGateContext';
+import { useConnect } from '../connect/ConnectProvider';
 import { navigate } from '../../app/navigation';
 import type { LearningPath } from '../../app/data/models';
 import type { NormalizedLearningRecord } from './useLearnState';
@@ -23,6 +25,7 @@ export function LearningEnvironment({
   onUpdateRecord,
 }: LearningEnvironmentProps) {
   const { requireAuth } = useAuthGate();
+  const { people } = useConnect();
   const [progress, setProgress] = useState(record?.progress || 0);
   const [status, setStatus] = useState<'In Progress' | 'Saved' | 'Completed'>(
     record?.status || 'In Progress'
@@ -36,6 +39,11 @@ export function LearningEnvironment({
       setStatus(record.status);
     }
   }, [record]);
+
+  // Resolve mentors from backend-connected practitioners
+  const matchingMentors = people.filter(
+    (p) => path.mentorIds.includes(p.id) || p.skills.some((s) => path.topics.includes(s))
+  );
 
   const milestones = [
     { title: 'Foundations & Tooling Setup', desc: 'Core fundamentals, workspace configuration, and syntax primer.' },
@@ -62,70 +70,52 @@ export function LearningEnvironment({
   }
 
   return (
-    <div className="learning-environment-container" style={{
-      background: 'linear-gradient(180deg, rgba(20, 24, 38, 0.95) 0%, rgba(10, 13, 24, 0.98) 100%)',
-      borderRadius: '16px',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
-      padding: '2rem',
-      color: '#f8fafc',
-      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
-    }}>
+    <div className="learning-environment-container">
       {/* Top Bar Navigation */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+      <div className="learning-env-topbar">
         <button
           type="button"
-          className="quiet-button"
+          className="quiet-button learning-env-back-btn"
           onClick={onBack}
-          style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: '#94a3b8' }}
         >
           &larr; Back to Learning Hub
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <span style={{
-            padding: '4px 12px',
-            borderRadius: '9999px',
-            fontSize: '0.8rem',
-            fontWeight: 600,
-            background: status === 'Completed' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(99, 102, 241, 0.2)',
-            color: status === 'Completed' ? '#4ade80' : '#a5b4fc',
-            border: '1px solid currentColor',
-          }}>
+        <div className="learning-env-status-pill">
+          <span className={`status-badge ${status === 'Completed' ? 'is-completed' : ''}`}>
             {status} ({progress}%)
           </span>
         </div>
       </div>
 
-      {/* Main Studio Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.8fr) minmax(0, 1fr)', gap: '2rem' }}>
-        {/* Left Column: Curriculum & Milestones */}
-        <div>
-          <div style={{ display: 'flex', gap: '1.5rem', marginBottom: '1.5rem' }}>
-            <div style={{ width: '120px', height: '120px', borderRadius: '12px', overflow: 'hidden', flexShrink: 0 }}>
+      {/* Main Grid */}
+      <div className="learning-env-grid">
+        {/* Left Column: Learning Identity, Progress, Milestones */}
+        <div className="learning-env-main-col">
+          {/* Identity Header */}
+          <div className="learning-env-header">
+            <div className="learning-env-art">
               <Artwork art={path.art} />
             </div>
-            <div>
-              <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#818cf8', fontWeight: 600 }}>
+            <div className="learning-env-header-details">
+              <span className="learning-env-category-badge">
                 {path.category} &bull; {path.resources} Interactive Units
               </span>
-              <h1 style={{ fontSize: '1.8rem', margin: '6px 0 10px', fontWeight: 700 }}>{path.title}</h1>
-              <p style={{ color: '#cbd5e1', lineHeight: '1.6', fontSize: '0.95rem' }}>{path.description}</p>
+              <h1 className="learning-env-title">{path.title}</h1>
+              <p className="learning-env-desc">{path.description}</p>
             </div>
           </div>
 
-          {/* Interactive Progress Bar & Slider */}
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.03)',
-            borderRadius: '12px',
-            padding: '1.25rem',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
-            marginBottom: '2rem',
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-              <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Active Track Progress</span>
-              <span style={{ fontSize: '0.9rem', color: '#818cf8', fontWeight: 700 }}>{progress}%</span>
+          {/* Progress Card */}
+          <div className="learning-env-card learning-env-progress-card">
+            <div className="learning-env-progress-header">
+              <span className="learning-env-section-kicker">Track Progress</span>
+              <span className="learning-env-progress-value">{progress}% COMPLETE</span>
             </div>
-            <div style={{ width: '100%', height: '8px', background: 'rgba(255, 255, 255, 0.1)', borderRadius: '4px', overflow: 'hidden', marginBottom: '12px' }}>
-              <div style={{ width: `${progress}%`, height: '100%', background: 'linear-gradient(90deg, #6366f1, #10b981)', transition: 'width 0.3s ease' }} />
+            <div className="learning-env-progress-track">
+              <div
+                className="learning-env-progress-bar"
+                style={{ width: `${progress}%` }}
+              />
             </div>
             <input
               type="range"
@@ -133,74 +123,122 @@ export function LearningEnvironment({
               max={100}
               value={progress}
               onChange={(e) => handleSaveProgress(Number(e.target.value))}
-              style={{ width: '100%', cursor: 'pointer', accentColor: '#6366f1' }}
+              className="learning-env-progress-slider"
+              aria-label="Adjust learning progress"
             />
             {savedNotice && (
-              <small style={{ display: 'block', marginTop: '6px', color: '#34d399', fontSize: '0.75rem' }}>
-                {savedNotice}
-              </small>
+              <small className="learning-env-sync-notice">{savedNotice}</small>
             )}
           </div>
 
           {/* Curriculum Milestones */}
-          <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem', fontWeight: 600 }}>Curriculum Milestones</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {milestones.map((m, idx) => {
-              const stepPercent = (idx + 1) * 25;
-              const isChecked = progress >= stepPercent;
-              return (
-                <div
-                  key={m.title}
-                  onClick={() => handleSaveProgress(isChecked ? idx * 25 : stepPercent)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '12px',
-                    padding: '1rem',
-                    borderRadius: '10px',
-                    background: isChecked ? 'rgba(99, 102, 241, 0.08)' : 'rgba(255, 255, 255, 0.02)',
-                    border: isChecked ? '1px solid rgba(99, 102, 241, 0.3)' : '1px solid rgba(255, 255, 255, 0.06)',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    readOnly
-                    style={{ marginTop: '4px', cursor: 'pointer', accentColor: '#6366f1' }}
-                  />
-                  <div>
-                    <strong style={{ display: 'block', color: isChecked ? '#e0e7ff' : '#f1f5f9', fontSize: '0.95rem' }}>
-                      {idx + 1}. {m.title}
-                    </strong>
-                    <p style={{ margin: '4px 0 0', color: '#94a3b8', fontSize: '0.85rem', lineHeight: '1.4' }}>
-                      {m.desc}
-                    </p>
+          <div className="learning-env-card learning-env-milestones-card">
+            <h2 className="learning-env-card-title">Curriculum Milestones</h2>
+            <div className="learning-env-milestones-list">
+              {milestones.map((m, idx) => {
+                const stepPercent = (idx + 1) * 25;
+                const isChecked = progress >= stepPercent;
+                return (
+                  <div
+                    key={m.title}
+                    onClick={() => handleSaveProgress(isChecked ? idx * 25 : stepPercent)}
+                    className={`learning-env-milestone-item ${isChecked ? 'is-checked' : ''}`}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        handleSaveProgress(isChecked ? idx * 25 : stepPercent);
+                      }
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      readOnly
+                      className="learning-env-milestone-checkbox"
+                    />
+                    <div className="learning-env-milestone-content">
+                      <strong>
+                        {idx + 1}. {m.title}
+                      </strong>
+                      <p>{m.desc}</p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* Right Column: Mentor Reciprocity & Actions */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          {/* Actions Card */}
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.03)',
-            borderRadius: '12px',
-            padding: '1.25rem',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
-          }}>
-            <h3 style={{ fontSize: '1rem', marginBottom: '1rem', fontWeight: 600 }}>Track Actions</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        {/* Right Column: Mentor, Session, Actions */}
+        <div className="learning-env-side-col">
+          {/* Real Backend Mentor Section */}
+          <div className="learning-env-card learning-env-mentor-card">
+            <span className="learning-env-section-kicker">Learning with</span>
+            {matchingMentors.length > 0 ? (
+              <div className="learning-env-mentor-list">
+                {matchingMentors.slice(0, 2).map((mentor) => (
+                  <div key={mentor.id} className="learning-env-mentor-item">
+                    <div className="learning-env-mentor-profile">
+                      <Avatar name={mentor.name} personId={mentor.id} avatarUrl={mentor.avatarUrl} />
+                      <div className="learning-env-mentor-details">
+                        <strong className="learning-env-mentor-name">{mentor.name}</strong>
+                        <small className="learning-env-mentor-skills">
+                          {mentor.skills.length > 0 ? mentor.skills.join(' · ') : mentor.description || 'Mentor'}
+                        </small>
+                      </div>
+                    </div>
+                    <div className="learning-env-mentor-actions">
+                      <button
+                        type="button"
+                        className="secondary-button"
+                        onClick={() => navigate('profile', undefined, false, { user: mentor.id })}
+                      >
+                        View Profile
+                      </button>
+                      <button
+                        type="button"
+                        className="secondary-button"
+                        onClick={() => navigate('chat', undefined, false, { user: mentor.id })}
+                      >
+                        Chat
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="learning-env-empty-box">
+                <p>No dedicated mentor assigned yet for this track.</p>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  onClick={() => navigate('connect', undefined, false, { skill: path.topics[0] })}
+                >
+                  Find Mentors in Connect &rarr;
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Backend Session / Zoom Section */}
+          <div className="learning-env-card learning-env-session-card">
+            <span className="learning-env-section-kicker">Upcoming Session</span>
+            <div className="learning-env-empty-session">
+              <strong className="session-empty-heading">NO UPCOMING SESSION</strong>
+              <p className="session-empty-text">No live session has been scheduled yet for this learning track.</p>
+            </div>
+          </div>
+
+          {/* Track Actions Card */}
+          <div className="learning-env-card learning-env-actions-card">
+            <span className="learning-env-section-kicker">Track Actions</span>
+            <div className="learning-env-action-buttons">
               <button
                 type="button"
                 className="primary-button"
                 onClick={() => handleSaveProgress(100, 'Completed')}
                 disabled={isSaving || progress === 100}
-                style={{ width: '100%', padding: '10px' }}
               >
                 {progress === 100 ? '✓ Path Completed' : 'Complete All Units (100%)'}
               </button>
@@ -208,7 +246,7 @@ export function LearningEnvironment({
                 type="button"
                 className="secondary-button"
                 onClick={() => handleSaveProgress(progress, 'Saved')}
-                style={{ width: '100%', padding: '10px' }}
+                disabled={isSaving}
               >
                 Save for Later
               </button>
@@ -216,33 +254,18 @@ export function LearningEnvironment({
                 type="button"
                 className="secondary-button"
                 onClick={() => navigate('connect', undefined, false, { skill: path.topics[0] })}
-                style={{ width: '100%', padding: '10px' }}
               >
                 Find Practice Partner &rarr;
               </button>
             </div>
           </div>
 
-          {/* Topics Tag Deck */}
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.03)',
-            borderRadius: '12px',
-            padding: '1.25rem',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
-          }}>
-            <h3 style={{ fontSize: '1rem', marginBottom: '0.75rem', fontWeight: 600 }}>Topics & Competencies</h3>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+          {/* Topics Deck */}
+          <div className="learning-env-card learning-env-topics-card">
+            <span className="learning-env-section-kicker">Competencies</span>
+            <div className="learning-env-topics-deck">
               {path.topics.map((t) => (
-                <span
-                  key={t}
-                  style={{
-                    padding: '4px 10px',
-                    borderRadius: '6px',
-                    fontSize: '0.8rem',
-                    background: 'rgba(255, 255, 255, 0.06)',
-                    color: '#e2e8f0',
-                  }}
-                >
+                <span key={t} className="learning-env-topic-tag">
                   #{t}
                 </span>
               ))}

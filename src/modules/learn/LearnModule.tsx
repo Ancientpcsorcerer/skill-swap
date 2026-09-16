@@ -9,7 +9,6 @@ import { LearnHero } from './LearnHero';
 import { LearnModeSwitcher } from './LearnModeSwitcher';
 import { ExploreSkillsView } from './ExploreSkillsView';
 import { MyProgressView } from './MyProgressView';
-import { LearningDetailModal } from './LearningDetailModal';
 import { LearningEnvironment } from './LearningEnvironment';
 import type { LearningPath } from '../../app/data/models';
 import '../../styles/learn.css';
@@ -241,17 +240,6 @@ export function LearnModule() {
           &ldquo;A skill learned is a door opened to a brighter tomorrow.&rdquo;
         </blockquote>
       </aside>
-
-      {/* Learning Detail Modal Environment */}
-      <LearningDetailModal
-        path={selectedPath}
-        onClose={() => setSelectedPath(null)}
-        records={learnState.records}
-        onUpdateRecord={learnState.updateRecord}
-        onStartSuccess={() => {
-          setLearningTab('In Progress');
-        }}
-      />
     </div>
   );
 }

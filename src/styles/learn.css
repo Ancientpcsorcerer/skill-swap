@@ -567,29 +567,364 @@
   margin: 0;
 }
 
-/* Progress Slider Control in Detail Modal */
-.progress-slider-control {
+/* ==========================================================================
+   CANONICAL LEARNING ENVIRONMENT & ACTION SYSTEM
+   ========================================================================== */
+
+.learning-environment-container {
+  background: var(--sw-surface, #ffffff);
+  border: 1px solid var(--sw-line-standard, #dfddd8);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+  margin-bottom: 32px;
+}
+
+.learning-env-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--sw-line-subtle, #f0eee9);
+}
+
+.learning-env-back-btn {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sw-ink-muted, #656862);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 140ms ease;
+}
+
+.learning-env-back-btn:hover {
+  color: var(--sw-ink-primary, #141514);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #eae7e0;
+  color: var(--sw-ink-primary, #141514);
+  border: 1px solid var(--sw-line-standard, #dfddd8);
+}
+
+.status-badge.is-completed {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+  border-color: rgba(34, 197, 94, 0.25);
+}
+
+.learning-env-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.1fr);
+  gap: 28px;
+}
+
+@media (max-width: 900px) {
+  .learning-env-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.learning-env-header {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.learning-env-art {
+  width: 110px;
+  height: 110px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid var(--sw-line-standard, #dfddd8);
+}
+
+.learning-env-category-badge {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: var(--sw-ink-muted, #656862);
+}
+
+.learning-env-title {
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--sw-ink-primary, #141514);
+  margin: 6px 0 10px 0;
+  line-height: 1.25;
+}
+
+.learning-env-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--sw-ink-secondary, #4a4d48);
+  margin: 0;
+}
+
+.learning-env-card {
+  background: var(--sw-canvas-warm, #f8f6f0);
+  border: 1px solid var(--sw-line-standard, #dfddd8);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.learning-env-section-kicker {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--sw-ink-muted, #656862);
+  margin-bottom: 12px;
+}
+
+.learning-env-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.learning-env-progress-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sw-ink-primary, #141514);
+}
+
+.learning-env-progress-track {
+  width: 100%;
+  height: 8px;
+  background: #e4e1d9;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.learning-env-progress-bar {
+  height: 100%;
+  background: var(--sw-ink-primary, #141514);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.learning-env-progress-slider {
+  width: 100%;
+  accent-color: var(--sw-ink-primary, #141514);
+  cursor: pointer;
+}
+
+.learning-env-sync-notice {
+  display: block;
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: #15803d;
+}
+
+.learning-env-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--sw-ink-primary, #141514);
+  margin: 0 0 16px 0;
+}
+
+.learning-env-milestones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.learning-env-milestone-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--sw-surface, #ffffff);
+  border: 1px solid var(--sw-line-standard, #dfddd8);
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.learning-env-milestone-item:hover {
+  border-color: #b0aba0;
+}
+
+.learning-env-milestone-item.is-checked {
+  background: #f0eee8;
+  border-color: #c4c0b5;
+}
+
+.learning-env-milestone-checkbox {
+  margin-top: 3px;
+  accent-color: var(--sw-ink-primary, #141514);
+  cursor: pointer;
+}
+
+.learning-env-milestone-content strong {
+  display: block;
+  font-size: 13px;
+  color: var(--sw-ink-primary, #141514);
+  margin-bottom: 2px;
+}
+
+.learning-env-milestone-content p {
+  font-size: 12px;
+  color: var(--sw-ink-muted, #656862);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Mentor Section */
+.learning-env-mentor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.learning-env-mentor-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: var(--sw-surface, #ffffff);
+  border: 1px solid var(--sw-line-standard, #dfddd8);
+  border-radius: 8px;
+}
+
+.learning-env-mentor-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.learning-env-mentor-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.learning-env-mentor-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sw-ink-primary, #141514);
+}
+
+.learning-env-mentor-skills {
+  font-size: 11.5px;
+  color: var(--sw-ink-muted, #656862);
+}
+
+.learning-env-mentor-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.learning-env-empty-box,
+.learning-env-empty-session {
+  padding: 14px;
+  background: var(--sw-surface, #ffffff);
+  border: 1px dashed var(--sw-line-standard, #dfddd8);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.learning-env-empty-box p,
+.session-empty-text {
+  font-size: 12px;
+  color: var(--sw-ink-muted, #656862);
+  margin: 0 0 10px 0;
+}
+
+.session-empty-heading {
+  display: block;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--sw-ink-primary, #141514);
+  margin-bottom: 4px;
+}
+
+/* Actions & Topics */
+.learning-env-action-buttons {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin: 16px 0;
-  padding: 14px;
-  background: var(--learn-surface-warm);
-  border-radius: 8px;
-  border: 1px solid var(--learn-border-subtle);
 }
 
-.progress-slider-header {
+.learning-env-topics-deck {
   display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  font-weight: 550;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.progress-slider-input {
-  width: 100%;
-  accent-color: var(--learn-accent);
-  cursor: pointer;
+.learning-env-topic-tag {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  background: var(--sw-surface, #ffffff);
+  border: 1px solid var(--sw-line-standard, #dfddd8);
+  color: var(--sw-ink-secondary, #4a4d48);
+}
+
+/* ==========================================================================
+   PRIMARY BLACK ACTION BUTTON SPECIFICATION (SECTIONS 6 & 7)
+   ========================================================================== */
+
+.active-learning-actions .primary-button,
+.learn-module-root .primary-button,
+.learning-env-action-buttons .primary-button {
+  background: #141514 !important;
+  color: #fafafa !important;
+  border: 1px solid #141514 !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  padding: 10px 20px !important;
+  min-height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+  transition: background 160ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 160ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.active-learning-actions .primary-button:hover:not(:disabled),
+.learn-module-root .primary-button:hover:not(:disabled),
+.learning-env-action-buttons .primary-button:hover:not(:disabled) {
+  background: #262826 !important;
+  border-color: #262826 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16) !important;
+}
+
+.active-learning-actions .primary-button:active:not(:disabled),
+.learn-module-root .primary-button:active:not(:disabled),
+.learning-env-action-buttons .primary-button:active:not(:disabled) {
+  transform: scale(0.98) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+}
+
+.active-learning-actions .primary-button:focus-visible,
+.learn-module-root .primary-button:focus-visible,
+.learning-env-action-buttons .primary-button:focus-visible {
+  outline: 2px solid #141514 !important;
+  outline-offset: 2px !important;
 }
 
 @media (max-width: 860px) {
@@ -602,3 +937,4 @@
     align-items: flex-start;
   }
 }
+
