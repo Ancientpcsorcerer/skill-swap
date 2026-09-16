@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { api, getApiToken } from '../../lib/api';
 import { useSession } from '../../app/session/SessionProvider';
-import { useWorkspace } from '../../app/data/WorkspaceProvider';
 
 export interface NormalizedLearningRecord {
   pathId: string;
@@ -60,23 +59,10 @@ function normalizeGoal(raw: any): NormalizedLearningGoal {
 
 export function useLearnState(): LearnStateResult {
   const { session } = useSession();
-  const workspace = useWorkspace();
   const isAuthenticated = !!session;
 
-  const [records, setRecords] = useState<NormalizedLearningRecord[]>(() => {
-    if (!isAuthenticated) return [];
-    return (workspace.learning || []).map(normalizeRecord);
-  });
-
-  const [goals, setGoals] = useState<NormalizedLearningGoal[]>(() => {
-    if (!isAuthenticated) return [];
-    return (workspace.goals || []).map((g) => ({
-      id: g,
-      goal: g,
-      createdAt: new Date().toISOString(),
-    }));
-  });
-
+  const [records, setRecords] = useState<NormalizedLearningRecord[]>([]);
+  const [goals, setGoals] = useState<NormalizedLearningGoal[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -99,46 +85,20 @@ export function useLearnState(): LearnStateResult {
         const rawRecords = Array.isArray(data?.records) ? data.records : [];
         const rawGoals = Array.isArray(data?.goals) ? data.goals : [];
 
-        if (rawRecords.length > 0 || rawGoals.length > 0) {
-          setRecords(rawRecords.map(normalizeRecord));
-          setGoals(rawGoals.map(normalizeGoal));
-        } else if (workspace.learning?.length || workspace.goals?.length) {
-          setRecords((workspace.learning || []).map(normalizeRecord));
-          setGoals(
-            (workspace.goals || []).map((g) => ({
-              id: g,
-              goal: g,
-              createdAt: new Date().toISOString(),
-            }))
-          );
-        }
-      } else if (workspace.learning?.length || workspace.goals?.length) {
-        setRecords((workspace.learning || []).map(normalizeRecord));
-        setGoals(
-          (workspace.goals || []).map((g) => ({
-            id: g,
-            goal: g,
-            createdAt: new Date().toISOString(),
-          }))
-        );
+        setRecords(rawRecords.map(normalizeRecord));
+        setGoals(rawGoals.map(normalizeGoal));
+      } else {
+        setRecords([]);
+        setGoals([]);
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Failed to fetch learning state';
-      console.warn('⚠️ Could not load server learning state, using fallback:', msg);
-      if (workspace.learning?.length || workspace.goals?.length) {
-        setRecords((workspace.learning || []).map(normalizeRecord));
-        setGoals(
-          (workspace.goals || []).map((g) => ({
-            id: g,
-            goal: g,
-            createdAt: new Date().toISOString(),
-          }))
-        );
-      }
+      console.error('Failed to load server learning state:', msg);
+      setError(msg);
     } finally {
       setLoading(false);
     }
-  }, [isAuthenticated, workspace.learning, workspace.goals]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     fetchState();
@@ -163,26 +123,20 @@ export function useLearnState(): LearnStateResult {
         return [optimistic, ...filtered];
       });
 
-      // Synchronize with workspace controller
-      workspace.setLearning(pathId, status);
-
       try {
-        const token = getApiToken();
-        if (token) {
-          const res = await api.learning.updateRecord(pathId, status, optimistic.progress);
-          if (res) {
-            const normalized = normalizeRecord(res);
-            setRecords((prev) => [normalized, ...prev.filter((r) => r.pathId !== pathId)]);
-            return normalized;
-          }
+        const res = await api.learning.updateRecord(pathId, status, optimistic.progress);
+        if (res) {
+          const normalized = normalizeRecord(res);
+          setRecords((prev) => [normalized, ...prev.filter((r) => r.pathId !== pathId)]);
+          return normalized;
         }
         return optimistic;
       } catch (err) {
-        console.warn('⚠️ Server updateRecord failed, kept local state:', err);
-        return optimistic;
+        console.error('Server updateRecord failed:', err);
+        throw err;
       }
     },
-    [workspace]
+    []
   );
 
   const addGoal = useCallback(
@@ -198,40 +152,32 @@ export function useLearnState(): LearnStateResult {
 
       setGoals((prev) => [optimistic, ...prev]);
 
-      // Synchronize with workspace controller
-      workspace.setGoal(trimmed);
-
       try {
-        const token = getApiToken();
-        if (token) {
-          const res = await api.learning.addGoal(trimmed);
-          if (res) {
-            const normalized = normalizeGoal(res);
-            setGoals((prev) => [normalized, ...prev.filter((g) => g.id !== optimistic.id)]);
-            return normalized;
-          }
+        const res = await api.learning.addGoal(trimmed);
+        if (res) {
+          const normalized = normalizeGoal(res);
+          setGoals((prev) => [normalized, ...prev.filter((g) => g.id !== optimistic.id)]);
+          return normalized;
         }
         return optimistic;
       } catch (err) {
-        console.warn('⚠️ Server addGoal failed, kept local state:', err);
-        return optimistic;
+        console.error('Server addGoal failed:', err);
+        setGoals((prev) => prev.filter((g) => g.id !== optimistic.id));
+        throw err;
       }
     },
-    [workspace]
+    []
   );
 
   const deleteGoal = useCallback(async (id: string): Promise<boolean> => {
     setGoals((prev) => prev.filter((g) => g.id !== id));
 
     try {
-      const token = getApiToken();
-      if (token) {
-        await api.learning.deleteGoal(id);
-      }
+      await api.learning.deleteGoal(id);
       return true;
     } catch (err) {
-      console.warn('⚠️ Server deleteGoal failed:', err);
-      return true;
+      console.error('Server deleteGoal failed:', err);
+      throw err;
     }
   }, []);
 
