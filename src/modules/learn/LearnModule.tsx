@@ -103,7 +103,10 @@ export function LearnModule() {
         {selectedPath ? (
           <LearningEnvironment
             path={selectedPath}
-            onBack={() => setSelectedPath(null)}
+            onBack={() => {
+              setSelectedPath(null);
+              navigate('learn', undefined, false, { tab: activeMode });
+            }}
             record={learnState.records.find((r) => r.pathId === selectedPath.id)}
             onUpdateRecord={learnState.updateRecord}
           />

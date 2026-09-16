@@ -41,9 +41,27 @@ export function LearningEnvironment({
   }, [record]);
 
   // Resolve mentors from backend-connected practitioners
-  const matchingMentors = people.filter(
-    (p) => path.mentorIds.includes(p.id) || p.skills.some((s) => path.topics.includes(s))
-  );
+  const matchingMentors = people.filter((p) => {
+    // 1. Direct match on mentorIds: match against user ID, username, or name prefix
+    const isMentorIdMatch = path.mentorIds.some(
+      (mId) =>
+        mId.toLowerCase() === p.id.toLowerCase() ||
+        (p.username && mId.toLowerCase() === p.username.toLowerCase()) ||
+        p.name.toLowerCase().startsWith(mId.toLowerCase())
+    );
+    if (isMentorIdMatch) return true;
+
+    // 2. Topics / skills matching (case-insensitive substring)
+    return p.skills.some((s) =>
+      path.topics.some(
+        (t) =>
+          t.toLowerCase().includes(s.toLowerCase()) ||
+          s.toLowerCase().includes(t.toLowerCase())
+      ) ||
+      path.title.toLowerCase().includes(s.toLowerCase()) ||
+      path.category.toLowerCase().includes(s.toLowerCase())
+    );
+  });
 
   const milestones = [
     { title: 'Foundations & Tooling Setup', desc: 'Core fundamentals, workspace configuration, and syntax primer.' },

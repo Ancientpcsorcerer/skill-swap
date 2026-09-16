@@ -20,6 +20,7 @@ export const sampleProjects: Project[] = [
 ];
 export const learningCategories = ['Programming','Design','Robotics','Electronics','Photography','Business','Writing','Mathematics','Cooking','Music','Research'];
 export const learningPaths: LearningPath[] = [
+  { id:'robotics',title:'Python for Robotics',description:'Sensors, kinematics, ROS and control systems with Python',category:'Robotics',topics:['robotics','python','electronics'],art:'drone',mentorIds:['aarav','rohan'],resources:42 },
   { id:'web',title:'Web Development',description:'From basics to real projects',category:'Programming',topics:['coding','software','javascript','web'],art:'code',mentorIds:['nikhil'],resources:48 },
   { id:'ai',title:'AI & Machine Learning',description:'Learn, build and apply',category:'Programming',topics:['mathematics','data','machine learning'],art:'ai',mentorIds:['aarav'],resources:72 },
   { id:'drone',title:'Drone & UAV Systems',description:'Hardware, software and flight',category:'Robotics',topics:['robotics','electronics','aerospace'],art:'drone',mentorIds:['rohan','arjun','aarav'],resources:36 },
