@@ -47,7 +47,7 @@ export function GlobalTopBar({
               label="User menu"
               trigger={
                 <>
-                  <Avatar name={session.identity.name} small />
+                  <Avatar name={session.identity.name} avatarUrl={session.identity.avatarUrl || session.identity.avatar_url} small />
                   <span>{session.identity.name.split(' ')[0]}</span>
                   <Icon name="chevron" />
                 </>

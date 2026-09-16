@@ -240,7 +240,7 @@ export function ChatModule() {
                         className="chat-picker-item"
                         onClick={() => startChatWithCollaborator(c)}
                       >
-                        <Avatar name={c.name} small />
+                        <Avatar name={c.name} avatarUrl={(c as any).avatarUrl || (c as any).avatar_url} small />
                         <div className="chat-picker-info">
                           <strong>{c.name}</strong>
                           <small>@{c.username || c.name.toLowerCase()}</small>
@@ -279,7 +279,7 @@ export function ChatModule() {
                       setShowCollaboratorsList(false);
                     }}
                   >
-                    <Avatar name={conv.partner.name} small />
+                    <Avatar name={conv.partner.name} avatarUrl={conv.partner.avatarUrl} small />
                     <div className="chat-conversation-details">
                       <div className="chat-conversation-top">
                         <strong className="chat-partner-name">{conv.partner.name}</strong>
@@ -333,7 +333,7 @@ export function ChatModule() {
               {/* Header */}
               <header className="chat-thread-header">
                 <div className="chat-thread-partner-info">
-                  <Avatar name={activePartner.name} />
+                  <Avatar name={activePartner.name} avatarUrl={activePartner.avatarUrl} />
                   <div>
                     <h2 className="chat-thread-name">{activePartner.name}</h2>
                     <p className="chat-thread-handle">
@@ -373,7 +373,7 @@ export function ChatModule() {
                         key={msg.id}
                         className={`chat-message-row ${isMe ? 'is-outgoing' : 'is-incoming'}`}
                       >
-                        {!isMe && <Avatar name={activePartner.name} small />}
+                        {!isMe && <Avatar name={activePartner.name} avatarUrl={activePartner.avatarUrl} small />}
                         <div className="chat-message-bubble">
                           <p className="chat-message-text" style={{ margin: 0 }}>{msg.text}</p>
                           <div className="chat-message-meta" style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end', marginTop: '4px' }}>

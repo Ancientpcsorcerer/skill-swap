@@ -128,6 +128,51 @@ export function ProfileModule() {
   // Posts
   const userPosts = postService.getPostsByAuthor(user.id);
 
+  async function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setError('');
+      const reader = new FileReader();
+      const base64Promise = new Promise<string>((resolve) => {
+        reader.onload = () => resolve(String(reader.result));
+        reader.readAsDataURL(file);
+      });
+      const base64Data = await base64Promise;
+
+      const mediaRes = await api.media.upload({
+        filename: file.name,
+        mimeType: file.type,
+        base64Data,
+        isPrivate: false,
+      });
+
+      if (mediaRes?.url) {
+        await api.profile.updatePhoto(mediaRes.url);
+        updateProfile({
+          avatarUrl: mediaRes.url,
+          avatar_url: mediaRes.url,
+        });
+      }
+    } catch (err: any) {
+      setError(err?.message || 'Failed to upload profile photo');
+    }
+  }
+
+  async function handlePhotoRemove() {
+    try {
+      setError('');
+      await api.profile.removePhoto();
+      updateProfile({
+        avatarUrl: null,
+        avatar_url: null,
+      });
+    } catch (err: any) {
+      setError(err?.message || 'Failed to remove profile photo');
+    }
+  }
+
   function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -195,7 +240,34 @@ export function ProfileModule() {
       <div className="profile-identity profile-identity-card">
         <div className="profile-identity-body">
           <div className="profile-avatar-lockup">
-            <Avatar name={user.name} personId={user.id} />
+            <Avatar
+              name={user.name}
+              personId={user.id}
+              avatarUrl={user.avatarUrl || user.avatar_url}
+            />
+            {!isViewingOther && !isGuest && (
+              <div style={{ marginTop: '8px', display: 'flex', gap: '6px' }}>
+                <label className="quiet-button" style={{ cursor: 'pointer', fontSize: '0.75rem', padding: '4px 8px' }}>
+                  {user.avatarUrl || user.avatar_url ? 'Change Photo' : 'Upload Photo'}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={handlePhotoUpload}
+                  />
+                </label>
+                {(user.avatarUrl || user.avatar_url) && (
+                  <button
+                    type="button"
+                    className="quiet-button"
+                    style={{ fontSize: '0.75rem', padding: '4px 8px', color: '#f87171' }}
+                    onClick={handlePhotoRemove}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            )}
             <div className="profile-user-titles">
               <h2>{user.name}</h2>
               <p className="profile-handle">@{user.username}</p>

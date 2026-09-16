@@ -56,7 +56,7 @@ export function PostCard({
           onClick={handleAuthorClick}
           aria-label={`View ${post.authorName}'s profile`}
         >
-          <Avatar name={post.authorName} personId={post.authorId} small />
+          <Avatar name={post.authorName} avatarUrl={post.authorAvatarUrl} personId={post.authorId} small />
           <div className="post-card-author-info">
             <strong className="post-card-author-name">{post.authorName}</strong>
             <span className="post-card-author-handle">@{post.authorUsername}</span>
