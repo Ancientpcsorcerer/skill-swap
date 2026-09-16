@@ -9,6 +9,8 @@ export interface ProfileSummary {
   skills: readonly string[];
   interests: readonly string[];
   description: string;
+  avatarUrl?: string | null;
+  avatar_url?: string | null;
 }
 
 export function ProfilePreview({
@@ -48,7 +50,7 @@ export function ProfilePreview({
         </button>
         {person && (
           <>
-            <Avatar name={person.name} />
+            <Avatar name={person.name} personId={person.id} avatarUrl={person.avatarUrl || person.avatar_url} />
             <p className="workspace-eyebrow">PROFILE PREVIEW</p>
             <h2 id="profile-preview-title">{person.name}</h2>
             <p className="profile-preview-skills">{person.skills.join(' \u00b7 ')}</p>

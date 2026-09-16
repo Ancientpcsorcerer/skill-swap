@@ -37,6 +37,7 @@ function userToPerson(u: User): Person {
     interests: u.interests || [],
     projectInterests: u.projectInterests || [],
     description: u.bio || '',
+    avatarUrl: u.avatarUrl || (u as any).avatar_url,
   };
 }
 
@@ -475,7 +476,7 @@ export function DiscoverModule() {
                   return (
                     <div key={u.id} className="suggested-user-card">
                       <button className="mini-person" onClick={() => setPerson(p)}>
-                        <Avatar name={u.name} personId={u.id} small />
+                        <Avatar name={u.name} personId={u.id} avatarUrl={u.avatarUrl || (u as any).avatar_url} small />
                         <span>
                           <strong>{u.name}</strong>
                           <small>{(u.skills && u.skills.length > 0 ? u.skills.join(' · ') : u.bio) || 'Active Creator'}</small>
