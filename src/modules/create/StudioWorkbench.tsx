@@ -6,6 +6,7 @@ import { postService } from '../posts/postService';
 import { projectTypes } from '../../app/data/catalog';
 import { LiveCardPreview } from './LiveCardPreview';
 import { navigate } from '../../app/navigation';
+import { api } from '../../lib/api';
 
 interface BlueprintTemplate {
   name: string;
@@ -120,14 +121,25 @@ export function StudioWorkbench() {
     setIsSubmitting(true);
     try {
       if (mode === 'Project') {
+        const serverProject = await api.projects.create({
+          title: title.trim(),
+          type,
+          description: description.trim(),
+          vision: vision.trim() || description.trim(),
+          required_skills: requiredSkills,
+          tags,
+          art: 'product',
+        });
+
         const created = workspace.addProject({
+          ...serverProject,
           title: title.trim(),
           type,
           description: description.trim(),
           vision: vision.trim() || description.trim(),
           requiredSkills,
           status: 'Ongoing',
-          art: title.trim(),
+          art: 'product',
           tags,
           files: [],
         });

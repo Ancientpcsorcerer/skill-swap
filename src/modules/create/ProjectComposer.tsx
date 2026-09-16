@@ -119,14 +119,41 @@ export function ProjectComposer({
             uploadedUrls.push(res.url);
           }
         } catch {
-          // fallback to local preview
-          uploadedUrls.push(item.previewUrl);
+          // ignore upload error
         }
       }
 
       const coverImageUrl = uploadedUrls[coverIndex] || (uploadedUrls.length > 0 ? uploadedUrls[0] : undefined);
 
+      // Create project in PostgreSQL database
+      const serverProject = await apiClient.projects.create({
+        title,
+        description,
+        vision,
+        type,
+        tags: [type],
+        required_skills: skills,
+        art: 'product',
+      });
+
+      if (coverImageUrl) {
+        try {
+          await apiClient.projects.setCoverImage(serverProject.id, coverImageUrl);
+        } catch (err) {
+          console.warn('Cover image attachment failed:', err);
+        }
+      }
+
+      if (visibility === 'private') {
+        try {
+          await apiClient.projects.updateVisibility(serverProject.id, 'private');
+        } catch (err) {
+          console.warn('Visibility update failed:', err);
+        }
+      }
+
       addProject({
+        ...serverProject,
         title,
         description,
         vision,
