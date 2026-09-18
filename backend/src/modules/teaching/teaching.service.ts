@@ -527,31 +527,44 @@ export class TeachingService {
     teacherId: string,
     data: {
       class_id?: string;
+      classId?: string;
       student_id?: string;
+      studentId?: string;
       track_id?: string;
+      trackId?: string;
       title: string;
-      scheduled_at: string;
+      scheduled_at?: string;
+      scheduledAt?: string;
       duration_minutes?: number;
+      durationMinutes?: number;
       meeting_url?: string;
+      meetingUrl?: string;
     }
   ): Promise<ClassSessionRecord> {
-    if (!data.title?.trim() || !data.scheduled_at) {
+    const scheduledAt = data.scheduled_at || data.scheduledAt;
+    if (!data.title?.trim() || !scheduledAt) {
       throw new BadRequestError('Session title and scheduled_at are required.');
     }
+
+    const classId = data.class_id || data.classId || null;
+    const studentId = data.student_id || data.studentId || null;
+    const trackId = data.track_id || data.trackId || null;
+    const durationMinutes = data.duration_minutes || data.durationMinutes || 45;
+    const meetingUrl = data.meeting_url || data.meetingUrl || null;
 
     const row = await queryOne<{ id: string }>(
       `INSERT INTO class_sessions (class_id, teacher_id, student_id, track_id, title, scheduled_at, duration_minutes, meeting_url, status, created_at)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'scheduled', NOW())
        RETURNING id`,
       [
-        data.class_id || null,
+        classId,
         teacherId,
-        data.student_id || null,
-        data.track_id || null,
+        studentId,
+        trackId,
         data.title.trim(),
-        data.scheduled_at,
-        data.duration_minutes || 45,
-        data.meeting_url?.trim() || null,
+        scheduledAt,
+        durationMinutes,
+        meetingUrl?.trim() || null,
       ]
     );
 
