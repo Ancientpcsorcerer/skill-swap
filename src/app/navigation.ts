@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-export const moduleIds = ['connect', 'create', 'discover', 'learn', 'chat', 'profile'] as const;
+export const moduleIds = ['connect', 'create', 'discover', 'learn', 'chat', 'profile', 'teaching'] as const;
 export type ModuleId = typeof moduleIds[number];
 export type Destination = ModuleId | 'signup' | 'login';
 const navigationEvent = 'skill-swap:navigate';

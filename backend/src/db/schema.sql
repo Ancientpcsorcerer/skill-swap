@@ -456,4 +456,23 @@ CREATE TABLE IF NOT EXISTS chat_group_members (
 CREATE INDEX IF NOT EXISTS idx_chat_group_members_user ON chat_group_members (user_id);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_chat_conversations_class ON chat_conversations (class_id) WHERE class_id IS NOT NULL;
 
+-- 38. User Zoom Integrations
+CREATE TABLE IF NOT EXISTS user_zoom_integrations (
+    user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    zoom_user_id VARCHAR(100) NULL,
+    zoom_email VARCHAR(255) NULL,
+    access_token TEXT NOT NULL,
+    refresh_token TEXT NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL,
+    scope TEXT NULL,
+    connected_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
+-- 39. Session Enhancements for Zoom & Rescheduling
+ALTER TABLE class_sessions ADD COLUMN IF NOT EXISTS meeting_provider VARCHAR(50) NOT NULL DEFAULT 'zoom';
+ALTER TABLE class_sessions ADD COLUMN IF NOT EXISTS meeting_id VARCHAR(100) NULL;
+ALTER TABLE class_sessions ADD COLUMN IF NOT EXISTS meeting_password VARCHAR(100) NULL;
+ALTER TABLE class_sessions ADD COLUMN IF NOT EXISTS timezone VARCHAR(50) NOT NULL DEFAULT 'UTC';
+ALTER TABLE class_sessions ADD COLUMN IF NOT EXISTS teacher_info TEXT NULL;
+ALTER TABLE class_sessions ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW();

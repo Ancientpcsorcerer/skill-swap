@@ -1,5 +1,6 @@
 import { query, queryOne, withTransaction } from '../../db/client';
 import { BadRequestError, NotFoundError, ForbiddenError } from '../../utils/errors';
+import { zoomService } from './zoom.service';
 
 export interface TeachingProfileRecord {
   user_id: string;
@@ -12,6 +13,7 @@ export interface TeachingProfileRecord {
   status: 'available' | 'busy' | 'paused';
   availability_slots: Array<{ day: string; time: string }>;
   skills: string[];
+  is_published: boolean;
 }
 
 export interface TeachingRequestRecord {
@@ -74,8 +76,13 @@ export interface ClassSessionRecord {
   scheduled_at: string;
   duration_minutes: number;
   meeting_url: string | null;
+  meeting_id: string | null;
+  meeting_provider: string;
+  timezone: string;
+  teacher_info: string | null;
   status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled';
   created_at: string;
+  updated_at: string;
 }
 
 export class TeachingService {
@@ -113,6 +120,7 @@ export class TeachingService {
       status: (profile?.status as any) || 'available',
       availability_slots: Array.isArray(profile?.availability_slots) ? profile.availability_slots : [],
       skills: skills.map((s) => s.skill),
+      is_published: Boolean(profile),
     };
   }
 
@@ -214,6 +222,7 @@ export class TeachingService {
       status: r.status,
       availability_slots: Array.isArray(r.availability_slots) ? r.availability_slots : [],
       skills: allSkills[r.user_id] || [],
+      is_published: true,
     }));
   }
 
@@ -496,7 +505,8 @@ export class TeachingService {
              cs.teacher_id, tu.name as teacher_name, tu.avatar_url as teacher_avatar_url,
              cs.student_id, su.name as student_name,
              cs.track_id, cs.title, cs.scheduled_at, cs.duration_minutes,
-             cs.meeting_url, cs.status, cs.created_at
+             cs.meeting_url, cs.meeting_id, cs.meeting_provider, cs.timezone, cs.teacher_info,
+             cs.status, cs.created_at, cs.updated_at
       FROM class_sessions cs
       JOIN users tu ON tu.id = cs.teacher_id
       LEFT JOIN users su ON su.id = cs.student_id
@@ -537,8 +547,13 @@ export class TeachingService {
       scheduledAt?: string;
       duration_minutes?: number;
       durationMinutes?: number;
+      timezone?: string;
+      teacher_info?: string;
+      teacherInfo?: string;
       meeting_url?: string;
       meetingUrl?: string;
+      require_zoom?: boolean;
+      requireZoom?: boolean;
     }
   ): Promise<ClassSessionRecord> {
     const scheduledAt = data.scheduled_at || data.scheduledAt;
@@ -550,11 +565,46 @@ export class TeachingService {
     const studentId = data.student_id || data.studentId || null;
     const trackId = data.track_id || data.trackId || null;
     const durationMinutes = data.duration_minutes || data.durationMinutes || 45;
-    const meetingUrl = data.meeting_url || data.meetingUrl || null;
+    const timezone = data.timezone || 'UTC';
+    const teacherInfo = data.teacher_info || data.teacherInfo || null;
+    const requireZoom = data.require_zoom ?? data.requireZoom ?? false;
+
+    let meetingUrl = data.meeting_url || data.meetingUrl || null;
+    let meetingId: string | null = null;
+    let meetingPassword: string | null = null;
+    let meetingProvider = 'zoom';
+
+    // Check Zoom integration status
+    const zoomStatus = await zoomService.getZoomStatus(teacherId);
+
+    if (zoomStatus.connected) {
+      try {
+        const zoomResult = await zoomService.createMeeting(teacherId, {
+          topic: data.title.trim(),
+          scheduledAt,
+          durationMinutes,
+          timezone,
+        });
+        meetingId = zoomResult.meetingId;
+        meetingUrl = zoomResult.meetingUrl;
+        meetingPassword = zoomResult.password || null;
+        meetingProvider = 'zoom';
+      } catch (err: any) {
+        if (requireZoom) {
+          throw new BadRequestError(`Unable to create Zoom meeting: ${err.message}`);
+        }
+        console.warn('Notice: Failed to create Zoom meeting via Zoom API:', err.message);
+      }
+    } else if (requireZoom) {
+      throw new BadRequestError('Zoom is not connected. Please connect your Zoom account to schedule a meeting.');
+    }
 
     const row = await queryOne<{ id: string }>(
-      `INSERT INTO class_sessions (class_id, teacher_id, student_id, track_id, title, scheduled_at, duration_minutes, meeting_url, status, created_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'scheduled', NOW())
+      `INSERT INTO class_sessions (
+         class_id, teacher_id, student_id, track_id, title, scheduled_at, duration_minutes,
+         meeting_url, meeting_id, meeting_password, meeting_provider, timezone, teacher_info,
+         status, created_at, updated_at
+       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'scheduled', NOW(), NOW())
        RETURNING id`,
       [
         classId,
@@ -564,12 +614,105 @@ export class TeachingService {
         data.title.trim(),
         scheduledAt,
         durationMinutes,
-        meetingUrl?.trim() || null,
+        meetingUrl,
+        meetingId,
+        meetingPassword,
+        meetingProvider,
+        timezone,
+        teacherInfo,
       ]
     );
 
     const sessions = await this.listSessions(teacherId);
     return sessions.find((s) => s.id === row!.id)!;
+  }
+
+  async updateSession(
+    teacherId: string,
+    sessionId: string,
+    data: {
+      title?: string;
+      scheduled_at?: string;
+      scheduledAt?: string;
+      duration_minutes?: number;
+      durationMinutes?: number;
+      timezone?: string;
+      teacher_info?: string;
+      teacherInfo?: string;
+    }
+  ): Promise<ClassSessionRecord> {
+    const existing = await queryOne<ClassSessionRecord>(
+      `SELECT * FROM class_sessions WHERE id = $1`,
+      [sessionId]
+    );
+    if (!existing) throw new NotFoundError('Session not found.');
+    if (existing.teacher_id !== teacherId) {
+      throw new ForbiddenError('You are not authorized to update this session.');
+    }
+    if (existing.status === 'cancelled') {
+      throw new BadRequestError('Cannot update a cancelled session.');
+    }
+
+    const title = data.title?.trim() || existing.title;
+    const scheduledAt = data.scheduled_at || data.scheduledAt || existing.scheduled_at;
+    const durationMinutes = data.duration_minutes || data.durationMinutes || existing.duration_minutes;
+    const timezone = data.timezone || existing.timezone || 'UTC';
+    const teacherInfo =
+      data.teacher_info !== undefined
+        ? data.teacher_info
+        : data.teacherInfo !== undefined
+        ? data.teacherInfo
+        : existing.teacher_info;
+
+    // Reschedule existing Zoom meeting if present
+    if (existing.meeting_id) {
+      try {
+        await zoomService.updateMeeting(teacherId, existing.meeting_id, {
+          topic: title,
+          scheduledAt,
+          durationMinutes,
+          timezone,
+        });
+      } catch (err: any) {
+        console.warn('Notice: Failed to update Zoom meeting on Zoom API:', err.message);
+      }
+    }
+
+    await query(
+      `UPDATE class_sessions
+       SET title = $1, scheduled_at = $2, duration_minutes = $3, timezone = $4, teacher_info = $5, updated_at = NOW()
+       WHERE id = $6`,
+      [title, scheduledAt, durationMinutes, timezone, teacherInfo, sessionId]
+    );
+
+    const sessions = await this.listSessions(teacherId);
+    return sessions.find((s) => s.id === sessionId)!;
+  }
+
+  async cancelSession(teacherId: string, sessionId: string): Promise<ClassSessionRecord> {
+    const existing = await queryOne<ClassSessionRecord>(
+      `SELECT * FROM class_sessions WHERE id = $1`,
+      [sessionId]
+    );
+    if (!existing) throw new NotFoundError('Session not found.');
+    if (existing.teacher_id !== teacherId) {
+      throw new ForbiddenError('You are not authorized to cancel this session.');
+    }
+
+    // Cancel remote Zoom meeting if present
+    if (existing.meeting_id) {
+      await zoomService.deleteMeeting(teacherId, existing.meeting_id);
+    }
+
+    await query(
+      `UPDATE class_sessions
+       SET status = 'cancelled', updated_at = NOW()
+       WHERE id = $1`,
+      [sessionId]
+    );
+
+    const sessions = await this.listSessions(teacherId);
+    return sessions.find((s) => s.id === sessionId)!;
   }
 }
 

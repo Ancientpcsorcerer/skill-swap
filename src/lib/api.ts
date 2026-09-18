@@ -12,6 +12,7 @@ import type {
   ClassItem,
   StudentItem,
   ClassSession,
+  ZoomStatus,
 } from '../app/data/models';
 
 export const API_BASE =
@@ -564,12 +565,61 @@ export const api = {
       return res.sessions;
     },
 
-    async createSession(data: { class_id?: string; student_id?: string; track_id?: string; title: string; scheduled_at: string; duration_minutes?: number; meeting_url?: string }) {
+    async createSession(data: {
+      class_id?: string;
+      student_id?: string;
+      track_id?: string;
+      title: string;
+      scheduled_at: string;
+      duration_minutes?: number;
+      timezone?: string;
+      teacher_info?: string;
+      meeting_url?: string;
+      require_zoom?: boolean;
+    }) {
       const res = await request<{ session: ClassSession }>('/teaching/sessions', {
         method: 'POST',
         body: JSON.stringify(data),
       });
       return res.session;
+    },
+
+    async updateSession(
+      id: string,
+      data: {
+        title?: string;
+        scheduled_at?: string;
+        duration_minutes?: number;
+        timezone?: string;
+        teacher_info?: string;
+      }
+    ) {
+      const res = await request<{ session: ClassSession }>(`/teaching/sessions/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      });
+      return res.session;
+    },
+
+    async cancelSession(id: string) {
+      const res = await request<{ session: ClassSession }>(`/teaching/sessions/${id}/cancel`, {
+        method: 'POST',
+      });
+      return res.session;
+    },
+
+    async getZoomStatus(): Promise<ZoomStatus> {
+      const res = await request<ZoomStatus>('/teaching/zoom/status');
+      return res;
+    },
+
+    async getZoomAuthorizeUrl(): Promise<string> {
+      const res = await request<{ url: string }>('/teaching/zoom/authorize');
+      return res.url;
+    },
+
+    async disconnectZoom(): Promise<void> {
+      await request('/teaching/zoom/disconnect', { method: 'POST' });
     },
   },
 

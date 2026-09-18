@@ -95,6 +95,7 @@ export interface TeachingProfile {
   status: 'available' | 'busy' | 'paused';
   availability_slots: Array<{ day: string; time: string }>;
   skills: string[];
+  is_published?: boolean;
 }
 
 export interface TeachingRequest {
@@ -157,7 +158,22 @@ export interface ClassSession {
   scheduled_at: string;
   duration_minutes: number;
   meeting_url: string | null;
+  meeting_id?: string | null;
+  meeting_provider?: string;
+  timezone?: string;
+  teacher_info?: string | null;
   status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled';
   created_at: string;
+  updated_at?: string;
 }
+
+export interface ZoomStatus {
+  connected: boolean;
+  configured: boolean;
+  zoomEmail?: string | null;
+  zoomUserId?: string | null;
+  connectedAt?: string | null;
+  message?: string;
+}
+
 

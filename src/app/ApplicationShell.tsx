@@ -13,6 +13,7 @@ import { ChatModule } from '../modules/chat/ChatModule';
 import { AuthGateProvider, useAuthGate } from './session/AuthGateContext';
 import { SignupModal } from '../components/auth/SignupModal';
 import { ContextualLoom } from './components/ContextualLoom';
+import { TeachingModule } from '../modules/teaching/TeachingModule';
 
 import { ErrorBoundary } from './components/ErrorBoundary';
 
@@ -23,6 +24,7 @@ const modules = {
   learn: LearnModule,
   chat: ChatModule,
   profile: ProfileModule,
+  teaching: TeachingModule,
 };
 
 function Shell({ active }: { active: ModuleId }) {

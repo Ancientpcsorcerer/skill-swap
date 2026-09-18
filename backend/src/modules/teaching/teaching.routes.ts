@@ -29,3 +29,12 @@ teachingRouter.post('/classes/:id/leave', authenticateToken, teachingController.
 // Sessions
 teachingRouter.get('/sessions', optionalAuth, teachingController.listSessions.bind(teachingController));
 teachingRouter.post('/sessions', authenticateToken, teachingController.createSession.bind(teachingController));
+teachingRouter.put('/sessions/:id', authenticateToken, teachingController.updateSession.bind(teachingController));
+teachingRouter.post('/sessions/:id/cancel', authenticateToken, teachingController.cancelSession.bind(teachingController));
+teachingRouter.delete('/sessions/:id', authenticateToken, teachingController.cancelSession.bind(teachingController));
+
+// Zoom Integration
+teachingRouter.get('/zoom/status', authenticateToken, teachingController.getZoomStatus.bind(teachingController));
+teachingRouter.get('/zoom/authorize', authenticateToken, teachingController.getZoomAuthorizeUrl.bind(teachingController));
+teachingRouter.get('/zoom/callback', teachingController.handleZoomCallback.bind(teachingController));
+teachingRouter.post('/zoom/disconnect', authenticateToken, teachingController.disconnectZoom.bind(teachingController));

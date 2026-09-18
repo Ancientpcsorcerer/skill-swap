@@ -19,6 +19,10 @@ const envSchema = z.object({
   R2_SECRET_ACCESS_KEY: z.string().optional(),
   R2_BUCKET_NAME: z.string().optional(),
   R2_PUBLIC_URL: z.string().optional(),
+  // Optional: Zoom Integration (OAuth)
+  ZOOM_CLIENT_ID: z.string().optional(),
+  ZOOM_CLIENT_SECRET: z.string().optional(),
+  ZOOM_REDIRECT_URI: z.string().optional(),
 });
 
 function parseEnv() {

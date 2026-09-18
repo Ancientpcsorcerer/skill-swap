@@ -16,7 +16,7 @@ import { postService } from '../posts/postService';
 import { PostCard } from '../posts/PostCard';
 import { PostComposer } from '../posts/PostComposer';
 import { PostPreview } from '../posts/PostPreview';
-import type { Project, User } from '../../app/data/models';
+import type { Project, User, TeachingProfile } from '../../app/data/models';
 import type { Person } from '../connect/types';
 import type { Post } from '../posts/types';
 import '../../styles/design-tokens.css';
@@ -30,7 +30,8 @@ export function ProfileModule() {
   const route = useApplicationRoute();
 
   const [editing, setEditing] = useState(false);
-  const [tab, setTab] = useState('Projects');
+  const tabQuery = route.query.get('tab');
+  const [tab, setTab] = useState(() => (tabQuery?.toLowerCase() === 'teaching' ? 'Teaching' : 'Projects'));
   const [project, setProject] = useState<Project | null>(null);
   const [personPreview, setPersonPreview] = useState<Person | null>(null);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
@@ -38,6 +39,10 @@ export function ProfileModule() {
   const [error, setError] = useState('');
   const [publicUser, setPublicUser] = useState<User | null>(null);
   const [loadingPublicUser, setLoadingPublicUser] = useState(false);
+  const [teachingProfile, setTeachingProfile] = useState<TeachingProfile | null>(null);
+  const [loadingTeachingProfile, setLoadingTeachingProfile] = useState(false);
+  const [activatingTeaching, setActivatingTeaching] = useState(false);
+  const [teachingSuccessNotice, setTeachingSuccessNotice] = useState('');
 
   const ref = useRef<HTMLDialogElement>(null);
   useModalDialog(ref, editing);
@@ -94,6 +99,53 @@ export function ProfileModule() {
       active = false;
     };
   }, [isViewingOther, targetUserId, people]);
+
+  // Fetch Teaching Profile for current authenticated user
+  useEffect(() => {
+    if (!session?.identity?.id) {
+      setTeachingProfile(null);
+      return;
+    }
+    let active = true;
+    setLoadingTeachingProfile(true);
+    api.teaching
+      .getProfile()
+      .then((p) => {
+        if (active) setTeachingProfile(p);
+      })
+      .catch(() => {
+        if (active) setTeachingProfile(null);
+      })
+      .finally(() => {
+        if (active) setLoadingTeachingProfile(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [session?.identity?.id]);
+
+  async function handleStartTeaching() {
+    if (!requireAuth('activate teaching', () => handleStartTeaching())) return;
+    try {
+      setActivatingTeaching(true);
+      setError('');
+      const headline = user.bio || `${user.name} - Mentor & Teacher`;
+      const skills = user.skills.length ? user.skills : ['Mentorship'];
+      const p = await api.teaching.updateProfile({
+        status: 'available',
+        headline,
+        skills,
+      });
+      setTeachingProfile(p);
+      window.dispatchEvent(new CustomEvent('skill-swap:teaching-activated'));
+      setTeachingSuccessNotice('Teaching capability activated! The Teaching section is now available in your navigation sidebar.');
+      setTimeout(() => setTeachingSuccessNotice(''), 5000);
+    } catch (err: any) {
+      setError(err.message || 'Failed to activate teaching.');
+    } finally {
+      setActivatingTeaching(false);
+    }
+  }
 
   const isGuest = !session;
   const guestUser: User = {
@@ -200,7 +252,7 @@ export function ProfileModule() {
 
   const profileTabs = isViewingOther
     ? ['Projects', 'Posts', 'About']
-    : ['Projects', 'Posts', 'Connections', 'Activity', 'About'];
+    : ['Projects', 'Posts', 'Teaching', 'Connections', 'Activity', 'About'];
 
   return (
     <section className="profile-module">
@@ -476,6 +528,95 @@ export function ProfileModule() {
                 >
                   Create a Post
                 </button>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {tab === 'Teaching' && (
+        <div className="profile-teaching-deck">
+          <SectionHeader
+            title="Teaching & Mentorship"
+            action={teachingProfile?.is_published ? 'Open Studio' : undefined}
+            onAction={teachingProfile?.is_published ? () => navigate('teaching') : undefined}
+          />
+
+          {teachingSuccessNotice && (
+            <div style={{ padding: '12px 18px', background: '#eef6ec', border: '1px solid #c8e4c3', borderRadius: '8px', color: '#2b5420', fontSize: '13.5px', marginBottom: '16px' }}>
+              ✓ {teachingSuccessNotice}
+            </div>
+          )}
+
+          {loadingTeachingProfile ? (
+            <p className="workspace-empty">Loading teaching profile...</p>
+          ) : !teachingProfile || !teachingProfile.is_published ? (
+            <div className="teaching-activation-card" style={{ background: '#ffffff', border: '1px solid var(--workspace-line, #dfddd8)', borderRadius: '12px', padding: '48px 24px', textAlign: 'center', maxWidth: '560px', margin: '20px auto' }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', color: '#8e948d', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+                Teaching
+              </span>
+              <h2 style={{ fontSize: '24px', fontWeight: 700, color: '#141514', margin: '0 0 10px 0' }}>
+                TEACHING
+              </h2>
+              <p style={{ fontSize: '15px', color: '#656862', margin: '0 0 28px 0', lineHeight: 1.5 }}>
+                Share what you know with people who want to learn it.
+              </p>
+              <button
+                type="button"
+                className="primary-button"
+                style={{ padding: '12px 32px', fontSize: '14px', fontWeight: 600 }}
+                disabled={activatingTeaching}
+                onClick={handleStartTeaching}
+              >
+                {activatingTeaching ? 'ACTIVATING…' : 'START TEACHING'}
+              </button>
+            </div>
+          ) : (
+            <div style={{ background: '#ffffff', border: '1px solid var(--workspace-line, #dfddd8)', borderRadius: '12px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <h3 style={{ fontSize: '18px', fontWeight: 700, margin: 0, color: '#141514' }}>
+                      {user.name}
+                    </h3>
+                    <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', padding: '2px 8px', borderRadius: '999px', background: '#eef6ec', color: '#2b5420', border: '1px solid #c8e4c3' }}>
+                      Teaching Published
+                    </span>
+                  </div>
+                  <p style={{ margin: '6px 0 0 0', fontSize: '14px', color: '#656862' }}>
+                    {teachingProfile.headline || 'Active Educator on Skill Swap'}
+                  </p>
+                  {teachingProfile.hourly_rate && (
+                    <span style={{ display: 'inline-block', marginTop: '6px', fontSize: '13px', fontWeight: 600 }}>
+                      Rate: {teachingProfile.hourly_rate}
+                    </span>
+                  )}
+                </div>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button
+                    type="button"
+                    className="primary-button"
+                    onClick={() => navigate('teaching')}
+                  >
+                    Open Teaching Studio &rarr;
+                  </button>
+                  <button
+                    type="button"
+                    className="secondary-button"
+                    onClick={() => navigate('teaching', undefined, false, { tab: 'classes' })}
+                  >
+                    Manage Classes & Sessions
+                  </button>
+                </div>
+              </div>
+
+              {teachingProfile.skills && teachingProfile.skills.length > 0 && (
+                <div style={{ paddingTop: '16px', borderTop: '1px solid #dfddd8' }}>
+                  <strong style={{ display: 'block', fontSize: '12px', textTransform: 'uppercase', color: '#8e948d', marginBottom: '8px' }}>
+                    Teaching Skills
+                  </strong>
+                  <Tags values={teachingProfile.skills} />
+                </div>
               )}
             </div>
           )}
