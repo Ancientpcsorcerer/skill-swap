@@ -34,7 +34,17 @@ export interface ChatMessageRecord {
   iv: string;
   auth_tag: string;
   ratchet_header?: Record<string, unknown> | null;
+  reply_to_message_id?: string | null;
+  forwarded_from_message_id?: string | null;
+  is_deleted: boolean;
+  edited_at?: string | null;
   created_at: string;
+  reply_to_message?: {
+    id: string;
+    sender_id: string;
+    sender_name: string;
+    is_deleted: boolean;
+  } | null;
 }
 
 export class ChatService {
@@ -279,17 +289,44 @@ export class ChatService {
       throw new ForbiddenError('You are not authorized to view messages in this conversation');
     }
 
-    const messages = await query<ChatMessageRecord>(
+    const rows = await query<any>(
       `SELECT m.id, m.conversation_id, m.sender_id, u.name as sender_name,
-              m.ciphertext, m.iv, m.auth_tag, m.ratchet_header, m.created_at
+              m.ciphertext, m.iv, m.auth_tag, m.ratchet_header,
+              m.reply_to_message_id, m.forwarded_from_message_id,
+              m.is_deleted, m.edited_at, m.created_at,
+              rm.sender_id as reply_sender_id, ru.name as reply_sender_name, rm.is_deleted as reply_is_deleted
        FROM chat_messages m
        JOIN users u ON u.id = m.sender_id
+       LEFT JOIN chat_messages rm ON rm.id = m.reply_to_message_id
+       LEFT JOIN users ru ON ru.id = rm.sender_id
        WHERE m.conversation_id = $1
        ORDER BY m.created_at ASC`,
       [conversationId]
     );
 
-    return messages;
+    return rows.map((r) => ({
+      id: r.id,
+      conversation_id: r.conversation_id,
+      sender_id: r.sender_id,
+      sender_name: r.sender_name,
+      ciphertext: r.is_deleted ? '' : r.ciphertext,
+      iv: r.is_deleted ? '' : r.iv,
+      auth_tag: r.is_deleted ? '' : r.auth_tag,
+      ratchet_header: r.is_deleted ? null : r.ratchet_header,
+      reply_to_message_id: r.reply_to_message_id,
+      forwarded_from_message_id: r.forwarded_from_message_id,
+      is_deleted: Boolean(r.is_deleted),
+      edited_at: r.edited_at,
+      created_at: r.created_at,
+      reply_to_message: r.reply_to_message_id
+        ? {
+            id: r.reply_to_message_id,
+            sender_id: r.reply_sender_id,
+            sender_name: r.reply_sender_name,
+            is_deleted: Boolean(r.reply_is_deleted),
+          }
+        : null,
+    }));
   }
 
   async sendMessage(
@@ -298,7 +335,8 @@ export class ChatService {
     ciphertext: string,
     iv: string,
     authTag: string,
-    ratchetHeader?: Record<string, unknown>
+    ratchetHeader?: Record<string, unknown>,
+    replyToMessageId?: string | null
   ): Promise<ChatMessageRecord> {
     if (!ciphertext || !iv || !authTag) {
       throw new BadRequestError('Encrypted payload requires ciphertext, iv, and authTag');
@@ -334,15 +372,150 @@ export class ChatService {
     }
 
     const msg = await queryOne<ChatMessageRecord>(
-      `INSERT INTO chat_messages (conversation_id, sender_id, ciphertext, iv, auth_tag, ratchet_header, created_at)
-       VALUES ($1, $2, $3, $4, $5, $6, NOW())
-       RETURNING id, conversation_id, sender_id, ciphertext, iv, auth_tag, ratchet_header, created_at`,
-      [conversationId, senderId, ciphertext, iv, authTag, ratchetHeader ? JSON.stringify(ratchetHeader) : null]
+      `INSERT INTO chat_messages (conversation_id, sender_id, ciphertext, iv, auth_tag, ratchet_header, reply_to_message_id, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+       RETURNING id, conversation_id, sender_id, ciphertext, iv, auth_tag, ratchet_header, reply_to_message_id, forwarded_from_message_id, is_deleted, edited_at, created_at`,
+      [
+        conversationId,
+        senderId,
+        ciphertext,
+        iv,
+        authTag,
+        ratchetHeader ? JSON.stringify(ratchetHeader) : null,
+        replyToMessageId || null,
+      ]
     );
 
     // Bump conversation updated_at
     await query(`UPDATE chat_conversations SET updated_at = NOW() WHERE id = $1`, [conversationId]);
 
+    return msg!;
+  }
+
+  async editMessage(
+    userId: string,
+    messageId: string,
+    ciphertext: string,
+    iv: string,
+    authTag: string,
+    ratchetHeader?: Record<string, unknown>
+  ): Promise<ChatMessageRecord> {
+    const msg = await queryOne<{ id: string; sender_id: string; is_deleted: boolean }>(
+      `SELECT id, sender_id, is_deleted FROM chat_messages WHERE id = $1`,
+      [messageId]
+    );
+    if (!msg) throw new NotFoundError('Message not found');
+    if (msg.sender_id !== userId) {
+      throw new ForbiddenError('You can only edit your own messages');
+    }
+    if (msg.is_deleted) {
+      throw new BadRequestError('Cannot edit a deleted message');
+    }
+
+    const updated = await queryOne<ChatMessageRecord>(
+      `UPDATE chat_messages
+       SET ciphertext = $1, iv = $2, auth_tag = $3, ratchet_header = $4, edited_at = NOW()
+       WHERE id = $5
+       RETURNING id, conversation_id, sender_id, ciphertext, iv, auth_tag, ratchet_header, reply_to_message_id, forwarded_from_message_id, is_deleted, edited_at, created_at`,
+      [ciphertext, iv, authTag, ratchetHeader ? JSON.stringify(ratchetHeader) : null, messageId]
+    );
+    return updated!;
+  }
+
+  async deleteMessage(userId: string, messageId: string): Promise<ChatMessageRecord> {
+    const msg = await queryOne<{ id: string; sender_id: string }>(
+      `SELECT id, sender_id FROM chat_messages WHERE id = $1`,
+      [messageId]
+    );
+    if (!msg) throw new NotFoundError('Message not found');
+    if (msg.sender_id !== userId) {
+      throw new ForbiddenError('You can only delete your own messages');
+    }
+
+    const updated = await queryOne<ChatMessageRecord>(
+      `UPDATE chat_messages
+       SET is_deleted = true, ciphertext = '', iv = '', auth_tag = '', edited_at = NOW()
+       WHERE id = $1
+       RETURNING id, conversation_id, sender_id, ciphertext, iv, auth_tag, ratchet_header, reply_to_message_id, forwarded_from_message_id, is_deleted, edited_at, created_at`,
+      [messageId]
+    );
+    return updated!;
+  }
+
+  async forwardMessage(
+    userId: string,
+    messageId: string,
+    targetConversationId: string,
+    ciphertext?: string,
+    iv?: string,
+    authTag?: string,
+    ratchetHeader?: Record<string, unknown>
+  ): Promise<ChatMessageRecord> {
+    const original = await queryOne<{
+      id: string;
+      conversation_id: string;
+      ciphertext: string;
+      iv: string;
+      auth_tag: string;
+      ratchet_header: any;
+      is_deleted: boolean;
+    }>(
+      `SELECT id, conversation_id, ciphertext, iv, auth_tag, ratchet_header, is_deleted
+       FROM chat_messages WHERE id = $1`,
+      [messageId]
+    );
+    if (!original || original.is_deleted) {
+      throw new NotFoundError('Original message not found or deleted');
+    }
+
+    // Verify user has access to target conversation
+    const targetConv = await queryOne<{
+      id: string;
+      participant_one_id: string | null;
+      participant_two_id: string | null;
+      type: string;
+    }>(
+      `SELECT id, participant_one_id, participant_two_id, type FROM chat_conversations WHERE id = $1`,
+      [targetConversationId]
+    );
+    if (!targetConv) throw new NotFoundError('Target conversation not found');
+
+    let isAuthorized = false;
+    if (targetConv.type === 'class_group') {
+      const isGroupMember = await queryOne<{ user_id: string }>(
+        `SELECT user_id FROM chat_group_members WHERE conversation_id = $1 AND user_id = $2`,
+        [targetConversationId, userId]
+      );
+      isAuthorized = !!isGroupMember;
+    } else {
+      isAuthorized = targetConv.participant_one_id === userId || targetConv.participant_two_id === userId;
+    }
+
+    if (!isAuthorized) {
+      throw new ForbiddenError('You are not authorized to forward messages to this conversation');
+    }
+
+    const finalCiphertext = ciphertext || original.ciphertext;
+    const finalIv = iv || original.iv;
+    const finalAuthTag = authTag || original.auth_tag;
+    const finalHeader = ratchetHeader ? JSON.stringify(ratchetHeader) : (original.ratchet_header ? JSON.stringify(original.ratchet_header) : null);
+
+    const msg = await queryOne<ChatMessageRecord>(
+      `INSERT INTO chat_messages (conversation_id, sender_id, ciphertext, iv, auth_tag, ratchet_header, forwarded_from_message_id, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+       RETURNING id, conversation_id, sender_id, ciphertext, iv, auth_tag, ratchet_header, reply_to_message_id, forwarded_from_message_id, is_deleted, edited_at, created_at`,
+      [
+        targetConversationId,
+        userId,
+        finalCiphertext,
+        finalIv,
+        finalAuthTag,
+        finalHeader,
+        original.id,
+      ]
+    );
+
+    await query(`UPDATE chat_conversations SET updated_at = NOW() WHERE id = $1`, [targetConversationId]);
     return msg!;
   }
 }

@@ -476,3 +476,84 @@ ALTER TABLE class_sessions ADD COLUMN IF NOT EXISTS meeting_password VARCHAR(100
 ALTER TABLE class_sessions ADD COLUMN IF NOT EXISTS timezone VARCHAR(50) NOT NULL DEFAULT 'UTC';
 ALTER TABLE class_sessions ADD COLUMN IF NOT EXISTS teacher_info TEXT NULL;
 ALTER TABLE class_sessions ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW();
+
+-- 40. Chat Message Actions (Replies, Edits, Deletes, Forwards)
+ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS reply_to_message_id UUID NULL REFERENCES chat_messages(id) ON DELETE SET NULL;
+ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS forwarded_from_message_id UUID NULL REFERENCES chat_messages(id) ON DELETE SET NULL;
+ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS edited_at TIMESTAMPTZ NULL;
+CREATE INDEX IF NOT EXISTS idx_chat_messages_reply ON chat_messages (reply_to_message_id);
+
+-- 41. Content Reports (Posts, Projects, Comments)
+CREATE TABLE IF NOT EXISTS content_reports (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    reporter_user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    target_type VARCHAR(20) NOT NULL CHECK (target_type IN ('post', 'project', 'comment')),
+    target_id UUID NOT NULL,
+    reason VARCHAR(255) NOT NULL DEFAULT '',
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'reviewed', 'dismissed')),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_content_reports_target ON content_reports (target_type, target_id);
+CREATE INDEX IF NOT EXISTS idx_content_reports_reporter ON content_reports (reporter_user_id);
+
+-- 42. Post Likes & Project Likes
+CREATE TABLE IF NOT EXISTS post_likes (
+    post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (post_id, user_id)
+);
+CREATE INDEX IF NOT EXISTS idx_post_likes_user ON post_likes (user_id);
+
+CREATE TABLE IF NOT EXISTS project_likes (
+    project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (project_id, user_id)
+);
+CREATE INDEX IF NOT EXISTS idx_project_likes_user ON project_likes (user_id);
+
+-- 43. Project Reposts & Post Saves
+CREATE TABLE IF NOT EXISTS project_reposts (
+    project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (project_id, user_id)
+);
+CREATE INDEX IF NOT EXISTS idx_project_reposts_user ON project_reposts (user_id);
+
+CREATE TABLE IF NOT EXISTS post_saves (
+    post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (post_id, user_id)
+);
+CREATE INDEX IF NOT EXISTS idx_post_saves_user ON post_saves (user_id);
+
+-- 44. Unified Comments & Threaded Replies (Posts & Projects)
+CREATE TABLE IF NOT EXISTS comments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    target_type VARCHAR(20) NOT NULL CHECK (target_type IN ('post', 'project')),
+    target_id UUID NOT NULL,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    parent_comment_id UUID NULL REFERENCES comments(id) ON DELETE CASCADE,
+    body TEXT NOT NULL,
+    is_deleted BOOLEAN NOT NULL DEFAULT false,
+    edited_at TIMESTAMPTZ NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_comments_target ON comments (target_type, target_id, created_at ASC);
+CREATE INDEX IF NOT EXISTS idx_comments_parent ON comments (parent_comment_id);
+CREATE INDEX IF NOT EXISTS idx_comments_user ON comments (user_id);
+
+-- 45. Comment Likes
+CREATE TABLE IF NOT EXISTS comment_likes (
+    comment_id UUID NOT NULL REFERENCES comments(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (comment_id, user_id)
+);
+CREATE INDEX IF NOT EXISTS idx_comment_likes_user ON comment_likes (user_id);
+

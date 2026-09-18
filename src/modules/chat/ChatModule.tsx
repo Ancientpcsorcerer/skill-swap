@@ -6,7 +6,6 @@ import { navigate, useApplicationRoute } from '../../app/navigation';
 import { Avatar } from '../../app/components/Avatar';
 import { Icon } from '../../app/components/Icon';
 import { chatService } from './chatService';
-import { ChatContextDrawer } from './ChatContextDrawer';
 import type { ChatParticipant, ChatConversation, ChatMessage } from './types';
 import '../../styles/design-tokens.css';
 import '../../styles/connect-profile-chat.css';
@@ -39,7 +38,14 @@ export function ChatModule() {
   const [inputText, setInputText] = useState('');
   const [filterQuery, setFilterQuery] = useState('');
   const [showCollaboratorsList, setShowCollaboratorsList] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(true);
+
+  // Message actions & context states
+  const [replyingToMessage, setReplyingToMessage] = useState<ChatMessage | null>(null);
+  const [editingMessage, setEditingMessage] = useState<ChatMessage | null>(null);
+  const [forwardingMessage, setForwardingMessage] = useState<ChatMessage | null>(null);
+  const [activeMenuMessageId, setActiveMenuMessageId] = useState<string | null>(null);
+  const [copiedToast, setCopiedToast] = useState(false);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -62,7 +68,6 @@ export function ChatModule() {
     const targetUserId = route.user;
     if (targetUserId && targetUserId !== currentUserId) {
       if (selectedPartnerId !== targetUserId) {
-        // Find person details
         const person = people.find((p) => p.id === targetUserId);
         if (person) {
           const participant: ChatParticipant = {
@@ -92,6 +97,13 @@ export function ChatModule() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [selectedPartnerId, conversations]);
+
+  // Close message action menu on outside click
+  useEffect(() => {
+    const handleDocumentClick = () => setActiveMenuMessageId(null);
+    document.addEventListener('click', handleDocumentClick);
+    return () => document.removeEventListener('click', handleDocumentClick);
+  }, []);
 
   if (!session) {
     return (
@@ -154,12 +166,21 @@ export function ChatModule() {
     inputRef.current?.focus();
 
     try {
+      if (editingMessage && conversationId) {
+        const msgId = editingMessage.id;
+        setEditingMessage(null);
+        await chatService.editMessage(conversationId, msgId, textToSend);
+        return;
+      }
+
       let conv = activeConversation;
       if (!conv) {
         conv = (await chatService.ensureConversation(currentUserId, activePartner)) || undefined;
       }
       if (conv) {
-        await chatService.sendMessage(currentUserId, conv.id, activePartner, textToSend);
+        const replyId = replyingToMessage?.id || null;
+        setReplyingToMessage(null);
+        await chatService.sendMessage(currentUserId, conv.id, activePartner, textToSend, replyId);
       }
     } catch (err) {
       console.error('Failed to send message:', err);
@@ -189,6 +210,46 @@ export function ChatModule() {
     }
   };
 
+  const scrollToMessage = (msgId?: string | null) => {
+    if (!msgId) return;
+    const el = document.getElementById(`chat-msg-${msgId}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.style.transition = 'background 300ms ease';
+      el.style.background = 'rgba(0, 0, 0, 0.05)';
+      setTimeout(() => {
+        el.style.background = '';
+      }, 1200);
+    }
+  };
+
+  const handleCopyMessage = (msg: ChatMessage) => {
+    navigator.clipboard.writeText(msg.text);
+    setCopiedToast(true);
+    setActiveMenuMessageId(null);
+    setTimeout(() => setCopiedToast(false), 2000);
+  };
+
+  const handleEditMessage = (msg: ChatMessage) => {
+    setEditingMessage(msg);
+    setReplyingToMessage(null);
+    setInputText(msg.text);
+    setActiveMenuMessageId(null);
+    inputRef.current?.focus();
+  };
+
+  const handleDeleteMessage = async (msg: ChatMessage) => {
+    setActiveMenuMessageId(null);
+    if (conversationId) {
+      await chatService.deleteMessage(conversationId, msg.id);
+    }
+  };
+
+  const handleForwardMessage = (msg: ChatMessage) => {
+    setForwardingMessage(msg);
+    setActiveMenuMessageId(null);
+  };
+
   const filteredConversations = conversations.filter(
     (c) =>
       c.partner.name.toLowerCase().includes(filterQuery.toLowerCase()) ||
@@ -197,7 +258,7 @@ export function ChatModule() {
 
   return (
     <section className="chat-module">
-      <div className={`chat-container ${drawerOpen && activePartner ? '' : 'drawer-collapsed'}`}>
+      <div className="chat-container">
         {/* LEFT PANE: Conversation List */}
         <aside className="chat-sidebar">
           <div className="chat-sidebar-header">
@@ -282,6 +343,8 @@ export function ChatModule() {
                     onClick={() => {
                       setSelectedPartnerId(conv.partnerId);
                       setShowCollaboratorsList(false);
+                      setReplyingToMessage(null);
+                      setEditingMessage(null);
                     }}
                   >
                     <Avatar name={conv.partner.name} avatarUrl={conv.partner.avatarUrl} small />
@@ -296,7 +359,11 @@ export function ChatModule() {
                       </div>
                       <div className="chat-conversation-preview-row">
                         <p className="chat-preview-text">
-                          {conv.lastMessage ? conv.lastMessage.text : 'Conversation started'}
+                          {conv.lastMessage
+                            ? conv.lastMessage.isDeleted
+                              ? 'Message deleted'
+                              : conv.lastMessage.text
+                            : 'Conversation started'}
                         </p>
                         {conv.unreadCount > 0 && (
                           <span className="chat-unread-badge">{conv.unreadCount}</span>
@@ -331,7 +398,7 @@ export function ChatModule() {
           </div>
         </aside>
 
-        {/* CENTER PANE: Active Conversation */}
+        {/* ACTIVE CONVERSATION: Consumes all remaining workspace */}
         <main className="chat-main-pane">
           {activePartner ? (
             <div className="chat-thread-container">
@@ -347,15 +414,7 @@ export function ChatModule() {
                     </p>
                   </div>
                 </div>
-                <div className="chat-thread-actions" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <button
-                    type="button"
-                    className={`radar-chip ${drawerOpen ? 'is-active' : ''}`}
-                    onClick={() => setDrawerOpen((prev) => !prev)}
-                    title="Toggle Collaborator Dossier Drawer"
-                  >
-                    {drawerOpen ? 'Hide Dossier' : '✦ View Dossier'}
-                  </button>
+                <div className="chat-thread-actions">
                   <button
                     type="button"
                     className="quiet-button"
@@ -373,29 +432,87 @@ export function ChatModule() {
                 {activeMessages.length > 0 ? (
                   activeMessages.map((msg) => {
                     const isMe = msg.senderId === currentUserId;
+                    const isMenuOpen = activeMenuMessageId === msg.id;
+
                     return (
                       <div
+                        id={`chat-msg-${msg.id}`}
                         key={msg.id}
                         className={`chat-message-row ${isMe ? 'is-outgoing' : 'is-incoming'}`}
                       >
                         {!isMe && <Avatar name={activePartner.name} avatarUrl={activePartner.avatarUrl} small />}
+
                         <div className="chat-message-bubble">
-                          <p className="chat-message-text" style={{ margin: 0 }}>{msg.text}</p>
-                          <div className="chat-message-meta" style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end', marginTop: '4px' }}>
+                          {/* Forwarded provenance */}
+                          {msg.forwardedFromMessageId && (
+                            <span className="chat-forwarded-label">
+                              ↪ Forwarded
+                            </span>
+                          )}
+
+                          {/* Replied-to message preview */}
+                          {msg.replyToMessage && (
+                            <div
+                              className="chat-reply-quote"
+                              onClick={() => scrollToMessage(msg.replyToMessageId)}
+                              title="Jump to quoted message"
+                            >
+                              <span className="chat-reply-quote-sender">
+                                {msg.replyToMessage.senderId === currentUserId
+                                  ? 'You'
+                                  : msg.replyToMessage.senderName || activePartner.name}
+                              </span>
+                              <span className="chat-reply-quote-text">
+                                {msg.replyToMessage.isDeleted
+                                  ? 'Original message deleted'
+                                  : msg.replyToMessage.text || 'Referenced message'}
+                              </span>
+                            </div>
+                          )}
+
+                          {/* Message Body */}
+                          {msg.isDeleted ? (
+                            <p className="chat-deleted-text" style={{ margin: 0 }}>
+                              Message deleted
+                            </p>
+                          ) : (
+                            <p className="chat-message-text" style={{ margin: 0 }}>
+                              {msg.text}
+                              {msg.editedAt && (
+                                <span className="chat-edited-indicator">(edited)</span>
+                              )}
+                            </p>
+                          )}
+
+                          {/* Meta timestamp & delivery status */}
+                          <div
+                            className="chat-message-meta"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              justifyContent: 'flex-end',
+                              marginTop: '4px',
+                            }}
+                          >
                             <span className="chat-message-time">
                               {formatTimestamp(msg.createdAt)}
                             </span>
-                            {isMe && msg.status === 'sending' && (
+                            {isMe && !msg.isDeleted && msg.status === 'sending' && (
                               <span className="chat-status-pill sending" title="Sending...">⏳</span>
                             )}
-                            {isMe && msg.status === 'delivered' && (
+                            {isMe && !msg.isDeleted && msg.status === 'delivered' && (
                               <span className="chat-status-pill delivered" title="Delivered to server">✓</span>
                             )}
-                            {isMe && msg.status === 'failed' && (
+                            {isMe && !msg.isDeleted && msg.status === 'failed' && (
                               <button
                                 type="button"
                                 className="chat-retry-pill"
-                                onClick={() => conversationId && activePartner && chatService.retryMessage(currentUserId, conversationId, activePartner, msg.id)}
+                                onClick={() =>
+                                  conversationId &&
+                                  activePartner &&
+                                  chatService.retryMessage(currentUserId, conversationId, activePartner, msg.id)
+                                }
                                 title="Delivery failed. Click to retry."
                                 style={{
                                   background: 'rgba(239, 68, 68, 0.2)',
@@ -412,6 +529,76 @@ export function ChatModule() {
                             )}
                           </div>
                         </div>
+
+                        {/* Action trigger button */}
+                        {!msg.isDeleted && (
+                          <div style={{ position: 'relative' }}>
+                            <button
+                              type="button"
+                              className="chat-message-actions-btn"
+                              title="Message actions"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveMenuMessageId(isMenuOpen ? null : msg.id);
+                              }}
+                            >
+                              •••
+                            </button>
+
+                            {/* Contextual Action Menu */}
+                            {isMenuOpen && (
+                              <div
+                                className="chat-message-action-menu"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <button
+                                  type="button"
+                                  className="chat-action-menu-item"
+                                  onClick={() => {
+                                    setReplyingToMessage(msg);
+                                    setEditingMessage(null);
+                                    setActiveMenuMessageId(null);
+                                    inputRef.current?.focus();
+                                  }}
+                                >
+                                  ↩ Reply
+                                </button>
+                                <button
+                                  type="button"
+                                  className="chat-action-menu-item"
+                                  onClick={() => handleCopyMessage(msg)}
+                                >
+                                  ❐ Copy
+                                </button>
+                                {isMe && (
+                                  <button
+                                    type="button"
+                                    className="chat-action-menu-item"
+                                    onClick={() => handleEditMessage(msg)}
+                                  >
+                                    ✎ Edit
+                                  </button>
+                                )}
+                                <button
+                                  type="button"
+                                  className="chat-action-menu-item"
+                                  onClick={() => handleForwardMessage(msg)}
+                                >
+                                  ↪ Forward
+                                </button>
+                                {isMe && (
+                                  <button
+                                    type="button"
+                                    className="chat-action-menu-item is-danger"
+                                    onClick={() => handleDeleteMessage(msg)}
+                                  >
+                                    ✕ Delete
+                                  </button>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     );
                   })
@@ -429,24 +616,74 @@ export function ChatModule() {
 
               {/* Composer */}
               <form className="chat-composer" onSubmit={handleSend}>
-                <textarea
-                  ref={inputRef}
-                  className="chat-composer-input"
-                  placeholder={`Message ${activePartner.name}... (Press Enter to send)`}
-                  rows={2}
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  autoFocus
-                />
-                <button
-                  type="submit"
-                  className="primary-button chat-send-button"
-                  disabled={!inputText.trim()}
-                  aria-label="Send message"
-                >
-                  Send
-                </button>
+                {/* Reply context bar */}
+                {replyingToMessage && (
+                  <div className="chat-composer-context">
+                    <span className="chat-composer-context-content">
+                      Replying to:{' '}
+                      <strong>
+                        {replyingToMessage.senderId === currentUserId ? 'You' : activePartner.name}:{' '}
+                        &ldquo;{replyingToMessage.text}&rdquo;
+                      </strong>
+                    </span>
+                    <button
+                      type="button"
+                      className="chat-composer-context-cancel"
+                      onClick={() => setReplyingToMessage(null)}
+                      title="Cancel reply"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+
+                {/* Edit context bar */}
+                {editingMessage && (
+                  <div className="chat-composer-context">
+                    <span className="chat-composer-context-content">
+                      Editing message:{' '}
+                      <strong>&ldquo;{editingMessage.text}&rdquo;</strong>
+                    </span>
+                    <button
+                      type="button"
+                      className="chat-composer-context-cancel"
+                      onClick={() => {
+                        setEditingMessage(null);
+                        setInputText('');
+                      }}
+                      title="Cancel edit"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+
+                <div className="chat-composer-row">
+                  <textarea
+                    ref={inputRef}
+                    className="chat-composer-input"
+                    placeholder={
+                      editingMessage
+                        ? 'Edit message... (Press Enter to save)'
+                        : replyingToMessage
+                        ? `Reply to ${activePartner.name}... (Press Enter to send)`
+                        : `Message ${activePartner.name}... (Press Enter to send)`
+                    }
+                    rows={2}
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    autoFocus
+                  />
+                  <button
+                    type="submit"
+                    className="primary-button chat-send-button"
+                    disabled={!inputText.trim()}
+                    aria-label={editingMessage ? 'Save edited message' : 'Send message'}
+                  >
+                    {editingMessage ? 'Save' : 'Send'}
+                  </button>
+                </div>
               </form>
             </div>
           ) : (
@@ -466,16 +703,70 @@ export function ChatModule() {
             </div>
           )}
         </main>
-
-        {/* RIGHT PANE: Collapsible Context Drawer */}
-        {drawerOpen && activePartner && (
-          <ChatContextDrawer
-            partner={activePartner}
-            session={session}
-            onClose={() => setDrawerOpen(false)}
-          />
-        )}
       </div>
+
+      {/* Forward Message Modal */}
+      {forwardingMessage && (
+        <div
+          className="chat-forward-overlay"
+          onClick={() => setForwardingMessage(null)}
+        >
+          <div className="chat-forward-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Forward Message</h3>
+            <p style={{ margin: 0, fontSize: 13, color: 'var(--sw-ink-muted)' }}>
+              Forward &ldquo;{forwardingMessage.text}&rdquo; to:
+            </p>
+            <div className="chat-forward-list">
+              {conversations
+                .filter((c) => c.partnerId !== selectedPartnerId)
+                .map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    className="chat-forward-item"
+                    onClick={async () => {
+                      try {
+                        await chatService.forwardMessage(
+                          c.id,
+                          forwardingMessage.id,
+                          forwardingMessage.text
+                        );
+                        setForwardingMessage(null);
+                        setCopiedToast(true);
+                      } catch (err) {
+                        console.error('Failed to forward message:', err);
+                      }
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <Avatar name={c.partner.name} avatarUrl={c.partner.avatarUrl} small />
+                      <div style={{ textAlign: 'left' }}>
+                        <strong style={{ display: 'block', fontSize: 13 }}>{c.partner.name}</strong>
+                        <small style={{ color: 'var(--sw-ink-muted)' }}>@{c.partner.username}</small>
+                      </div>
+                    </div>
+                    <span style={{ fontSize: 12, fontWeight: 600 }}>Forward &rarr;</span>
+                  </button>
+                ))}
+              {conversations.filter((c) => c.partnerId !== selectedPartnerId).length === 0 && (
+                <p style={{ fontSize: 12, color: 'var(--sw-ink-muted)', textAlign: 'center', margin: '16px 0' }}>
+                  No other active conversations to forward to.
+                </p>
+              )}
+            </div>
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={() => setForwardingMessage(null)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Copied Toast */}
+      {copiedToast && <div className="chat-copied-toast">Copied to clipboard</div>}
     </section>
   );
 }

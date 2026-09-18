@@ -400,13 +400,25 @@ export function ProfileModule() {
                 )}
               </div>
             ) : (
-              <button
-                type="button"
-                className="quiet-button"
-                onClick={() => requireAuth('edit profile', () => setEditing(true))}
-              >
-                + Edit Profile
-              </button>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                {!teachingProfile?.is_published && (
+                  <button
+                    type="button"
+                    className="primary-button"
+                    style={{ fontSize: '0.8rem', padding: '6px 14px' }}
+                    onClick={() => setTab('Teaching')}
+                  >
+                    ✦ Start Teaching
+                  </button>
+                )}
+                <button
+                  type="button"
+                  className="quiet-button"
+                  onClick={() => requireAuth('edit profile', () => setEditing(true))}
+                >
+                  + Edit Profile
+                </button>
+              </div>
             )}
           </div>
         </div>

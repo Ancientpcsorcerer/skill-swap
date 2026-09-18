@@ -43,6 +43,11 @@ export interface ProjectRecord {
   creator_avatar_url?: string | null;
   follower_count?: number;
   is_following?: boolean;
+  like_count?: number;
+  has_liked?: boolean;
+  comment_count?: number;
+  repost_count?: number;
+  has_reposted?: boolean;
   members?: Array<{
     id: string;
     user_id: string;
@@ -135,20 +140,34 @@ export class ProjectsService {
     );
     const total = parseInt(countRes?.count || '0', 10);
 
-    // Projects with creator info and follower counts
+    // Projects with creator info, follower counts, likes, comments, and reposts
+    sqlParams.push(currentUserId || null);
+    const currentUserIdIdx = sqlParams.length;
     sqlParams.push(limit);
+    const limitIdx = sqlParams.length;
     sqlParams.push(offset);
+    const offsetIdx = sqlParams.length;
+
     const rows = await query<ProjectRecord>(
       `SELECT p.id, p.creator_id, p.title, p.description, p.vision, p.type, p.status, p.art,
               p.is_discoverable, COALESCE(p.visibility, 'public') as visibility,
               p.cover_image_url, p.recreated_from_id, p.created_at, p.updated_at,
               u.name as creator_name, u.username as creator_username, u.avatar_url as creator_avatar_url,
-              (SELECT COUNT(*)::int FROM project_followers pf WHERE pf.project_id = p.id) as follower_count
+              (SELECT COUNT(*)::int FROM project_followers pf WHERE pf.project_id = p.id) as follower_count,
+              (SELECT COUNT(*)::int FROM project_likes pl WHERE pl.project_id = p.id) as like_count,
+              CASE WHEN $${currentUserIdIdx}::uuid IS NOT NULL THEN
+                EXISTS(SELECT 1 FROM project_likes pl WHERE pl.project_id = p.id AND pl.user_id = $${currentUserIdIdx}::uuid)
+              ELSE false END as has_liked,
+              (SELECT COUNT(*)::int FROM comments c WHERE c.target_type = 'project' AND c.target_id = p.id AND c.is_deleted = false) as comment_count,
+              (SELECT COUNT(*)::int FROM project_reposts pr WHERE pr.project_id = p.id) as repost_count,
+              CASE WHEN $${currentUserIdIdx}::uuid IS NOT NULL THEN
+                EXISTS(SELECT 1 FROM project_reposts pr WHERE pr.project_id = p.id AND pr.user_id = $${currentUserIdIdx}::uuid)
+              ELSE false END as has_reposted
        FROM projects p
        JOIN users u ON u.id = p.creator_id
        WHERE ${whereClause}
        ORDER BY p.created_at DESC
-       LIMIT $${idx++} OFFSET $${idx++}`,
+       LIMIT $${limitIdx} OFFSET $${offsetIdx}`,
       sqlParams
     );
 
@@ -164,6 +183,11 @@ export class ProjectsService {
           tags,
           required_skills,
           is_following,
+          like_count: Number(project.like_count || 0),
+          has_liked: Boolean(project.has_liked),
+          comment_count: Number(project.comment_count || 0),
+          repost_count: Number(project.repost_count || 0),
+          has_reposted: Boolean(project.has_reposted),
         };
       })
     );
@@ -177,11 +201,20 @@ export class ProjectsService {
               p.is_discoverable, COALESCE(p.visibility, 'public') as visibility,
               p.cover_image_url, p.recreated_from_id, p.created_at, p.updated_at,
               u.name as creator_name, u.username as creator_username, u.avatar_url as creator_avatar_url,
-              (SELECT COUNT(*)::int FROM project_followers pf WHERE pf.project_id = p.id) as follower_count
+              (SELECT COUNT(*)::int FROM project_followers pf WHERE pf.project_id = p.id) as follower_count,
+              (SELECT COUNT(*)::int FROM project_likes pl WHERE pl.project_id = p.id) as like_count,
+              CASE WHEN $2::text IS NOT NULL THEN
+                EXISTS(SELECT 1 FROM project_likes pl WHERE pl.project_id = p.id AND pl.user_id = $2::uuid)
+              ELSE false END as has_liked,
+              (SELECT COUNT(*)::int FROM comments c WHERE c.target_type = 'project' AND c.target_id = p.id AND c.is_deleted = false) as comment_count,
+              (SELECT COUNT(*)::int FROM project_reposts pr WHERE pr.project_id = p.id) as repost_count,
+              CASE WHEN $2::text IS NOT NULL THEN
+                EXISTS(SELECT 1 FROM project_reposts pr WHERE pr.project_id = p.id AND pr.user_id = $2::uuid)
+              ELSE false END as has_reposted
        FROM projects p
        JOIN users u ON u.id = p.creator_id
        WHERE p.id = $1 AND p.deleted_at IS NULL`,
-      [id]
+      [id, currentUserId || null]
     );
 
     if (!project) {
@@ -692,6 +725,92 @@ export class ProjectsService {
       `DELETE FROM project_members WHERE project_id = $1 AND user_id = $2`,
       [projectId, targetUserId]
     );
+  }
+
+  async likeProject(userId: string, projectId: string): Promise<{ success: boolean; likeCount: number; hasLiked: boolean }> {
+    const project = await queryOne<{ id: string }>(`SELECT id FROM projects WHERE id = $1 AND deleted_at IS NULL`, [projectId]);
+    if (!project) throw new NotFoundError('Project not found');
+
+    await query(
+      `INSERT INTO project_likes (project_id, user_id) VALUES ($1, $2) ON CONFLICT (project_id, user_id) DO NOTHING`,
+      [projectId, userId]
+    );
+
+    const countRow = await queryOne<{ count: string }>(
+      `SELECT COUNT(*)::int as count FROM project_likes WHERE project_id = $1`,
+      [projectId]
+    );
+
+    return {
+      success: true,
+      likeCount: Number(countRow?.count || 0),
+      hasLiked: true,
+    };
+  }
+
+  async unlikeProject(userId: string, projectId: string): Promise<{ success: boolean; likeCount: number; hasLiked: boolean }> {
+    await query(`DELETE FROM project_likes WHERE project_id = $1 AND user_id = $2`, [projectId, userId]);
+
+    const countRow = await queryOne<{ count: string }>(
+      `SELECT COUNT(*)::int as count FROM project_likes WHERE project_id = $1`,
+      [projectId]
+    );
+
+    return {
+      success: true,
+      likeCount: Number(countRow?.count || 0),
+      hasLiked: false,
+    };
+  }
+
+  async repostProject(userId: string, projectId: string): Promise<{ success: boolean; repostCount: number; hasReposted: boolean }> {
+    const project = await queryOne<{ id: string }>(`SELECT id FROM projects WHERE id = $1 AND deleted_at IS NULL`, [projectId]);
+    if (!project) throw new NotFoundError('Project not found');
+
+    await query(
+      `INSERT INTO project_reposts (project_id, user_id) VALUES ($1, $2) ON CONFLICT (project_id, user_id) DO NOTHING`,
+      [projectId, userId]
+    );
+
+    const countRow = await queryOne<{ count: string }>(
+      `SELECT COUNT(*)::int as count FROM project_reposts WHERE project_id = $1`,
+      [projectId]
+    );
+
+    return {
+      success: true,
+      repostCount: Number(countRow?.count || 0),
+      hasReposted: true,
+    };
+  }
+
+  async unrepostProject(userId: string, projectId: string): Promise<{ success: boolean; repostCount: number; hasReposted: boolean }> {
+    await query(`DELETE FROM project_reposts WHERE project_id = $1 AND user_id = $2`, [projectId, userId]);
+
+    const countRow = await queryOne<{ count: string }>(
+      `SELECT COUNT(*)::int as count FROM project_reposts WHERE project_id = $1`,
+      [projectId]
+    );
+
+    return {
+      success: true,
+      repostCount: Number(countRow?.count || 0),
+      hasReposted: false,
+    };
+  }
+
+  async reportProject(userId: string, projectId: string, reason: string): Promise<{ success: boolean; reportId: string }> {
+    const project = await queryOne<{ id: string }>(`SELECT id FROM projects WHERE id = $1 AND deleted_at IS NULL`, [projectId]);
+    if (!project) throw new NotFoundError('Project not found');
+
+    const row = await queryOne<{ id: string }>(
+      `INSERT INTO content_reports (reporter_user_id, target_type, target_id, reason)
+       VALUES ($1, 'project', $2, $3)
+       RETURNING id`,
+      [userId, projectId, reason || 'Inappropriate content']
+    );
+
+    return { success: true, reportId: row!.id };
   }
 }
 

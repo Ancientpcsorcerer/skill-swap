@@ -13,6 +13,8 @@ import type {
   StudentItem,
   ClassSession,
   ZoomStatus,
+  CommentItem,
+  ChatMessage,
 } from '../app/data/models';
 
 export const API_BASE =
@@ -367,6 +369,29 @@ export const api = {
       });
       return res.update;
     },
+
+    async like(id: string) {
+      return request<{ success: boolean; likeCount: number; hasLiked: boolean }>(`/projects/${id}/like`, { method: 'POST' });
+    },
+
+    async unlike(id: string) {
+      return request<{ success: boolean; likeCount: number; hasLiked: boolean }>(`/projects/${id}/like`, { method: 'DELETE' });
+    },
+
+    async repost(id: string) {
+      return request<{ success: boolean; repostCount: number; hasReposted: boolean }>(`/projects/${id}/repost`, { method: 'POST' });
+    },
+
+    async unrepost(id: string) {
+      return request<{ success: boolean; repostCount: number; hasReposted: boolean }>(`/projects/${id}/repost`, { method: 'DELETE' });
+    },
+
+    async report(id: string, reason: string) {
+      return request<{ success: boolean; reportId: string }>(`/projects/${id}/report`, {
+        method: 'POST',
+        body: JSON.stringify({ reason }),
+      });
+    },
   },
 
   chat: {
@@ -389,16 +414,121 @@ export const api = {
     },
 
     async getMessages(conversationId: string) {
-      const res = await request<{ messages: any[] }>(`/chat/conversations/${conversationId}/messages`);
+      const res = await request<{ messages: ChatMessage[] }>(`/chat/conversations/${conversationId}/messages`);
       return res.messages;
     },
 
-    async sendMessage(conversationId: string, payload: { ciphertext: string; iv: string; authTag: string; ratchetHeader?: Record<string, unknown> }) {
-      const res = await request<{ message: any }>(`/chat/conversations/${conversationId}/messages`, {
+    async sendMessage(
+      conversationId: string,
+      payload: {
+        ciphertext: string;
+        iv: string;
+        authTag: string;
+        ratchetHeader?: Record<string, unknown>;
+        reply_to_message_id?: string | null;
+      }
+    ) {
+      const res = await request<{ message: ChatMessage }>(`/chat/conversations/${conversationId}/messages`, {
         method: 'POST',
         body: JSON.stringify(payload),
       });
       return res.message;
+    },
+
+    async editMessage(
+      messageId: string,
+      payload: {
+        ciphertext: string;
+        iv: string;
+        authTag: string;
+        ratchetHeader?: Record<string, unknown>;
+      }
+    ) {
+      const res = await request<{ message: ChatMessage }>(`/chat/messages/${messageId}`, {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      });
+      return res.message;
+    },
+
+    async deleteMessage(messageId: string) {
+      const res = await request<{ message: ChatMessage }>(`/chat/messages/${messageId}`, {
+        method: 'DELETE',
+      });
+      return res.message;
+    },
+
+    async forwardMessage(
+      messageId: string,
+      payload: {
+        targetConversationId: string;
+        ciphertext?: string;
+        iv?: string;
+        authTag?: string;
+        ratchetHeader?: Record<string, unknown>;
+      }
+    ) {
+      const res = await request<{ message: ChatMessage }>(`/chat/messages/${messageId}/forward`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      return res.message;
+    },
+  },
+
+  comments: {
+    async list(targetType: 'post' | 'project', targetId: string) {
+      const res = await request<{ comments: CommentItem[]; total_count: number }>(
+        `/comments?targetType=${encodeURIComponent(targetType)}&targetId=${encodeURIComponent(targetId)}`
+      );
+      return res;
+    },
+
+    async create(data: {
+      targetType: 'post' | 'project';
+      targetId: string;
+      body: string;
+      parentCommentId?: string | null;
+    }) {
+      const res = await request<{ comment: CommentItem }>('/comments', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+      return res.comment;
+    },
+
+    async update(id: string, body: string) {
+      const res = await request<{ comment: CommentItem }>(`/comments/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ body }),
+      });
+      return res.comment;
+    },
+
+    async delete(id: string) {
+      const res = await request<{ success: boolean; comment: CommentItem }>(`/comments/${id}`, {
+        method: 'DELETE',
+      });
+      return res;
+    },
+
+    async like(id: string) {
+      return request<{ success: boolean; like_count: number; has_liked: boolean }>(`/comments/${id}/like`, {
+        method: 'POST',
+      });
+    },
+
+    async unlike(id: string) {
+      return request<{ success: boolean; like_count: number; has_liked: boolean }>(`/comments/${id}/like`, {
+        method: 'DELETE',
+      });
+    },
+
+    async report(id: string, reason: string) {
+      return request<{ success: boolean; report_id: string }>(`/comments/${id}/report`, {
+        method: 'POST',
+        body: JSON.stringify({ reason }),
+      });
     },
   },
 
@@ -433,12 +563,52 @@ export const api = {
       return res.posts;
     },
 
+    async getById(id: string) {
+      const res = await request<{ post: PostItem }>(`/posts/${id}`);
+      return res.post;
+    },
+
     async create(data: { title: string; content: string; tags?: string[]; project_tag?: string; art?: string; image_urls?: string[]; video_urls?: string[] }) {
       const res = await request<{ post: PostItem }>('/posts', {
         method: 'POST',
         body: JSON.stringify(data),
       });
       return res.post;
+    },
+
+    async update(id: string, data: { title?: string; content?: string; tags?: string[]; project_tag?: string; art?: string; image_urls?: string[]; video_urls?: string[] }) {
+      const res = await request<{ post: PostItem }>(`/posts/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      });
+      return res.post;
+    },
+
+    async delete(id: string) {
+      return request<{ success: boolean }>(`/posts/${id}`, { method: 'DELETE' });
+    },
+
+    async like(id: string) {
+      return request<{ success: boolean; likeCount: number; hasLiked: boolean }>(`/posts/${id}/like`, { method: 'POST' });
+    },
+
+    async unlike(id: string) {
+      return request<{ success: boolean; likeCount: number; hasLiked: boolean }>(`/posts/${id}/like`, { method: 'DELETE' });
+    },
+
+    async save(id: string) {
+      return request<{ success: boolean; hasSaved: boolean }>(`/posts/${id}/save`, { method: 'POST' });
+    },
+
+    async unsave(id: string) {
+      return request<{ success: boolean; hasSaved: boolean }>(`/posts/${id}/save`, { method: 'DELETE' });
+    },
+
+    async report(id: string, reason: string) {
+      return request<{ success: boolean; reportId: string }>(`/posts/${id}/report`, {
+        method: 'POST',
+        body: JSON.stringify({ reason }),
+      });
     },
 
     async repost(id: string) {

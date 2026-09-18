@@ -231,6 +231,62 @@ export class ProjectsController {
       next(err);
     }
   }
+
+  async likeProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const result = await projectsService.likeProject(req.user.userId, id);
+      res.json({ success: true, data: result });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async unlikeProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const result = await projectsService.unlikeProject(req.user.userId, id);
+      res.json({ success: true, data: result });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async repostProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const result = await projectsService.repostProject(req.user.userId, id);
+      res.json({ success: true, data: result });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async unrepostProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const result = await projectsService.unrepostProject(req.user.userId, id);
+      res.json({ success: true, data: result });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async reportProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const { reason } = req.body;
+      const result = await projectsService.reportProject(req.user.userId, id, reason);
+      res.json({ success: true, data: result });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export const projectsController = new ProjectsController();

@@ -40,11 +40,61 @@ export class ChatController {
     try {
       if (!req.user) throw new UnauthorizedError('Authentication required');
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const { ciphertext, iv, authTag, ratchetHeader, reply_to_message_id, replyToMessageId } = req.body;
+      if (!ciphertext || !iv || !authTag) {
+        throw new BadRequestError('Required encrypted fields: ciphertext, iv, and authTag');
+      }
+      const replyId = reply_to_message_id || replyToMessageId || null;
+      const message = await chatService.sendMessage(id, req.user.userId, ciphertext, iv, authTag, ratchetHeader, replyId);
+      res.status(201).json({ success: true, data: { message } });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async editMessage(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       const { ciphertext, iv, authTag, ratchetHeader } = req.body;
       if (!ciphertext || !iv || !authTag) {
         throw new BadRequestError('Required encrypted fields: ciphertext, iv, and authTag');
       }
-      const message = await chatService.sendMessage(id, req.user.userId, ciphertext, iv, authTag, ratchetHeader);
+      const message = await chatService.editMessage(req.user.userId, id, ciphertext, iv, authTag, ratchetHeader);
+      res.json({ success: true, data: { message } });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async deleteMessage(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const message = await chatService.deleteMessage(req.user.userId, id);
+      res.json({ success: true, data: { message } });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async forwardMessage(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const { targetConversationId, ciphertext, iv, authTag, ratchetHeader } = req.body;
+      if (!targetConversationId) {
+        throw new BadRequestError('targetConversationId is required');
+      }
+      const message = await chatService.forwardMessage(
+        req.user.userId,
+        id,
+        targetConversationId,
+        ciphertext,
+        iv,
+        authTag,
+        ratchetHeader
+      );
       res.status(201).json({ success: true, data: { message } });
     } catch (err) {
       next(err);

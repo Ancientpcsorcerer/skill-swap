@@ -11,8 +11,12 @@ export interface Post {
   art: string;
   imageUrls?: string[];
   videoUrls?: string[];
+  likeCount?: number;
+  hasLiked?: boolean;
+  commentCount?: number;
   repostCount?: number;
   hasReposted?: boolean;
+  hasSaved?: boolean;
   repostId?: string | null;
   repostedBy?: {
     id: string;

@@ -176,21 +176,48 @@ class ChatStoreService {
       const decryptedList: ChatMessage[] = [];
 
       for (const sm of serverMessages) {
-        const text = await e2eeService.decryptMessage(conversationId, {
-          ciphertext: sm.ciphertext,
-          iv: sm.iv,
-          authTag: sm.auth_tag,
-        });
+        let text = '';
+        if (!sm.is_deleted && sm.ciphertext && sm.iv && sm.auth_tag) {
+          text = await e2eeService.decryptMessage(conversationId, {
+            ciphertext: sm.ciphertext,
+            iv: sm.iv,
+            authTag: sm.auth_tag,
+          });
+        }
 
         decryptedList.push({
           id: sm.id,
           senderId: sm.sender_id,
+          senderName: sm.sender_name,
           conversationId: sm.conversation_id,
           text,
           createdAt: sm.created_at,
+          replyToMessageId: sm.reply_to_message_id,
+          forwardedFromMessageId: sm.forwarded_from_message_id,
+          isDeleted: Boolean(sm.is_deleted),
+          editedAt: sm.edited_at,
+          replyToMessage: sm.reply_to_message
+            ? {
+                id: sm.reply_to_message.id,
+                senderId: sm.reply_to_message.sender_id,
+                senderName: sm.reply_to_message.sender_name,
+                isDeleted: Boolean(sm.reply_to_message.is_deleted),
+              }
+            : null,
           status: 'delivered',
         });
       }
+
+      // Populate decrypted reply text from sibling messages where possible
+      const msgMap = new Map<string, string>();
+      decryptedList.forEach((m) => {
+        if (!m.isDeleted && m.text) msgMap.set(m.id, m.text);
+      });
+      decryptedList.forEach((m) => {
+        if (m.replyToMessage && !m.replyToMessage.isDeleted && msgMap.has(m.replyToMessage.id)) {
+          m.replyToMessage.text = msgMap.get(m.replyToMessage.id);
+        }
+      });
 
       this.messagesMap.set(conversationId, decryptedList);
       this.notify();
@@ -210,7 +237,8 @@ class ChatStoreService {
     currentUserId: string,
     conversationId: string,
     partner: ChatParticipant,
-    text: string
+    text: string,
+    replyToMessageId?: string | null
   ): Promise<ChatMessage> {
     const trimmed = text.trim();
     if (!trimmed) throw new Error('Message cannot be empty');
@@ -225,6 +253,7 @@ class ChatStoreService {
       conversationId,
       text: trimmed,
       createdAt: now,
+      replyToMessageId: replyToMessageId || null,
       status: 'sending',
     };
 
@@ -250,6 +279,7 @@ class ChatStoreService {
         iv: encrypted.iv,
         authTag: encrypted.authTag,
         ratchetHeader: encrypted.ratchetHeader,
+        reply_to_message_id: replyToMessageId || null,
       });
 
       // 4. Reconcile optimistic message with authoritative server record
@@ -259,6 +289,16 @@ class ChatStoreService {
             ...m,
             id: serverRecord.id,
             createdAt: serverRecord.created_at,
+            replyToMessageId: serverRecord.reply_to_message_id,
+            forwardedFromMessageId: serverRecord.forwarded_from_message_id,
+            replyToMessage: serverRecord.reply_to_message
+              ? {
+                  id: serverRecord.reply_to_message.id,
+                  senderId: serverRecord.reply_to_message.sender_id,
+                  senderName: serverRecord.reply_to_message.sender_name,
+                  isDeleted: Boolean(serverRecord.reply_to_message.is_deleted),
+                }
+              : null,
             status: 'delivered' as const,
           };
         }
@@ -303,6 +343,96 @@ class ChatStoreService {
       this.notify();
       throw err;
     }
+  }
+
+  /**
+   * Edits own message with client-side re-encryption
+   */
+  async editMessage(
+    conversationId: string,
+    messageId: string,
+    newText: string
+  ): Promise<ChatMessage> {
+    const trimmed = newText.trim();
+    if (!trimmed) throw new Error('Message cannot be empty');
+
+    const encrypted = await e2eeService.encryptMessage(conversationId, trimmed);
+    const serverRecord = await apiClient.chat.editMessage(messageId, {
+      ciphertext: encrypted.ciphertext,
+      iv: encrypted.iv,
+      authTag: encrypted.authTag,
+      ratchetHeader: encrypted.ratchetHeader,
+    });
+
+    const list = this.messagesMap.get(conversationId) || [];
+    const updatedList = list.map((m) => {
+      if (m.id === messageId) {
+        return {
+          ...m,
+          text: trimmed,
+          editedAt: serverRecord.edited_at || new Date().toISOString(),
+        };
+      }
+      return m;
+    });
+
+    this.messagesMap.set(conversationId, updatedList);
+    this.notify();
+    return updatedList.find((m) => m.id === messageId)!;
+  }
+
+  /**
+   * Deletes own message on server while preserving reply thread integrity
+   */
+  async deleteMessage(
+    conversationId: string,
+    messageId: string
+  ): Promise<void> {
+    await apiClient.chat.deleteMessage(messageId);
+    const list = this.messagesMap.get(conversationId) || [];
+    const updatedList = list.map((m) => {
+      if (m.id === messageId) {
+        return {
+          ...m,
+          text: '',
+          isDeleted: true,
+          editedAt: new Date().toISOString(),
+        };
+      }
+      return m;
+    });
+
+    this.messagesMap.set(conversationId, updatedList);
+    this.notify();
+  }
+
+  /**
+   * Forwards a message to another conversation with re-encryption for that conversation
+   */
+  async forwardMessage(
+    targetConversationId: string,
+    messageId: string,
+    decryptedText: string
+  ): Promise<ChatMessage> {
+    const encrypted = await e2eeService.encryptMessage(targetConversationId, decryptedText);
+    const serverRecord = await apiClient.chat.forwardMessage(messageId, {
+      targetConversationId,
+      ciphertext: encrypted.ciphertext,
+      iv: encrypted.iv,
+      authTag: encrypted.authTag,
+      ratchetHeader: encrypted.ratchetHeader,
+    });
+
+    await this.fetchMessages(targetConversationId);
+    return {
+      id: serverRecord.id,
+      senderId: serverRecord.sender_id,
+      conversationId: targetConversationId,
+      text: decryptedText,
+      createdAt: serverRecord.created_at,
+      forwardedFromMessageId: serverRecord.forwarded_from_message_id,
+      status: 'delivered',
+    };
   }
 
   /**

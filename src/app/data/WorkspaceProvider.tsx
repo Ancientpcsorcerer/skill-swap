@@ -42,6 +42,11 @@ function mapServerProject(p: any): Project {
     cover_image_url: p.cover_image_url || p.coverImageUrl || undefined,
     recreated_from_id: p.recreated_from_id || null,
     is_following: Boolean(p.is_following),
+    like_count: p.like_count || 0,
+    has_liked: Boolean(p.has_liked),
+    comment_count: p.comment_count || 0,
+    repost_count: p.repost_count || 0,
+    has_reposted: Boolean(p.has_reposted),
     files: p.files || [],
     imageUrls: p.image_urls || p.imageUrls || [],
     videoUrls: p.video_urls || p.videoUrls || [],
@@ -194,6 +199,68 @@ function useWorkspaceController(userId: string) {
     }));
   }
 
+  async function likeProject(id: string) {
+    const res = await api.projects.like(id);
+    setState((prev) => ({
+      ...prev,
+      projects: prev.projects.map((p) =>
+        p.id === id ? { ...p, like_count: res.likeCount, has_liked: true } : p
+      ),
+    }));
+    return res;
+  }
+
+  async function unlikeProject(id: string) {
+    const res = await api.projects.unlike(id);
+    setState((prev) => ({
+      ...prev,
+      projects: prev.projects.map((p) =>
+        p.id === id ? { ...p, like_count: res.likeCount, has_liked: false } : p
+      ),
+    }));
+    return res;
+  }
+
+  async function repostProject(id: string) {
+    const res = await api.projects.repost(id);
+    setState((prev) => ({
+      ...prev,
+      projects: prev.projects.map((p) =>
+        p.id === id ? { ...p, repost_count: res.repostCount, has_reposted: true } : p
+      ),
+    }));
+    return res;
+  }
+
+  async function unrepostProject(id: string) {
+    const res = await api.projects.unrepost(id);
+    setState((prev) => ({
+      ...prev,
+      projects: prev.projects.map((p) =>
+        p.id === id ? { ...p, repost_count: res.repostCount, has_reposted: false } : p
+      ),
+    }));
+    return res;
+  }
+
+  async function deleteProject(id: string) {
+    await api.projects.delete(id);
+    setState((prev) => ({
+      ...prev,
+      projects: prev.projects.filter((p) => p.id !== id),
+    }));
+  }
+
+  async function updateProjectFull(id: string, data: Partial<Project>) {
+    const updated = await api.projects.update(id, data);
+    const mapped = mapServerProject(updated);
+    setState((prev) => ({
+      ...prev,
+      projects: prev.projects.map((p) => (p.id === id ? { ...p, ...mapped } : p)),
+    }));
+    return mapped;
+  }
+
   return {
     ...state,
     allProjects: state.projects,
@@ -203,6 +270,12 @@ function useWorkspaceController(userId: string) {
     refreshProjects,
     addProject,
     updateProject,
+    updateProjectFull,
+    deleteProject,
+    likeProject,
+    unlikeProject,
+    repostProject,
+    unrepostProject,
     setLearning,
     setGoal,
     toggleSavedProject: (id: string) => toggle('savedProjects', id),

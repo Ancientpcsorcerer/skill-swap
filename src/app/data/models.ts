@@ -33,6 +33,11 @@ export interface Project {
   cover_image_url?: string;
   recreated_from_id?: string | null;
   is_following?: boolean;
+  like_count?: number;
+  has_liked?: boolean;
+  comment_count?: number;
+  repost_count?: number;
+  has_reposted?: boolean;
   imageUrls?: string[];
   videoUrls?: string[];
 }
@@ -65,8 +70,12 @@ export interface PostItem {
   art: string;
   image_urls: string[];
   video_urls: string[];
+  like_count?: number;
+  has_liked?: boolean;
+  comment_count?: number;
   repost_count?: number;
   has_reposted?: boolean;
+  has_saved?: boolean;
   repost_id?: string | null;
   reposted_by?: {
     id: string;
@@ -77,6 +86,54 @@ export interface PostItem {
   } | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface CommentAuthor {
+  id: string;
+  name: string;
+  username: string;
+  avatar_url?: string | null;
+}
+
+export interface CommentItem {
+  id: string;
+  target_type: 'post' | 'project';
+  target_id: string;
+  user_id: string;
+  parent_comment_id: string | null;
+  body: string;
+  is_deleted: boolean;
+  edited_at: string | null;
+  created_at: string;
+  updated_at: string;
+  author: CommentAuthor;
+  is_creator: boolean;
+  like_count: number;
+  has_liked: boolean;
+  reply_count: number;
+  replies?: CommentItem[];
+}
+
+export interface ChatMessage {
+  id: string;
+  conversation_id: string;
+  sender_id: string;
+  sender_name?: string;
+  ciphertext: string;
+  iv: string;
+  auth_tag: string;
+  ratchet_header?: any;
+  reply_to_message_id?: string | null;
+  forwarded_from_message_id?: string | null;
+  is_deleted?: boolean;
+  edited_at?: string | null;
+  created_at: string;
+  reply_to_message?: {
+    id: string;
+    sender_id: string;
+    sender_name: string;
+    is_deleted?: boolean;
+  } | null;
 }
 export interface LearningPath { id: string; title: string; description: string; category: string; topics: string[]; art: string; mentorIds: string[]; resources: number }
 export interface Community { id: string; name: string; description: string; category: string; members: string; art: string }

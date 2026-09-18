@@ -54,6 +54,17 @@ projectsRouter.post('/:id/follow', authenticateToken, projectsController.followP
 projectsRouter.delete('/:id/follow', authenticateToken, projectsController.unfollowProject.bind(projectsController));
 projectsRouter.post('/:id/join', authenticateToken, projectsController.joinProject.bind(projectsController));
 
+// Project interactions: Like / Unlike
+projectsRouter.post('/:id/like', authenticateToken, projectsController.likeProject.bind(projectsController));
+projectsRouter.delete('/:id/like', authenticateToken, projectsController.unlikeProject.bind(projectsController));
+
+// Project interactions: Repost / Unrepost
+projectsRouter.post('/:id/repost', authenticateToken, projectsController.repostProject.bind(projectsController));
+projectsRouter.delete('/:id/repost', authenticateToken, projectsController.unrepostProject.bind(projectsController));
+
+// Project moderation: Report
+projectsRouter.post('/:id/report', authenticateToken, projectsController.reportProject.bind(projectsController));
+
 // Recreate Completed Project (Bug F7)
 projectsRouter.post('/:id/recreate', authenticateToken, projectsController.recreateProject.bind(projectsController));
 
