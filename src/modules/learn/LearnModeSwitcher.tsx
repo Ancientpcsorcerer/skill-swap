@@ -1,14 +1,16 @@
 interface LearnModeSwitcherProps {
-  activeMode: 'explore' | 'progress';
-  onSelectMode: (mode: 'explore' | 'progress') => void;
+  activeMode: 'explore' | 'progress' | 'teaching';
+  onSelectMode: (mode: 'explore' | 'progress' | 'teaching') => void;
   totalExplorePaths?: number;
   activeProgressCount?: number;
+  pendingRequestCount?: number;
 }
 
 export function LearnModeSwitcher({
   activeMode,
   onSelectMode,
   activeProgressCount = 0,
+  pendingRequestCount = 0,
 }: LearnModeSwitcherProps) {
   return (
     <div className="learn-mode-bar">
@@ -41,7 +43,25 @@ export function LearnModeSwitcher({
             </span>
           )}
         </button>
+
+        <button
+          type="button"
+          id="tab-teaching"
+          role="tab"
+          aria-selected={activeMode === 'teaching'}
+          aria-controls="panel-teaching"
+          className="learn-segmented-tab"
+          onClick={() => onSelectMode('teaching')}
+        >
+          Teaching Studio
+          {pendingRequestCount > 0 && (
+            <span className="learn-counter-badge" aria-label={`${pendingRequestCount} pending requests`}>
+              {pendingRequestCount}
+            </span>
+          )}
+        </button>
       </div>
     </div>
   );
 }
+

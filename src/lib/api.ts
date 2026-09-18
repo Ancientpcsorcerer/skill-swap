@@ -7,6 +7,11 @@ import type {
   Community,
   ExplorationItem,
   Activity,
+  TeachingProfile,
+  TeachingRequest,
+  ClassItem,
+  StudentItem,
+  ClassSession,
 } from '../app/data/models';
 
 export const API_BASE =
@@ -377,6 +382,11 @@ export const api = {
       return res.conversation;
     },
 
+    async getClassConversation(classId: string) {
+      const res = await request<{ conversation: any }>(`/chat/conversations/class/${classId}`);
+      return res.conversation;
+    },
+
     async getMessages(conversationId: string) {
       const res = await request<{ messages: any[] }>(`/chat/conversations/${conversationId}/messages`);
       return res.messages;
@@ -429,6 +439,18 @@ export const api = {
       });
       return res.post;
     },
+
+    async repost(id: string) {
+      return request<{ success: boolean; repostCount: number; hasReposted: boolean }>(`/posts/${id}/repost`, {
+        method: 'POST',
+      });
+    },
+
+    async unrepost(id: string) {
+      return request<{ success: boolean; repostCount: number; hasReposted: boolean }>(`/posts/${id}/repost`, {
+        method: 'DELETE',
+      });
+    },
   },
 
   learning: {
@@ -456,6 +478,98 @@ export const api = {
 
     async deleteGoal(id: string) {
       return request(`/learning/goals/${id}`, { method: 'DELETE' });
+    },
+  },
+
+  teaching: {
+    async getProfile() {
+      const res = await request<{ profile: TeachingProfile }>('/teaching/profile');
+      return res.profile;
+    },
+
+    async updateProfile(data: { headline?: string; bio?: string; hourly_rate?: string; status?: 'available' | 'busy' | 'paused'; availability_slots?: Array<{ day: string; time: string }>; skills?: string[] }) {
+      const res = await request<{ profile: TeachingProfile }>('/teaching/profile', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      });
+      return res.profile;
+    },
+
+    async listTeachers(skill?: string) {
+      const url = skill ? `/teaching/teachers?skill=${encodeURIComponent(skill)}` : '/teaching/teachers';
+      const res = await request<{ teachers: TeachingProfile[] }>(url);
+      return res.teachers;
+    },
+
+    async getRequests() {
+      const res = await request<{ incoming: TeachingRequest[]; outgoing: TeachingRequest[] }>('/teaching/requests');
+      return res;
+    },
+
+    async sendRequest(teacherId: string, skill: string, message: string) {
+      const res = await request<{ request: TeachingRequest }>('/teaching/requests', {
+        method: 'POST',
+        body: JSON.stringify({ teacherId, skill, message }),
+      });
+      return res.request;
+    },
+
+    async acceptRequest(id: string) {
+      const res = await request<{ request: TeachingRequest }>(`/teaching/requests/${id}/accept`, {
+        method: 'POST',
+      });
+      return res.request;
+    },
+
+    async declineRequest(id: string) {
+      const res = await request<{ request: TeachingRequest }>(`/teaching/requests/${id}/decline`, {
+        method: 'POST',
+      });
+      return res.request;
+    },
+
+    async getStudents() {
+      const res = await request<{ students: StudentItem[] }>('/teaching/students');
+      return res.students;
+    },
+
+    async getClasses() {
+      const res = await request<{ classes: ClassItem[] }>('/teaching/classes');
+      return res.classes;
+    },
+
+    async createClass(data: { title: string; description: string; skill: string; schedule?: string; meeting_url?: string; max_students?: number }) {
+      const res = await request<{ class: ClassItem }>('/teaching/classes', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+      return res.class;
+    },
+
+    async joinClass(id: string) {
+      return request<{ success: boolean; memberCount: number }>(`/teaching/classes/${id}/join`, {
+        method: 'POST',
+      });
+    },
+
+    async leaveClass(id: string) {
+      return request<{ success: boolean; memberCount: number }>(`/teaching/classes/${id}/leave`, {
+        method: 'POST',
+      });
+    },
+
+    async getSessions(trackId?: string) {
+      const url = trackId ? `/teaching/sessions?trackId=${encodeURIComponent(trackId)}` : '/teaching/sessions';
+      const res = await request<{ sessions: ClassSession[] }>(url);
+      return res.sessions;
+    },
+
+    async createSession(data: { class_id?: string; student_id?: string; track_id?: string; title: string; scheduled_at: string; duration_minutes?: number; meeting_url?: string }) {
+      const res = await request<{ session: ClassSession }>('/teaching/sessions', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+      return res.session;
     },
   },
 

@@ -9,3 +9,8 @@ postsRouter.get('/', optionalAuth, postsController.listPosts.bind(postsControlle
 
 // Authenticated creation
 postsRouter.post('/', authenticateToken, postsController.createPost.bind(postsController));
+
+// Authenticated repost and unrepost
+postsRouter.post('/:id/repost', authenticateToken, postsController.repostPost.bind(postsController));
+postsRouter.delete('/:id/repost', authenticateToken, postsController.unrepostPost.bind(postsController));
+

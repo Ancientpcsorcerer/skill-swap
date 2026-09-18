@@ -4,12 +4,14 @@ import { Artwork } from '../../app/components/Artwork';
 import { learningPaths, trendingSkills } from '../../app/data/catalog';
 import { useAuthGate } from '../../app/session/AuthGateContext';
 import { navigate, useApplicationRoute } from '../../app/navigation';
+import { api } from '../../lib/api';
 import { useLearnState } from './useLearnState';
 import { LearnHero } from './LearnHero';
 import { LearnModeSwitcher } from './LearnModeSwitcher';
 import { ExploreSkillsView } from './ExploreSkillsView';
 import { MyProgressView } from './MyProgressView';
 import { LearningEnvironment } from './LearningEnvironment';
+import { TeachingView } from './TeachingView';
 import type { LearningPath } from '../../app/data/models';
 import '../../styles/learn.css';
 
@@ -22,8 +24,10 @@ export function LearnModule() {
   const tabQuery = route.query.get('tab');
   const pathQuery = route.query.get('path');
 
-  const [activeMode, setActiveMode] = useState<'explore' | 'progress'>(() => {
-    return tabQuery === 'progress' ? 'progress' : 'explore';
+  const [activeMode, setActiveMode] = useState<'explore' | 'progress' | 'teaching'>(() => {
+    if (tabQuery === 'progress') return 'progress';
+    if (tabQuery === 'teaching') return 'teaching';
+    return 'explore';
   });
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,11 +35,14 @@ export function LearnModule() {
   const [learningTab, setLearningTab] = useState<'In Progress' | 'Saved' | 'Completed'>('In Progress');
   const [selectedPath, setSelectedPath] = useState<LearningPath | null>(null);
   const [asideGoalMessage, setAsideGoalMessage] = useState('');
+  const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
 
   // Sync mode with route if tab parameter changes
   useEffect(() => {
     if (tabQuery === 'progress' && activeMode !== 'progress') {
       setActiveMode('progress');
+    } else if (tabQuery === 'teaching' && activeMode !== 'teaching') {
+      setActiveMode('teaching');
     } else if (tabQuery === 'explore' && activeMode !== 'explore') {
       setActiveMode('explore');
     }
@@ -51,10 +58,24 @@ export function LearnModule() {
     }
   }, [pathQuery]);
 
-  function handleSelectMode(newMode: 'explore' | 'progress') {
+
+  useEffect(() => {
+    if (learnState.isAuthenticated) {
+      api.teaching
+        .getRequests()
+        .then((r) => {
+          const pending = r.incoming.filter((req) => req.status === 'pending').length;
+          setPendingRequestsCount(pending);
+        })
+        .catch(() => {});
+    }
+  }, [learnState.isAuthenticated]);
+
+  function handleSelectMode(newMode: 'explore' | 'progress' | 'teaching') {
     setActiveMode(newMode);
     navigate('learn', undefined, false, { tab: newMode });
   }
+
 
   function handleAsideGoalSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -97,9 +118,10 @@ export function LearnModule() {
           activeMode={activeMode}
           onSelectMode={handleSelectMode}
           activeProgressCount={inProgressCount}
+          pendingRequestCount={pendingRequestsCount}
         />
 
-        {/* Immersive Dedicated Learning Environment or Segmented Views */}
+        {/* Immersive Dedicated Learning Environment, Segmented Views, or Teaching Studio */}
         {selectedPath ? (
           <LearningEnvironment
             path={selectedPath}
@@ -118,7 +140,7 @@ export function LearnModule() {
             onCategoryChange={setSelectedCategory}
             onSelectPath={setSelectedPath}
           />
-        ) : (
+        ) : activeMode === 'progress' ? (
           <MyProgressView
             records={learnState.records}
             goals={learnState.goals}
@@ -131,8 +153,11 @@ export function LearnModule() {
             onDeleteGoal={learnState.deleteGoal}
             onSwitchToExplore={() => handleSelectMode('explore')}
           />
+        ) : (
+          <TeachingView isAuthenticated={learnState.isAuthenticated} />
         )}
       </div>
+
 
       {/* Persistent Workspace Aside */}
       <aside className="module-aside">

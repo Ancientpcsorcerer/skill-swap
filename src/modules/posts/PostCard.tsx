@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { Avatar } from '../../app/components/Avatar';
 import { Tags } from '../../app/components/UI';
 import { navigate } from '../../app/navigation';
+import { useAuthGate } from '../../app/session/AuthGateContext';
+import { postService } from './postService';
 import type { Post } from './types';
 
 function formatPostTime(isoString: string): string {
@@ -31,9 +34,52 @@ export function PostCard({
   post: Post;
   onOpen?: (post: Post) => void;
 }) {
+  const { requireAuth } = useAuthGate();
+  const [isReposting, setIsReposting] = useState(false);
+
   const handleAuthorClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     navigate('profile', undefined, false, { user: post.authorId });
+  };
+
+  const handleRepostAuthorClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (post.repostedBy) {
+      navigate('profile', undefined, false, { user: post.repostedBy.id });
+    }
+  };
+
+  const handleRepostClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isReposting) return;
+    if (
+      !requireAuth('repost this item', async () => {
+        try {
+          if (post.hasReposted) {
+            await postService.unrepostPost(post.id);
+          } else {
+            await postService.repostPost(post.id);
+          }
+        } catch (err) {
+          console.error('Repost action failed:', err);
+        }
+      })
+    ) {
+      return;
+    }
+
+    setIsReposting(true);
+    try {
+      if (post.hasReposted) {
+        await postService.unrepostPost(post.id);
+      } else {
+        await postService.repostPost(post.id);
+      }
+    } catch (err) {
+      console.error('Repost action failed:', err);
+    } finally {
+      setIsReposting(false);
+    }
   };
 
   return (
@@ -49,6 +95,19 @@ export function PostCard({
         }
       }}
     >
+      {post.repostedBy && (
+        <div
+          className="post-card-provenance"
+          onClick={handleRepostAuthorClick}
+          title={`Reposted by ${post.repostedBy.name}`}
+        >
+          <span aria-hidden="true">🔁</span>
+          <span>
+            Reposted by <strong>{post.repostedBy.name}</strong>
+          </span>
+        </div>
+      )}
+
       <header className="post-card-header">
         <button
           type="button"
@@ -80,7 +139,22 @@ export function PostCard({
           </div>
         )}
         <Tags values={post.tags.filter((t) => t !== post.projectTag)} />
+
+        <div className="post-card-actions">
+          <button
+            type="button"
+            className={`post-repost-btn ${post.hasReposted ? 'active' : ''}`}
+            onClick={handleRepostClick}
+            disabled={isReposting}
+            aria-label={post.hasReposted ? 'Undo Repost' : 'Repost'}
+            title={post.hasReposted ? 'Undo Repost' : 'Repost'}
+          >
+            <span aria-hidden="true">🔁</span>
+            <span>{post.repostCount ?? 0}</span>
+          </button>
+        </div>
       </footer>
     </article>
   );
 }
+

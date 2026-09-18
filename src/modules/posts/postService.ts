@@ -26,6 +26,18 @@ async function fetchServerPosts(): Promise<Post[]> {
         art: sp.art || 'idea',
         imageUrls: sp.image_urls || [],
         videoUrls: sp.video_urls || [],
+        repostCount: sp.repost_count || 0,
+        hasReposted: Boolean(sp.has_reposted),
+        repostId: sp.repost_id || null,
+        repostedBy: sp.reposted_by
+          ? {
+              id: sp.reposted_by.id,
+              name: sp.reposted_by.name,
+              username: sp.reposted_by.username,
+              avatarUrl: sp.reposted_by.avatar_url,
+              createdAt: sp.reposted_by.created_at,
+            }
+          : null,
         createdAt: sp.created_at,
       }));
       hasFetchedPosts = true;
@@ -38,6 +50,7 @@ async function fetchServerPosts(): Promise<Post[]> {
   }
   return inMemoryPosts;
 }
+
 
 export const postService = {
   subscribe(callback: () => void): () => void {
@@ -122,4 +135,27 @@ export const postService = {
 
     return createdPost;
   },
+
+  async repostPost(postId: string): Promise<{ success: boolean; repostCount: number; hasReposted: boolean }> {
+    const result = await api.posts.repost(postId);
+    inMemoryPosts = inMemoryPosts.map((p) =>
+      p.id === postId
+        ? { ...p, repostCount: result.repostCount, hasReposted: true }
+        : p
+    );
+    window.dispatchEvent(new CustomEvent(POST_UPDATE_EVENT));
+    return result;
+  },
+
+  async unrepostPost(postId: string): Promise<{ success: boolean; repostCount: number; hasReposted: boolean }> {
+    const result = await api.posts.unrepost(postId);
+    inMemoryPosts = inMemoryPosts.map((p) =>
+      p.id === postId
+        ? { ...p, repostCount: result.repostCount, hasReposted: false }
+        : p
+    );
+    window.dispatchEvent(new CustomEvent(POST_UPDATE_EVENT));
+    return result;
+  },
 };
+

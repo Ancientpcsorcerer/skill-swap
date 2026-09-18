@@ -349,3 +349,111 @@ CREATE INDEX IF NOT EXISTS idx_posts_author ON posts (author_id, created_at DESC
 CREATE INDEX IF NOT EXISTS idx_chat_messages_conv ON chat_messages (conversation_id, created_at ASC);
 CREATE INDEX IF NOT EXISTS idx_chat_conv_participants ON chat_conversations (participant_one_id, participant_two_id);
 
+-- 30. Reposts (First-Class Backend Reposts with Provenance)
+CREATE TABLE IF NOT EXISTS reposts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    original_post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT uq_user_post_repost UNIQUE (user_id, original_post_id)
+);
+CREATE INDEX IF NOT EXISTS idx_reposts_post ON reposts (original_post_id);
+CREATE INDEX IF NOT EXISTS idx_reposts_user ON reposts (user_id, created_at DESC);
+
+-- 31. Teaching Profiles
+CREATE TABLE IF NOT EXISTS teaching_profiles (
+    user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    headline VARCHAR(150) NOT NULL DEFAULT '',
+    bio TEXT NOT NULL DEFAULT '',
+    hourly_rate VARCHAR(50) NOT NULL DEFAULT '',
+    status VARCHAR(30) NOT NULL DEFAULT 'available' CHECK (status IN ('available', 'busy', 'paused')),
+    availability_slots JSONB NOT NULL DEFAULT '[]',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 32. Teaching Skills
+CREATE TABLE IF NOT EXISTS teaching_skills (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    skill VARCHAR(80) NOT NULL,
+    level VARCHAR(30) NOT NULL DEFAULT 'expert',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT uq_teaching_skill UNIQUE (user_id, skill)
+);
+CREATE INDEX IF NOT EXISTS idx_teaching_skills_skill ON teaching_skills (skill);
+
+-- 33. Teaching Requests
+CREATE TABLE IF NOT EXISTS teaching_requests (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    teacher_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    skill VARCHAR(80) NOT NULL,
+    message TEXT NOT NULL DEFAULT '',
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'declined', 'cancelled')),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT chk_no_self_teaching CHECK (student_id <> teacher_id)
+);
+CREATE INDEX IF NOT EXISTS idx_teaching_requests_teacher ON teaching_requests (teacher_id, status);
+CREATE INDEX IF NOT EXISTS idx_teaching_requests_student ON teaching_requests (student_id, status);
+
+-- 34. Classes
+CREATE TABLE IF NOT EXISTS classes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    teacher_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(150) NOT NULL,
+    description TEXT NOT NULL,
+    skill VARCHAR(80) NOT NULL,
+    schedule VARCHAR(100) NOT NULL DEFAULT '',
+    meeting_url TEXT NULL,
+    max_students INTEGER NOT NULL DEFAULT 20,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_classes_teacher ON classes (teacher_id);
+CREATE INDEX IF NOT EXISTS idx_classes_skill ON classes (skill);
+
+-- 35. Class Members
+CREATE TABLE IF NOT EXISTS class_members (
+    class_id UUID NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
+    student_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    joined_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (class_id, student_id)
+);
+CREATE INDEX IF NOT EXISTS idx_class_members_student ON class_members (student_id);
+
+-- 36. Class Sessions
+CREATE TABLE IF NOT EXISTS class_sessions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    class_id UUID NULL REFERENCES classes(id) ON DELETE CASCADE,
+    teacher_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    student_id UUID NULL REFERENCES users(id) ON DELETE SET NULL,
+    track_id VARCHAR(50) NULL,
+    title VARCHAR(150) NOT NULL,
+    scheduled_at TIMESTAMPTZ NOT NULL,
+    duration_minutes INTEGER NOT NULL DEFAULT 45,
+    meeting_url TEXT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'scheduled' CHECK (status IN ('scheduled', 'in_progress', 'completed', 'cancelled')),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_class_sessions_teacher ON class_sessions (teacher_id);
+CREATE INDEX IF NOT EXISTS idx_class_sessions_class ON class_sessions (class_id);
+CREATE INDEX IF NOT EXISTS idx_class_sessions_track ON class_sessions (track_id);
+
+-- 37. Chat Group Support & Membership
+ALTER TABLE chat_conversations ADD COLUMN IF NOT EXISTS type VARCHAR(20) NOT NULL DEFAULT 'direct' CHECK (type IN ('direct', 'class_group'));
+ALTER TABLE chat_conversations ADD COLUMN IF NOT EXISTS class_id UUID NULL REFERENCES classes(id) ON DELETE CASCADE;
+ALTER TABLE chat_conversations ALTER COLUMN participant_one_id DROP NOT NULL;
+ALTER TABLE chat_conversations ALTER COLUMN participant_two_id DROP NOT NULL;
+
+CREATE TABLE IF NOT EXISTS chat_group_members (
+    conversation_id UUID NOT NULL REFERENCES chat_conversations(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    joined_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (conversation_id, user_id)
+);
+CREATE INDEX IF NOT EXISTS idx_chat_group_members_user ON chat_group_members (user_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_chat_conversations_class ON chat_conversations (class_id) WHERE class_id IS NOT NULL;
+
+

@@ -50,6 +50,18 @@ export class ChatController {
       next(err);
     }
   }
+
+  async getClassConversation(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const classId = Array.isArray(req.params.classId) ? req.params.classId[0] : req.params.classId;
+      const conversation = await chatService.getClassConversation(classId, req.user.userId);
+      res.json({ success: true, data: { conversation } });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export const chatController = new ChatController();
+

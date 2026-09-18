@@ -4,7 +4,8 @@ import { Avatar } from '../../app/components/Avatar';
 import { useAuthGate } from '../../app/session/AuthGateContext';
 import { useConnect } from '../connect/ConnectProvider';
 import { navigate } from '../../app/navigation';
-import type { LearningPath } from '../../app/data/models';
+import { api } from '../../lib/api';
+import type { LearningPath, ClassSession } from '../../app/data/models';
 import type { NormalizedLearningRecord } from './useLearnState';
 
 interface LearningEnvironmentProps {
@@ -32,6 +33,24 @@ export function LearningEnvironment({
   );
   const [savedNotice, setSavedNotice] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [sessions, setSessions] = useState<ClassSession[]>([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    api.teaching
+      .getSessions(path.id)
+      .then((data) => {
+        if (isMounted) setSessions(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => {
+        console.error('Failed to load track sessions:', err);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [path.id]);
+
+
 
   useEffect(() => {
     if (record) {
@@ -246,11 +265,34 @@ export function LearningEnvironment({
           {/* Backend Session / Zoom Section */}
           <div className="learning-env-card learning-env-session-card">
             <span className="learning-env-section-kicker">Upcoming Session</span>
-            <div className="learning-env-empty-session">
-              <strong className="session-empty-heading">NO UPCOMING SESSION</strong>
-              <p className="session-empty-text">No live session has been scheduled yet for this learning track.</p>
-            </div>
+            {sessions.length > 0 ? (
+              <div className="learning-env-active-session" style={{ padding: '8px 0' }}>
+                <strong className="session-active-heading" style={{ display: 'block', fontSize: '15px', color: '#141514', marginBottom: '4px' }}>
+                  {sessions[0].title}
+                </strong>
+                <p className="session-active-meta" style={{ fontSize: '12.5px', color: '#656862', margin: '0 0 10px 0' }}>
+                  Hosted by <strong>{sessions[0].teacher_name}</strong> &bull; {new Date(sessions[0].scheduled_at).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })} ({sessions[0].duration_minutes}m)
+                </p>
+                {sessions[0].meeting_url && (
+                  <a
+                    href={sessions[0].meeting_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="primary-button session-join-link"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none', padding: '6px 14px', fontSize: '12.5px' }}
+                  >
+                    Join Live Session &rarr;
+                  </a>
+                )}
+              </div>
+            ) : (
+              <div className="learning-env-empty-session">
+                <strong className="session-empty-heading">NO UPCOMING SESSION</strong>
+                <p className="session-empty-text">No live session has been scheduled yet for this learning track.</p>
+              </div>
+            )}
           </div>
+
 
           {/* Track Actions Card */}
           <div className="learning-env-card learning-env-actions-card">

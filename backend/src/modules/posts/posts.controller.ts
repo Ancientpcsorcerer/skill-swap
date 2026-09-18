@@ -6,7 +6,8 @@ export class PostsController {
   async listPosts(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const authorId = typeof req.query.authorId === 'string' ? req.query.authorId : undefined;
-      const posts = await postsService.listPosts(authorId);
+      const currentUserId = req.user?.userId;
+      const posts = await postsService.listPosts(authorId, currentUserId);
       res.json({ success: true, data: { posts } });
     } catch (err) {
       next(err);
@@ -22,6 +23,29 @@ export class PostsController {
       next(err);
     }
   }
+
+  async repostPost(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const postId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const result = await postsService.repost(req.user.userId, postId);
+      res.json({ success: true, data: result });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async unrepostPost(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) throw new UnauthorizedError('Authentication required');
+      const postId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const result = await postsService.unrepost(req.user.userId, postId);
+      res.json({ success: true, data: result });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export const postsController = new PostsController();
+

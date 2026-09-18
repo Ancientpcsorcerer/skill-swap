@@ -9,5 +9,7 @@ chatRouter.use(authenticateToken);
 
 chatRouter.get('/conversations', chatController.getConversations.bind(chatController));
 chatRouter.post('/conversations', chatController.getOrCreateConversation.bind(chatController));
+chatRouter.get('/conversations/class/:classId', chatController.getClassConversation.bind(chatController));
 chatRouter.get('/conversations/:id/messages', chatController.getMessages.bind(chatController));
 chatRouter.post('/conversations/:id/messages', chatController.sendMessage.bind(chatController));
+
